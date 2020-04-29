@@ -4,6 +4,7 @@ std::string IMAGE_TOPIC;
 std::string IMU_TOPIC;
 std::vector<std::string> CAM_NAMES;
 std::string FISHEYE_MASK;
+std::string FISHEYE_MASK_NAME;
 int MAX_CNT;
 int MIN_DIST;
 int WINDOW_SIZE;
@@ -56,8 +57,9 @@ void readParameters(ros::NodeHandle &n)
     SHOW_TRACK = fsSettings["show_track"];
     EQUALIZE = fsSettings["equalize"];
     FISHEYE = fsSettings["fisheye"];
+    fsSettings["fisheye_mask_name"] >> FISHEYE_MASK_NAME;
     if (FISHEYE == 1)
-        FISHEYE_MASK = VINS_FOLDER_PATH + "config/fisheye_mask.jpg";
+        FISHEYE_MASK = VINS_FOLDER_PATH + "config/"+ FISHEYE_MASK_NAME;
     CAM_NAMES.push_back(config_file);
 
     WINDOW_SIZE = 20;
