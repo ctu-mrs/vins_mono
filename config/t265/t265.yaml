@@ -31,16 +31,17 @@ extrinsicRotation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [-0.9997541340649516, 0.021399233299414476, 0.005808978760158635,
-          -0.02128428125230146, -0.999589518976427, 0.01917740660382183, 
-           0.006216976082604166, 0.019049051595095515, 0.9997992212648076]
+   data: [-0.9996952408210835, -0.02468630027545555, -0.00010981068309013239,
+           0.02467854073017069, -0.9994744976747972, 0.021016615453988346,
+          -0.0006285754571917723, 0.021007500480103733, 0.999779120514363]
 #Translation from camera frame to imu frame, imu^T_cam
 extrinsicTranslation: !!opencv-matrix
    rows: 3
    cols: 1
    dt: d
-   data: [ 0.017916853088683814, 0.005238170575180803, -0.07369224277721223]
+   data: [ -0.04551838550231989, -0.0030311262189550775, 0.07385268579557093]
 
+     
 #feature tracker paprameters
 max_cnt: 150            # max feature number in feature tracking. The bigger number the longer computational time. Default 150.
 min_dist: 30            # min distance between two features. Default 30.
