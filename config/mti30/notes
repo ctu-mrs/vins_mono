@@ -1,0 +1,9 @@
+VINS MONO:
+- potrebuje inicializaci IMU, celkem poradnou, jinak se nerozjede, nebo otocit kameru kvuli parallaxu - vyzkouset jak na to!
+- vyzkouset rotovat na zemi pred takeoff
+  t265 imu:
+  - pokud pouzivam copy, pise mi ze mam spatny header v imu, ale jede, zkusit bud linear interpolation nebo ten muj merger
+  - vetsinou pri pristani odletne do nekonecna, uprava parametru nepomohla
+  mti30 imu:
+  - pri pristani neodleti
+  - vetsi variabilita nastaveni noisu (se mi zda)
