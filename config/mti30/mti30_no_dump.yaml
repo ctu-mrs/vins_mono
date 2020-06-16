@@ -1,9 +1,9 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/uav47/xsens/imu/data"
-# imu_topic: "/uav47/xsens/imu/data_filtered"
-image_topic: "/uav47/rs_t265/fisheye1/image_raw"
+imu_topic: "/uav44/xsens/imu/data"
+# imu_topic: "/uav44/xsens/imu/data_filtered"
+image_topic: "/uav44/rs_t265/realsense2_camera/fisheye1/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
 model_type: KANNALA_BRANDT
@@ -21,7 +21,7 @@ projection_parameters:
    v0: 402.08265136473955
 
 # Extrinsic parameter between IMU and Camera.
-estimate_extrinsic: 1   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
                         # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
                         # 2  Don't know anything about extrinsic parameters. You don't need to give R,T. We will try to calibrate it. Do some rotation movement at beginning.                        
 #If you choose 0 or 1, you should write down the following matrix.
@@ -55,21 +55,21 @@ fisheye: 1              # if using fisheye, turn on it. A fisheye_mask_name has 
 fisheye_mask_name: "fisheye_mask_848x800.jpg"              # name of the mask file 
 
 #optimization parameters
-max_solver_time: 0.04  # max solver itration time (ms), to guarantee real time
-max_num_iterations: 10   # max solver itrations, to guarantee real time
+max_solver_time: 0.05  # max solver itration time (ms), to guarantee real time
+max_num_iterations: 30   # max solver itrations, to guarantee real time
 keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
 
 #imu parameters       The more accurate parameters you provide, the better performance
-acc_n: 0.1          # accelerometer measurement noise standard deviation. #0.2   0.04
-gyr_n: 0.001         # gyroscope measurement noise standard deviation.     #0.05  0.004
+acc_n: 0.4          # accelerometer measurement noise standard deviation. #0.2   0.04
+gyr_n: 0.01         # gyroscope measurement noise standard deviation.     #0.05  0.004
 acc_w: 0.0001         # accelerometer bias random work noise standard deviation.  #0.02
 gyr_w: 0.0001       # gyroscope bias random work noise standard deviation.     #4.0e-5
 g_norm: 9.81007     # gravity magnitude
 
 #loop closure parameters
-loop_closure: 1                    # start loop closure
+loop_closure: 0                    # start loop closure
 load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
-fast_relocalization: 1            # useful in real-time and large project
+fast_relocalization: 0            # useful in real-time and large project
 pose_graph_save_path: "/home/honzabednar/git/vins-mono/output/pose_graph/" # save and load path
 
 #unsynchronization parameters
