@@ -1,0 +1,1372 @@
+G
+
+SUMMARY
+========
+
+PARAMETERS
+ * /feature_tracker/config_file: /home/honzabednar...
+ * /feature_tracker/vins_folder: /home/honzabednar...
+ * /pose_graph/config_file: /home/honzabednar...
+ * /pose_graph/skip_cnt: 0
+ * /pose_graph/skip_dis: 0.0
+ * /pose_graph/visualization_shift_x: 0
+ * /pose_graph/visualization_shift_y: 0
+ * /rosdistro: melodic
+ * /rosversion: 1.14.5
+ * /vins_estimator/config_file: /home/honzabednar...
+ * /vins_estimator/vins_folder: /home/honzabednar...
+
+NODES
+  /
+    feature_tracker (feature_tracker/feature_tracker)
+    pose_graph (pose_graph/pose_graph)
+    vins_estimator (vins_estimator/vins_estimator)
+
+ROS_MASTER_URI=http://localhost:11311
+
+process[feature_tracker-1]: started with pid [17933]
+process[vins_estimator-2]: started with pid [17943]
+process[pose_graph-3]: started with pid [17949]
+[ INFO] [1593767184.037438253]: init begins
+[ INFO] [1593767184.084400085]: Loaded config_file: /home/honzabednar/workspace/src/vins-mono/feature_tracker/../config/simulation/simulation.yaml
+result path /home/honzabednar/git/vins-mono/output//vins_result_no_loop.csv
+[ INFO] [1593767184.092974235]: ROW: 360.000000 COL: 640.000000
+[ WARN] [1593767184.093545794]:  fix extrinsic param
+[ INFO] [1593767184.107136878]: Extrinsic_R :
+ 2.22045e-16           -1            0
+          -1 -2.22045e-16           -0
+           0            0           -1
+[ INFO] [1593767184.107727312]: Extrinsic_T :
+ 0.153  0.018 -0.103
+[ INFO] [1593767184.108161344]: Unsynchronized sensors, online estimate time offset, initial td: 0
+[ WARN] [1593767184.108655532]: waiting for image and imu...
+[ INFO] [1593767186.562299934, 10.872000000]: IMU excitation not enouth!
+[ INFO] [1593767186.563517098, 10.872000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767186.736350550, 11.036000000]: IMU excitation not enouth!
+[ INFO] [1593767186.736728832, 11.036000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767186.919194214, 11.184000000]: IMU excitation not enouth!
+[ INFO] [1593767186.919732240, 11.184000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767187.167302417, 11.356000000]: IMU excitation not enouth!
+[ INFO] [1593767187.167656198, 11.356000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767187.302478465, 11.440000000]: IMU excitation not enouth!
+[ INFO] [1593767187.302877373, 11.440000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767187.538090909, 11.644000000]: IMU excitation not enouth!
+[ INFO] [1593767187.538517749, 11.644000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767187.739765079, 11.844000000]: IMU excitation not enouth!
+[ INFO] [1593767187.740080706, 11.844000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767187.938658776, 11.988000000]: IMU excitation not enouth!
+[ INFO] [1593767187.939038895, 11.988000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767188.025586233, 12.084000000]: IMU excitation not enouth!
+[ INFO] [1593767188.025797713, 12.084000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767188.130319488, 12.196000000]: IMU excitation not enouth!
+[ INFO] [1593767188.130639206, 12.196000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767188.303891555, 12.368000000]: IMU excitation not enouth!
+[ INFO] [1593767188.304268309, 12.368000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767188.453583130, 12.484000000]: IMU excitation not enouth!
+[ INFO] [1593767188.453918837, 12.484000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767188.868266032, 12.720000000]: IMU excitation not enouth!
+[ INFO] [1593767188.869121022, 12.720000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767189.334226027, 13.020000000]: IMU excitation not enouth!
+[ INFO] [1593767189.334543848, 13.020000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767189.438160955, 13.120000000]: IMU excitation not enouth!
+[ INFO] [1593767189.438485723, 13.124000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767189.599559758, 13.260000000]: IMU excitation not enouth!
+[ INFO] [1593767189.600024225, 13.260000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767189.752810132, 13.412000000]: IMU excitation not enouth!
+[ INFO] [1593767189.753177224, 13.412000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767189.945318118, 13.608000000]: IMU excitation not enouth!
+[ INFO] [1593767189.946385117, 13.608000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767190.165184480, 13.804000000]: IMU excitation not enouth!
+[ INFO] [1593767190.165569493, 13.804000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767190.326472208, 13.932000000]: IMU excitation not enouth!
+[ INFO] [1593767190.326885460, 13.932000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767190.547102512, 14.084000000]: IMU excitation not enouth!
+[ INFO] [1593767190.548108498, 14.084000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767190.798539421, 14.296000000]: IMU excitation not enouth!
+[ INFO] [1593767190.799010638, 14.296000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767191.025704306, 14.476000000]: IMU excitation not enouth!
+[ INFO] [1593767191.026160477, 14.476000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767191.200319364, 14.612000000]: IMU excitation not enouth!
+[ INFO] [1593767191.200795406, 14.612000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767191.337011455, 14.744000000]: IMU excitation not enouth!
+[ INFO] [1593767191.337449465, 14.744000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767191.534830327, 14.940000000]: IMU excitation not enouth!
+[ INFO] [1593767191.535186703, 14.940000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767191.642206007, 15.040000000]: IMU excitation not enouth!
+[ INFO] [1593767191.643839900, 15.040000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767191.852882170, 15.224000000]: IMU excitation not enouth!
+[ INFO] [1593767191.853265696, 15.224000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767192.087429497, 15.428000000]: IMU excitation not enouth!
+[ INFO] [1593767192.087939735, 15.428000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767192.286442169, 15.624000000]: IMU excitation not enouth!
+[ INFO] [1593767192.286827827, 15.624000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767192.480337014, 15.816000000]: IMU excitation not enouth!
+[ INFO] [1593767192.480621787, 15.816000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767192.574672350, 15.916000000]: IMU excitation not enouth!
+[ INFO] [1593767192.574908747, 15.916000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767192.745711725, 16.076000000]: IMU excitation not enouth!
+[ INFO] [1593767192.746033212, 16.076000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767192.853198192, 16.176000000]: IMU excitation not enouth!
+[ INFO] [1593767192.853508940, 16.176000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767193.004965511, 16.296000000]: IMU excitation not enouth!
+[ INFO] [1593767193.005361411, 16.296000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767193.269079793, 16.484000000]: IMU excitation not enouth!
+[ INFO] [1593767193.269429564, 16.484000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767193.446860588, 16.644000000]: IMU excitation not enouth!
+[ INFO] [1593767193.448037271, 16.644000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767193.585773897, 16.756000000]: IMU excitation not enouth!
+[ INFO] [1593767193.586162726, 16.756000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767193.705362881, 16.876000000]: IMU excitation not enouth!
+[ INFO] [1593767193.705609043, 16.876000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767193.931227834, 17.044000000]: IMU excitation not enouth!
+[ INFO] [1593767193.931668399, 17.044000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767194.066424128, 17.156000000]: IMU excitation not enouth!
+[ INFO] [1593767194.066919192, 17.160000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767194.239340922, 17.332000000]: IMU excitation not enouth!
+[ INFO] [1593767194.239660779, 17.332000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767194.435217519, 17.520000000]: IMU excitation not enouth!
+[ INFO] [1593767194.435617725, 17.520000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767194.610114502, 17.700000000]: IMU excitation not enouth!
+[ INFO] [1593767194.610531297, 17.700000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767194.721782341, 17.800000000]: IMU excitation not enouth!
+[ INFO] [1593767194.722107376, 17.800000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767194.946206169, 18.008000000]: IMU excitation not enouth!
+[ INFO] [1593767194.946908693, 18.008000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.165047296, 18.204000000]: IMU excitation not enouth!
+[ INFO] [1593767195.165451264, 18.204000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.255992582, 18.292000000]: IMU excitation not enouth!
+[ INFO] [1593767195.256293595, 18.292000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.411749581, 18.460000000]: IMU excitation not enouth!
+[ INFO] [1593767195.412145078, 18.460000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.506075325, 18.556000000]: IMU excitation not enouth!
+[ INFO] [1593767195.506357712, 18.556000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.702378084, 18.764000000]: IMU excitation not enouth!
+[ INFO] [1593767195.702618189, 18.764000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.802163032, 18.864000000]: IMU excitation not enouth!
+[ INFO] [1593767195.802371110, 18.864000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767195.970033976, 19.036000000]: IMU excitation not enouth!
+[ INFO] [1593767195.970352437, 19.036000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.070435571, 19.136000000]: IMU excitation not enouth!
+[ INFO] [1593767196.070699894, 19.136000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.177689168, 19.240000000]: IMU excitation not enouth!
+[ INFO] [1593767196.178050874, 19.240000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.355223966, 19.424000000]: IMU excitation not enouth!
+[ INFO] [1593767196.355695264, 19.424000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.529287466, 19.596000000]: IMU excitation not enouth!
+[ INFO] [1593767196.530236689, 19.596000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.627119419, 19.696000000]: IMU excitation not enouth!
+[ INFO] [1593767196.628026769, 19.696000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.824554149, 19.896000000]: IMU excitation not enouth!
+[ INFO] [1593767196.824817714, 19.896000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767196.928966737, 19.996000000]: IMU excitation not enouth!
+[ INFO] [1593767196.929219336, 19.996000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767197.025708971, 20.096000000]: IMU excitation not enouth!
+[ INFO] [1593767197.025971438, 20.096000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767197.198056970, 20.264000000]: IMU excitation not enouth!
+[ INFO] [1593767197.198451333, 20.264000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767197.296323753, 20.364000000]: IMU excitation not enouth!
+[ INFO] [1593767197.296947408, 20.364000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767197.514547947, 20.580000000]: IMU excitation not enouth!
+[ INFO] [1593767197.514805900, 20.580000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767197.710524593, 20.776000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767197.892168986, 20.956000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767198.095961257, 21.160000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767198.268240568, 21.332000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767198.473521983, 21.532000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767198.650955442, 21.708000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767198.760864312, 21.820000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767198.942655031, 22.004000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767199.041610218, 22.104000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767199.245682409, 22.304000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767199.418364732, 22.480000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767199.515835118, 22.576000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767199.618161409, 22.680000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767200.046679524, 23.052000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767200.277076522, 23.272000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767200.458056775, 23.436000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767200.877026312, 23.844000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767200.944347165, 23.908000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.006884972, 23.968000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.140417078, 24.092000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.242978849, 24.196000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.334999228, 24.292000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.549978359, 24.508000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.725020549, 24.680000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.826212633, 24.780000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767201.962264017, 24.904000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.052210836, 24.984000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.209562186, 25.144000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.319720245, 25.256000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.530286072, 25.456000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.689033066, 25.620000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.783344083, 25.716000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767202.894029113, 25.824000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.037284763, 25.964000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.230901401, 26.152000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.385781233, 26.304000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.620278675, 26.524000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.790600290, 26.688000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.885740940, 26.792000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767203.998945200, 26.896000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767204.152085108, 27.056000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767204.269215670, 27.164000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767204.448331160, 27.348000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767204.622270723, 27.524000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767204.854838254, 27.728000000]: IMU excitation not enouth!
+[ INFO] [1593767204.864338002, 27.740000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.047615120, 27.920000000]: IMU excitation not enouth!
+[ INFO] [1593767205.053238738, 27.928000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.228549943, 28.104000000]: IMU excitation not enouth!
+[ INFO] [1593767205.236517307, 28.112000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.320003297, 28.200000000]: IMU excitation not enouth!
+[ INFO] [1593767205.326199095, 28.204000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.508334645, 28.388000000]: IMU excitation not enouth!
+[ INFO] [1593767205.513835706, 28.388000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.609231255, 28.484000000]: IMU excitation not enouth!
+[ INFO] [1593767205.616083391, 28.488000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.804359077, 28.680000000]: IMU excitation not enouth!
+[ INFO] [1593767205.810562870, 28.688000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767205.973028369, 28.852000000]: IMU excitation not enouth!
+[ INFO] [1593767205.978541581, 28.856000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767206.073088213, 28.952000000]: IMU excitation not enouth!
+[ INFO] [1593767206.080307058, 28.960000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767206.273284338, 29.152000000]: IMU excitation not enouth!
+[ INFO] [1593767206.278181577, 29.156000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767206.439381359, 29.316000000]: IMU excitation not enouth!
+[ INFO] [1593767206.442531196, 29.320000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767206.542013938, 29.416000000]: IMU excitation not enouth!
+[ INFO] [1593767206.547056192, 29.420000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767206.767168977, 29.636000000]: IMU excitation not enouth!
+[ INFO] [1593767206.772252978, 29.640000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767206.929483863, 29.800000000]: IMU excitation not enouth!
+[ INFO] [1593767206.937118526, 29.808000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767207.041431037, 29.908000000]: IMU excitation not enouth!
+[ INFO] [1593767207.045142494, 29.912000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767207.225697428, 30.096000000]: IMU excitation not enouth!
+[ INFO] [1593767207.228158588, 30.100000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767207.400305945, 30.276000000]: IMU excitation not enouth!
+[ INFO] [1593767207.402237674, 30.276000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767207.518506894, 30.396000000]: IMU excitation not enouth!
+[ INFO] [1593767207.524061786, 30.400000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767207.690375283, 30.552000000]: IMU excitation not enouth!
+[ INFO] [1593767207.692892285, 30.556000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767207.898974067, 30.764000000]: IMU excitation not enouth!
+[ INFO] [1593767207.904112064, 30.764000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767208.011459371, 30.872000000]: IMU excitation not enouth!
+[ INFO] [1593767208.015345512, 30.876000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767208.091987267, 30.956000000]: IMU excitation not enouth!
+[ INFO] [1593767208.097308634, 30.960000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767208.264572933, 31.132000000]: IMU excitation not enouth!
+[ INFO] [1593767208.269646769, 31.136000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767208.449040787, 31.316000000]: IMU excitation not enouth!
+[ INFO] [1593767208.451634680, 31.320000000]: Not enough features or parallax; Move device around
+[ INFO] [1593767208.552722671, 31.424000000]: IMU excitation not enouth!
+[ WARN] [1593767208.822764304, 31.684000000]: gyroscope bias initial calibration -0.000548685 -2.30316e-05   0.00194901
+[ INFO] [1593767208.939397138, 31.788000000]: Initialization finish!
+position: -0.028763, -0.087713, 0.45401[ INFO] [1593767208.939507341, 31.788000000]: td 0.028077
+position: -0.049834, -0.037482, 1.33558[ INFO] [1593767209.000824789, 31.848000000]: td 0.017054
+[ INFO] [1593767209.051078012, 31.888000000]: td 0.014361
+[ INFO] [1593767209.104028939, 31.948000000]: td 0.013708
+[ INFO] [1593767209.155629647, 32.000000000]: td 0.013161
+[ INFO] [1593767209.215877541, 32.048000000]: td 0.012341
+[ INFO] [1593767209.267633578, 32.096000000]: td 0.012567
+[ INFO] [1593767209.337639969, 32.164000000]: td 0.012878
+[ INFO] [1593767209.432077150, 32.260000000]: td 0.012814
+[ INFO] [1593767209.517913699, 32.348000000]: td 0.012802
+[ INFO] [1593767209.598566093, 32.432000000]: td 0.013618
+[ INFO] [1593767209.709273993, 32.540000000]: td 0.013825
+[ INFO] [1593767209.819158559, 32.644000000]: td 0.013809
+[ INFO] [1593767209.918721522, 32.736000000]: td 0.013767
+[ INFO] [1593767210.015591356, 32.828000000]: td 0.013244
+[ INFO] [1593767210.121311759, 32.916000000]: td 0.013187
+[ INFO] [1593767210.222301995, 33.016000000]: td 0.013797
+[ INFO] [1593767210.305725191, 33.092000000]: td 0.013609
+[ INFO] [1593767210.428086741, 33.196000000]: td 0.013273
+[ INFO] [1593767210.533948880, 33.308000000]: td 0.013123
+[ INFO] [1593767210.603043675, 33.376000000]: td 0.012987
+[ INFO] [1593767210.686533867, 33.464000000]: td 0.013330
+[ INFO] [1593767210.807588886, 33.580000000]: td 0.013537
+[ INFO] [1593767210.892576355, 33.668000000]: td 0.013372
+[ INFO] [1593767210.993003237, 33.760000000]: td 0.013365
+[ INFO] [1593767211.096873944, 33.864000000]: td 0.013689
+[ INFO] [1593767211.206404172, 33.976000000]: td 0.013812
+[ INFO] [1593767211.266706078, 34.036000000]: td 0.013435
+[ INFO] [1593767211.362079545, 34.136000000]: td 0.013168
+[ INFO] [1593767211.458010832, 34.232000000]: td 0.013538
+[ INFO] [1593767211.571836738, 34.332000000]: td 0.013988
+[ INFO] [1593767211.673330264, 34.440000000]: td 0.013802
+[ INFO] [1593767211.796314187, 34.564000000]: td 0.013497
+[ INFO] [1593767211.872892805, 34.640000000]: td 0.013735
+[ INFO] [1593767211.954657092, 34.720000000]: td 0.013571
+[ INFO] [1593767212.055512384, 34.820000000]: td 0.013461
+[ INFO] [1593767212.155182394, 34.920000000]: td 0.013720
+[ INFO] [1593767212.253125624, 35.016000000]: td 0.013568
+[ INFO] [1593767212.345091383, 35.104000000]: td 0.013578
+[ INFO] [1593767212.451749926, 35.212000000]: td 0.013296
+[ INFO] [1593767212.550601508, 35.308000000]: td 0.013073
+[ INFO] [1593767212.630977900, 35.368000000]: td 0.013937
+[ INFO] [1593767212.760352255, 35.476000000]: td 0.014033
+[ INFO] [1593767212.851299353, 35.568000000]: td 0.013560
+[ INFO] [1593767212.959585142, 35.664000000]: td 0.013361
+[ INFO] [1593767213.067841157, 35.768000000]: td 0.013162
+[ INFO] [1593767213.177983984, 35.880000000]: td 0.013357
+[ INFO] [1593767213.324839797, 36.020000000]: td 0.013488
+[ INFO] [1593767213.377285106, 36.076000000]: td 0.010491
+[ INFO] [1593767213.455493196, 36.152000000]: td 0.010146
+[ INFO] [1593767213.537683347, 36.236000000]: td 0.010035
+[ INFO] [1593767213.630884977, 36.304000000]: td 0.010203
+[ INFO] [1593767213.783929817, 36.452000000]: td 0.010205
+[ INFO] [1593767213.877154544, 36.548000000]: td 0.010225
+[ INFO] [1593767213.938817894, 36.604000000]: td 0.010299
+[ INFO] [1593767214.038131178, 36.708000000]: td 0.010366
+[ INFO] [1593767214.135471293, 36.804000000]: td 0.010437
+[ INFO] [1593767214.257818251, 36.892000000]: td 0.010303
+[ INFO] [1593767214.374824619, 37.008000000]: td 0.010163
+[ INFO] [1593767214.458542255, 37.084000000]: td 0.010263
+[ INFO] [1593767214.560201957, 37.192000000]: td 0.010162
+[ INFO] [1593767214.681851205, 37.288000000]: td 0.009977
+[ INFO] [1593767214.788505159, 37.392000000]: td 0.010028
+[ INFO] [1593767214.903332389, 37.508000000]: td 0.010127
+[ INFO] [1593767215.014535806, 37.616000000]: td 0.010066
+[ INFO] [1593767215.101539566, 37.692000000]: td 0.010009
+[ INFO] [1593767215.167993034, 37.748000000]: td 0.009953
+[ INFO] [1593767215.279095159, 37.848000000]: td 0.010023
+[ INFO] [1593767215.412226716, 37.976000000]: td 0.010174
+[ INFO] [1593767215.507647512, 38.072000000]: td 0.010210
+[ INFO] [1593767215.626354668, 38.172000000]: td 0.010186
+[ INFO] [1593767215.705858748, 38.256000000]: td 0.009982
+[ INFO] [1593767215.785068495, 38.328000000]: td 0.010015
+[ INFO] [1593767215.876285573, 38.428000000]: td 0.010001
+[ INFO] [1593767215.981956036, 38.516000000]: td 0.010185
+position: -0.413900, 0.592447, 10.00036[ INFO] [1593767216.106689802, 38.640000000]: td 0.010277
+position: -0.398430, 0.578483, 10.03693[ INFO] [1593767216.213900220, 38.748000000]: td 0.010042
+position: -0.390223, 0.569279, 10.06253[ INFO] [1593767216.310005590, 38.848000000]: td 0.010074
+position: -0.396087, 0.575382, 10.07646[ INFO] [1593767216.375351839, 38.916000000]: td 0.010078
+position: -0.407852, 0.569936, 10.09909[ INFO] [1593767216.463398767, 38.996000000]: td 0.010421
+position: -0.407320, 0.554716, 10.12102[ INFO] [1593767216.571753518, 39.108000000]: td 0.010427
+position: -0.396182, 0.541868, 10.13928[ INFO] [1593767216.683082500, 39.216000000]: td 0.010069
+position: -0.396519, 0.540127, 10.16054[ INFO] [1593767216.815317636, 39.336000000]: td 0.010184
+position: -0.390606, 0.530141, 10.17177[ INFO] [1593767216.893584579, 39.416000000]: td 0.009877
+position: -0.376308, 0.518977, 10.16614[ INFO] [1593767216.953887469, 39.472000000]: td 0.009550
+position: -0.379041, 0.531114, 10.17173[ INFO] [1593767217.075840454, 39.580000000]: td 0.009710
+position: -0.379247, 0.542070, 10.18025[ INFO] [1593767217.177059784, 39.680000000]: td 0.010444
+position: -0.366686, 0.531039, 10.18640[ INFO] [1593767217.268371595, 39.760000000]: td 0.010711
+position: -0.341354, 0.526139, 10.19447[ INFO] [1593767217.368988268, 39.856000000]: td 0.010186
+position: -0.314042, 0.514684, 10.22065[ INFO] [1593767217.491545417, 39.968000000]: td 0.009936
+position: -0.299377, 0.498745, 10.24424[ INFO] [1593767217.584513308, 40.048000000]: td 0.009776
+position: -0.321834, 0.499754, 10.27462[ INFO] [1593767217.669402911, 40.128000000]: td 0.009727
+position: -0.347411, 0.494097, 10.29848[ INFO] [1593767217.822923408, 40.272000000]: td 0.009789
+position: -0.351161, 0.479135, 10.31329[ INFO] [1593767217.912565373, 40.324000000]: td 0.009777
+position: -0.339457, 0.470524, 10.31463[ INFO] [1593767218.039485180, 40.448000000]: td 0.009848
+position: -0.328212, 0.464297, 10.30192[ INFO] [1593767218.147720597, 40.544000000]: td 0.010063
+position: -0.323652, 0.459044, 10.29162[ INFO] [1593767218.258995743, 40.660000000]: td 0.010221
+position: -0.321991, 0.462749, 10.27454[ INFO] [1593767218.349766032, 40.748000000]: td 0.009925
+position: -0.328198, 0.462514, 10.25264[ INFO] [1593767218.436465910, 40.804000000]: td 0.009736
+position: -0.330621, 0.457139, 10.23479[ INFO] [1593767218.554713807, 40.912000000]: td 0.009877
+position: -0.320788, 0.444435, 10.20461[ INFO] [1593767218.666101293, 41.020000000]: td 0.009817
+position: -0.323143, 0.442594, 10.18283[ INFO] [1593767218.791054120, 41.144000000]: td 0.009949
+position: -0.333800, 0.431006, 10.15890[ INFO] [1593767218.856913294, 41.208000000]: td 0.009877
+position: -0.331316, 0.417193, 10.14547[ INFO] [1593767218.936886597, 41.292000000]: td 0.009631
+position: -0.326852, 0.419807, 10.12515[ INFO] [1593767219.059094947, 41.400000000]: td 0.009861
+position: -0.327757, 0.427544, 10.11035[ INFO] [1593767219.156955788, 41.464000000]: td 0.009870
+
+
+
+
+
+nepovedeny start, hned nestihl nabeh
+
+SUMMARY
+========
+
+PARAMETERS
+ * /feature_tracker/config_file: /home/honzabednar...
+ * /feature_tracker/vins_folder: /home/honzabednar...
+ * /pose_graph/config_file: /home/honzabednar...
+ * /pose_graph/skip_cnt: 0
+ * /pose_graph/skip_dis: 0.0
+ * /pose_graph/visualization_shift_x: 0
+ * /pose_graph/visualization_shift_y: 0
+ * /rosdistro: melodic
+ * /rosversion: 1.14.5
+ * /vins_estimator/config_file: /home/honzabednar...
+ * /vins_estimator/vins_folder: /home/honzabednar...
+
+NODES
+  /
+    feature_tracker (feature_tracker/feature_tracker)
+    pose_graph (pose_graph/pose_graph)
+    vins_estimator (vins_estimator/vins_estimator)
+
+ROS_MASTER_URI=http://localhost:11311
+
+process[feature_tracker-1]: started with pid [545]
+process[vins_estimator-2]: started with pid [547]
+process[pose_graph-3]: started with pid [549]
+[ INFO] [1593769392.587974112]: init begins
+[ INFO] [1593769392.638625863]: Loaded config_file: /home/honzabednar/workspace/src/vins-mono/feature_tracker/../config/simulation/simulation.yaml
+result path /home/honzabednar/git/vins-mono/output//vins_result_no_loop.csv
+[ INFO] [1593769392.640918518]: ROW: 360.000000 COL: 640.000000
+[ WARN] [1593769392.640962311]:  fix extrinsic param
+[ INFO] [1593769392.641413284]: Extrinsic_R :
+ 2.22045e-16           -1            0
+          -1 -2.22045e-16           -0
+           0            0           -1
+[ INFO] [1593769392.641461320]: Extrinsic_T :
+ 0.153  0.018 -0.103
+[ INFO] [1593769392.641489561]: Unsynchronized sensors, online estimate time offset, initial td: 0
+[ WARN] [1593769392.641542292]: waiting for image and imu...
+[ INFO] [1593769394.600240930, 11.416000000]: IMU excitation not enouth!
+[ INFO] [1593769394.601369986, 11.416000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769394.792646143, 11.624000000]: IMU excitation not enouth!
+[ INFO] [1593769394.793321479, 11.624000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769394.893062368, 11.724000000]: IMU excitation not enouth!
+[ INFO] [1593769394.893528715, 11.724000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769394.995437223, 11.828000000]: IMU excitation not enouth!
+[ INFO] [1593769394.995797086, 11.828000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769395.184244330, 12.020000000]: IMU excitation not enouth!
+[ INFO] [1593769395.184662438, 12.020000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769395.495248007, 12.236000000]: IMU excitation not enouth!
+[ INFO] [1593769395.495706139, 12.236000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769395.863258096, 12.456000000]: IMU excitation not enouth!
+[ INFO] [1593769395.863708957, 12.456000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769396.051132337, 12.588000000]: IMU excitation not enouth!
+[ INFO] [1593769396.051537007, 12.588000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769396.237213900, 12.744000000]: IMU excitation not enouth!
+[ INFO] [1593769396.237933540, 12.744000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769396.418760756, 12.916000000]: IMU excitation not enouth!
+[ INFO] [1593769396.419186439, 12.916000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769396.618316200, 13.116000000]: IMU excitation not enouth!
+[ INFO] [1593769396.618720604, 13.116000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769396.791817156, 13.304000000]: IMU excitation not enouth!
+[ INFO] [1593769396.792286386, 13.304000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769396.966842788, 13.448000000]: IMU excitation not enouth!
+[ INFO] [1593769396.967652838, 13.448000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769397.189316048, 13.604000000]: IMU excitation not enouth!
+[ INFO] [1593769397.189734552, 13.608000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769397.416025775, 13.788000000]: IMU excitation not enouth!
+[ INFO] [1593769397.416488147, 13.788000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769397.554947545, 13.904000000]: IMU excitation not enouth!
+[ INFO] [1593769397.555325530, 13.904000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769397.745885193, 14.068000000]: IMU excitation not enouth!
+[ INFO] [1593769397.746318748, 14.068000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769397.840834357, 14.160000000]: IMU excitation not enouth!
+[ INFO] [1593769397.841362289, 14.160000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769398.076919309, 14.348000000]: IMU excitation not enouth!
+[ INFO] [1593769398.077400851, 14.348000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769398.241393063, 14.488000000]: IMU excitation not enouth!
+[ INFO] [1593769398.241838391, 14.488000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769398.396487624, 14.652000000]: IMU excitation not enouth!
+[ INFO] [1593769398.396931724, 14.652000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769398.593076459, 14.832000000]: IMU excitation not enouth!
+[ INFO] [1593769398.593615063, 14.832000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769398.761234881, 14.964000000]: IMU excitation not enouth!
+[ INFO] [1593769398.761634454, 14.964000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769399.012713793, 15.132000000]: IMU excitation not enouth!
+[ INFO] [1593769399.013148932, 15.132000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769399.144330313, 15.240000000]: IMU excitation not enouth!
+[ INFO] [1593769399.144968349, 15.240000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769399.338103992, 15.392000000]: IMU excitation not enouth!
+[ INFO] [1593769399.338513008, 15.392000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769399.522191772, 15.552000000]: IMU excitation not enouth!
+[ INFO] [1593769399.524930923, 15.556000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769399.761706961, 15.740000000]: IMU excitation not enouth!
+[ INFO] [1593769399.762424183, 15.740000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769399.887704613, 15.864000000]: IMU excitation not enouth!
+[ INFO] [1593769399.888229819, 15.864000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.000803123, 15.960000000]: IMU excitation not enouth!
+[ INFO] [1593769400.001210938, 15.960000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.233932859, 16.160000000]: IMU excitation not enouth!
+[ INFO] [1593769400.234375995, 16.160000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.464817321, 16.372000000]: IMU excitation not enouth!
+[ INFO] [1593769400.465241548, 16.372000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.603699680, 16.472000000]: IMU excitation not enouth!
+[ INFO] [1593769400.604282795, 16.472000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.744114310, 16.620000000]: IMU excitation not enouth!
+[ INFO] [1593769400.744440935, 16.620000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.844857789, 16.724000000]: IMU excitation not enouth!
+[ INFO] [1593769400.845196696, 16.724000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769400.947347527, 16.832000000]: IMU excitation not enouth!
+[ INFO] [1593769400.947845878, 16.832000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.073400793, 16.948000000]: IMU excitation not enouth!
+[ INFO] [1593769401.073773924, 16.948000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.188573869, 17.040000000]: IMU excitation not enouth!
+[ INFO] [1593769401.188983126, 17.040000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.354424404, 17.200000000]: IMU excitation not enouth!
+[ INFO] [1593769401.354794263, 17.200000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.466788828, 17.312000000]: IMU excitation not enouth!
+[ INFO] [1593769401.467057083, 17.312000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.646362668, 17.484000000]: IMU excitation not enouth!
+[ INFO] [1593769401.646767978, 17.484000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.859221941, 17.680000000]: IMU excitation not enouth!
+[ INFO] [1593769401.859684643, 17.680000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769401.966454734, 17.788000000]: IMU excitation not enouth!
+[ INFO] [1593769401.967466793, 17.788000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769402.111112334, 17.908000000]: IMU excitation not enouth!
+[ INFO] [1593769402.111478220, 17.908000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769402.263150124, 18.060000000]: IMU excitation not enouth!
+[ INFO] [1593769402.263682979, 18.060000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769402.380345386, 18.184000000]: IMU excitation not enouth!
+[ INFO] [1593769402.380789257, 18.184000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769402.579194014, 18.348000000]: IMU excitation not enouth!
+[ INFO] [1593769402.579501066, 18.348000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769402.785083557, 18.560000000]: IMU excitation not enouth!
+[ INFO] [1593769402.785332429, 18.560000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769402.951703961, 18.724000000]: IMU excitation not enouth!
+[ INFO] [1593769402.952399977, 18.724000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769403.144418206, 18.920000000]: IMU excitation not enouth!
+[ INFO] [1593769403.144838529, 18.920000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769403.329445847, 19.108000000]: IMU excitation not enouth!
+[ INFO] [1593769403.329768452, 19.108000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769403.531291244, 19.308000000]: IMU excitation not enouth!
+[ INFO] [1593769403.531703846, 19.308000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769403.711171973, 19.488000000]: IMU excitation not enouth!
+[ INFO] [1593769403.711454748, 19.488000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769403.920445380, 19.700000000]: IMU excitation not enouth!
+[ INFO] [1593769403.920784135, 19.700000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769404.086890011, 19.864000000]: IMU excitation not enouth!
+[ INFO] [1593769404.087306870, 19.864000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769404.200041415, 19.976000000]: IMU excitation not enouth!
+[ INFO] [1593769404.200789725, 19.976000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769404.370993558, 20.148000000]: IMU excitation not enouth!
+[ INFO] [1593769404.371366129, 20.148000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769404.481391828, 20.260000000]: IMU excitation not enouth!
+[ INFO] [1593769404.482219643, 20.260000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769404.695346838, 20.468000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769404.894988230, 20.668000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.076021351, 20.840000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.276807666, 21.040000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.375626410, 21.140000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.473794971, 21.240000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.646723818, 21.412000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.750329557, 21.516000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769405.926399900, 21.692000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769406.128178724, 21.896000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769406.293138406, 22.036000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769406.578815492, 22.308000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769406.727410519, 22.440000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769406.871319757, 22.552000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769407.025011885, 22.700000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769407.101857657, 22.772000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769407.477600928, 23.148000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769407.697708110, 23.316000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769407.872373561, 23.488000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.025889306, 23.628000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.119998703, 23.724000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.253013036, 23.852000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.362346516, 23.956000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.493346625, 24.076000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.677282187, 24.204000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.805964296, 24.328000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769408.971333857, 24.484000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769409.176315797, 24.688000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769409.352120412, 24.864000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769409.533576844, 25.048000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769409.625358814, 25.140000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769409.812837693, 25.328000000]: IMU excitation not enouth!
+[ INFO] [1593769409.829523874, 25.344000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769409.986664549, 25.500000000]: IMU excitation not enouth!
+[ INFO] [1593769410.003891012, 25.516000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769410.185569048, 25.700000000]: IMU excitation not enouth!
+[ INFO] [1593769410.200983296, 25.716000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769410.361182551, 25.880000000]: IMU excitation not enouth!
+[ INFO] [1593769410.375727513, 25.896000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769410.441478732, 25.960000000]: IMU excitation not enouth!
+[ INFO] [1593769410.449982394, 25.968000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769410.569141269, 26.088000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769410.769109684, 26.288000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769410.953296229, 26.468000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769411.088512601, 26.592000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769411.448226602, 26.916000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769411.692213558, 27.128000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769411.844964877, 27.272000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769412.134345499, 27.524000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769412.226764825, 27.604000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769412.395293754, 27.760000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769412.493049572, 27.844000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769412.721926737, 28.044000000]: IMU excitation not enouth!
+[ INFO] [1593769412.735229739, 28.056000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769412.907847553, 28.200000000]: IMU excitation not enouth!
+[ INFO] [1593769412.928627072, 28.204000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769413.120258026, 28.364000000]: IMU excitation not enouth!
+[ INFO] [1593769413.148268467, 28.392000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769413.562054670, 28.768000000]: IMU excitation not enouth!
+[ INFO] [1593769413.570194014, 28.768000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769413.854797789, 29.060000000]: IMU excitation not enouth!
+[ INFO] [1593769413.865654940, 29.068000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.022716223, 29.204000000]: IMU excitation not enouth!
+[ INFO] [1593769414.030246035, 29.216000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.156867960, 29.316000000]: IMU excitation not enouth!
+[ INFO] [1593769414.167514548, 29.332000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.261651835, 29.428000000]: IMU excitation not enouth!
+[ INFO] [1593769414.270128137, 29.428000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.337715646, 29.496000000]: IMU excitation not enouth!
+[ INFO] [1593769414.349808048, 29.504000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.452226216, 29.600000000]: IMU excitation not enouth!
+[ INFO] [1593769414.460527918, 29.608000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.691976437, 29.804000000]: IMU excitation not enouth!
+[ INFO] [1593769414.701203298, 29.816000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769414.904417538, 30.008000000]: IMU excitation not enouth!
+[ INFO] [1593769414.909744901, 30.008000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.014951990, 30.104000000]: IMU excitation not enouth!
+[ INFO] [1593769415.020192262, 30.104000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.106820010, 30.180000000]: IMU excitation not enouth!
+[ INFO] [1593769415.110980440, 30.184000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.149454654, 30.216000000]: IMU excitation not enouth!
+[ INFO] [1593769415.153363709, 30.220000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.193265728, 30.256000000]: IMU excitation not enouth!
+[ INFO] [1593769415.197845273, 30.260000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.322268900, 30.356000000]: IMU excitation not enouth!
+[ INFO] [1593769415.325210673, 30.356000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.458661180, 30.452000000]: IMU excitation not enouth!
+[ INFO] [1593769415.461061916, 30.456000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.677151351, 30.652000000]: IMU excitation not enouth!
+[ INFO] [1593769415.680608090, 30.652000000]: Not enough features or parallax; Move device around
+[ INFO] [1593769415.879660955, 30.860000000]: IMU excitation not enouth!
+[ WARN] [1593769416.155203640, 31.052000000]: gyroscope bias initial calibration  0.000440975 -0.000131614    0.0019804
+[ INFO] [1593769416.273909501, 31.148000000]: Initialization finish!
+[ INFO] [1593769416.274180239, 31.148000000]: td 0.012270
+[ INFO] [1593769416.337131394, 31.204000000]: td 0.012916
+[ INFO] [1593769416.394589376, 31.264000000]: td 0.012642
+[ INFO] [1593769416.454426817, 31.320000000]: td 0.012772
+[ INFO] [1593769416.513503070, 31.376000000]: td 0.012952
+[ INFO] [1593769416.561422070, 31.420000000]: td 0.012637
+[ INFO] [1593769416.621381458, 31.476000000]: td 0.012700
+[ INFO] [1593769416.697564496, 31.560000000]: td 0.012837
+[ INFO] [1593769416.782533534, 31.648000000]: td 0.012748
+[ INFO] [1593769416.889085522, 31.752000000]: td 0.012546
+[ INFO] [1593769416.991366502, 31.848000000]: td 0.012338
+[ INFO] [1593769417.074148507, 31.924000000]: td 0.012651
+[ INFO] [1593769417.158747900, 32.012000000]: td 0.013103
+[ INFO] [1593769417.266238994, 32.120000000]: td 0.012924
+[ INFO] [1593769417.361923507, 32.212000000]: td 0.012700
+[ INFO] [1593769417.469884777, 32.328000000]: td 0.012719
+[ INFO] [1593769417.562149541, 32.420000000]: td 0.012680
+[ INFO] [1593769417.659442227, 32.520000000]: td 0.012704
+[ INFO] [1593769417.742225225, 32.592000000]: td 0.012938
+[ INFO] [1593769417.837863891, 32.692000000]: td 0.013099
+[ INFO] [1593769417.933762768, 32.788000000]: td 0.012822
+[ INFO] [1593769418.043231735, 32.872000000]: td 0.012649
+[ INFO] [1593769418.168262010, 33.004000000]: td 0.012725
+[ INFO] [1593769418.250734341, 33.084000000]: td 0.012626
+[ INFO] [1593769418.381360277, 33.204000000]: td 0.012611
+[ INFO] [1593769418.437597369, 33.256000000]: td 0.012342
+[ INFO] [1593769418.577696730, 33.388000000]: td 0.012481
+[ INFO] [1593769418.657032268, 33.468000000]: td 0.012730
+[ INFO] [1593769418.753730938, 33.564000000]: td 0.012863
+[ INFO] [1593769418.850258089, 33.656000000]: td 0.012837
+[ INFO] [1593769418.945045663, 33.760000000]: td 0.012662
+[ INFO] [1593769419.026149932, 33.828000000]: td 0.012714
+[ INFO] [1593769419.122161496, 33.924000000]: td 0.012697
+[ INFO] [1593769419.220842927, 34.028000000]: td 0.012534
+[ INFO] [1593769419.303607436, 34.112000000]: td 0.012555
+[ INFO] [1593769419.405857352, 34.216000000]: td 0.012447
+[ INFO] [1593769419.507586632, 34.324000000]: td 0.012405
+[ INFO] [1593769419.623208461, 34.440000000]: td 0.012490
+[ INFO] [1593769419.706454547, 34.524000000]: td 0.012422
+[ INFO] [1593769419.822002071, 34.636000000]: td 0.012267
+[ INFO] [1593769419.890118232, 34.704000000]: td 0.012650
+[ INFO] [1593769419.987119988, 34.800000000]: td 0.012728
+[ INFO] [1593769420.084252235, 34.896000000]: td 0.012628
+[ INFO] [1593769420.172142515, 34.984000000]: td 0.012775
+[ INFO] [1593769420.269792277, 35.084000000]: td 0.012566
+[ INFO] [1593769420.380492934, 35.196000000]: td 0.012578
+[ INFO] [1593769420.480311421, 35.296000000]: td 0.012643
+[ INFO] [1593769420.539567789, 35.356000000]: td 0.012690
+[ INFO] [1593769420.662407584, 35.444000000]: td 0.012864
+[ INFO] [1593769420.767819111, 35.548000000]: td 0.012873
+[ INFO] [1593769420.863927253, 35.648000000]: td 0.012748
+[ INFO] [1593769420.977455244, 35.760000000]: td 0.012729
+[ INFO] [1593769421.072029149, 35.852000000]: td 0.012744
+[ INFO] [1593769421.159091213, 35.940000000]: td 0.012471
+[ INFO] [1593769421.240264248, 36.020000000]: td 0.012317
+[ INFO] [1593769421.354537596, 36.136000000]: td 0.012404
+[ INFO] [1593769421.457878800, 36.240000000]: td 0.012627
+[ INFO] [1593769421.558960651, 36.328000000]: td 0.012534
+[ INFO] [1593769421.662993297, 36.436000000]: td 0.012566
+[ INFO] [1593769421.766251228, 36.528000000]: td 0.012753
+[ INFO] [1593769421.863608831, 36.612000000]: td 0.012567
+[ INFO] [1593769421.954599808, 36.696000000]: td 0.012640
+[ INFO] [1593769422.099131393, 36.800000000]: td 0.012858
+[ INFO] [1593769422.209053193, 36.912000000]: td 0.012558
+[ INFO] [1593769422.274832185, 36.980000000]: td 0.012411
+[ INFO] [1593769422.368362427, 37.068000000]: td 0.012439
+[ INFO] [1593769422.478510560, 37.184000000]: td 0.012628
+[ INFO] [1593769422.569517032, 37.276000000]: td 0.012663
+[ INFO] [1593769422.672941297, 37.368000000]: td 0.012692
+[ INFO] [1593769422.777674474, 37.472000000]: td 0.012687
+[ INFO] [1593769422.871571735, 37.556000000]: td 0.012683
+[ INFO] [1593769422.956331720, 37.640000000]: td 0.012892
+[ INFO] [1593769423.092381874, 37.772000000]: td 0.012877
+[ INFO] [1593769423.156402892, 37.836000000]: td 0.012657
+[ INFO] [1593769423.278010012, 37.964000000]: td 0.012689
+[ INFO] [1593769423.374911043, 38.040000000]: td 0.012884
+[ INFO] [1593769423.487146400, 38.152000000]: td 0.012948
+[ INFO] [1593769423.547856250, 38.216000000]: td 0.012958
+[ INFO] [1593769423.650272955, 38.316000000]: td 0.012887
+[ INFO] [1593769423.757201193, 38.420000000]: td 0.012811
+[ INFO] [1593769423.852487562, 38.516000000]: td 0.012946
+[ INFO] [1593769423.956391857, 38.612000000]: td 0.012915
+[ INFO] [1593769424.073907154, 38.720000000]: td 0.012924
+[ INFO] [1593769424.156602595, 38.804000000]: td 0.013114
+[ INFO] [1593769424.300719436, 38.912000000]: td 0.012871
+[ INFO] [1593769424.426299899, 38.968000000]: td 0.012705
+[ INFO] [1593769424.601541929, 39.124000000]: td 0.012818
+[ INFO] [1593769424.675185310, 39.192000000]: td 0.012999
+[ INFO] [1593769424.804758972, 39.304000000]: td 0.013011
+[ INFO] [1593769424.890994153, 39.376000000]: td 0.012740
+[ INFO] [1593769425.095710318, 39.516000000]: td 0.012724
+[ INFO] [1593769425.245652082, 39.648000000]: td 0.013297
+[ INFO] [1593769425.421134636, 39.800000000]: td 0.013295
+[ INFO] [1593769425.594471045, 39.976000000]: td 0.013429
+[ INFO] [1593769425.814127709, 40.184000000]: td 0.013475
+[ INFO] [1593769426.002230108, 40.356000000]: td 0.013524
+[ INFO] [1593769426.079848943, 40.420000000]: td 0.013623
+[ INFO] [1593769426.136337234, 40.468000000]: td 0.013602
+[ INFO] [1593769426.260335225, 40.588000000]: td 0.013651
+[ INFO] [1593769426.343038067, 40.668000000]: td 0.013573
+[ INFO] [1593769426.392944082, 40.716000000]: td 0.013431
+[ INFO] [1593769426.453590275, 40.760000000]: td 0.013412
+[ INFO] [1593769426.511809767, 40.812000000]: td 0.013425
+[ INFO] [1593769426.697484713, 40.976000000]: td 0.013566
+[ INFO] [1593769426.756549012, 41.044000000]: td 0.013444
+[ INFO] [1593769426.881051004, 41.136000000]: td 0.013473
+[ INFO] [1593769427.061222980, 41.268000000]: td 0.013651
+[ INFO] [1593769427.134660362, 41.336000000]: td 0.013568
+[ INFO] [1593769427.235626999, 41.428000000]: td 0.013544
+[ INFO] [1593769427.360972446, 41.544000000]: td 0.013653
+[ INFO] [1593769427.426311926, 41.584000000]: td 0.013717
+[ INFO] [1593769427.513857122, 41.668000000]: td 0.013589
+[ INFO] [1593769427.572640807, 41.712000000]: td 0.013591
+[ INFO] [1593769427.670403504, 41.812000000]: td 0.013565
+[ INFO] [1593769427.769240745, 41.896000000]: td 0.013454
+[ INFO] [1593769427.890422178, 41.996000000]: td 0.013562
+[ INFO] [1593769427.984969485, 42.048000000]: td 0.013615
+[ INFO] [1593769428.103643164, 42.152000000]: td 0.013769
+[ INFO] [1593769428.175544592, 42.184000000]: td 0.013670
+[ INFO] [1593769428.251684575, 42.248000000]: td 0.013619
+[ INFO] [1593769428.326119436, 42.320000000]: td 0.013652
+[ INFO] [1593769428.455622706, 42.444000000]: td 0.013625
+[ INFO] [1593769428.560191223, 42.544000000]: td 0.013567
+[ INFO] [1593769428.625016398, 42.612000000]: td 0.013596
+[ INFO] [1593769428.714968727, 42.696000000]: td 0.013673
+[ INFO] [1593769428.816237706, 42.800000000]: td 0.013612
+[ INFO] [1593769428.921929211, 42.896000000]: td 0.013553
+[ INFO] [1593769429.045187827, 43.004000000]: td 0.013564
+[ INFO] [1593769429.172056979, 43.112000000]: td 0.013619
+[ INFO] [1593769429.245243414, 43.188000000]: td 0.013634
+[ INFO] [1593769429.342246397, 43.276000000]: td 0.013493
+[ INFO] [1593769429.458094409, 43.376000000]: td 0.013531
+[ INFO] [1593769429.541311279, 43.460000000]: td 0.013417
+[ INFO] [1593769429.635924663, 43.560000000]: td 0.013447
+[ INFO] [1593769429.729214090, 43.656000000]: td 0.013629
+[ INFO] [1593769429.834115260, 43.764000000]: td 0.013727
+[ INFO] [1593769429.967758269, 43.868000000]: td 0.013591
+[ INFO] [1593769430.144240755, 44.016000000]: td 0.013511
+[ INFO] [1593769430.297231875, 44.124000000]: td 0.013498
+[ INFO] [1593769430.515456703, 44.344000000]: td 0.013604
+[ INFO] [1593769430.599211243, 44.428000000]: td 0.013546
+[ INFO] [1593769430.719571447, 44.532000000]: td 0.013438
+[ INFO] [1593769430.790632769, 44.592000000]: td 0.013510
+[ INFO] [1593769430.893627635, 44.696000000]: td 0.013508
+[ INFO] [1593769430.945538805, 44.744000000]: td 0.013428
+[ INFO] [1593769431.030485759, 44.816000000]: td 0.013556
+[ INFO] [1593769431.102849839, 44.880000000]: td 0.013557
+[ INFO] [1593769431.189225873, 44.952000000]: td 0.013545
+[ INFO] [1593769431.261328447, 45.024000000]: td 0.013580
+[ INFO] [1593769431.352383352, 45.108000000]: td 0.013640
+[ INFO] [1593769431.441413239, 45.188000000]: td 0.013579
+[ INFO] [1593769431.552128030, 45.296000000]: td 0.013592
+[ INFO] [1593769431.662391718, 45.396000000]: td 0.013602
+[ INFO] [1593769431.727437813, 45.460000000]: td 0.013668
+[ INFO] [1593769431.862943308, 45.576000000]: td 0.013851
+[ INFO] [1593769431.961204066, 45.672000000]: td 0.013765
+[ INFO] [1593769432.069914897, 45.776000000]: td 0.013556
+[ INFO] [1593769432.155617110, 45.808000000]: td 0.013507
+[ INFO] [1593769432.276933471, 45.928000000]: td 0.013576
+[ INFO] [1593769432.380375471, 46.032000000]: td 0.013574
+[ INFO] [1593769432.491980007, 46.136000000]: td 0.013576
+[ INFO] [1593769432.584441912, 46.200000000]: td 0.013599
+[ INFO] [1593769432.734681910, 46.336000000]: td 0.013557
+[ INFO] [1593769432.829736326, 46.436000000]: td 0.013555
+[ INFO] [1593769432.924703184, 46.528000000]: td 0.013609
+[ INFO] [1593769433.034810359, 46.620000000]: td 0.013629
+[ INFO] [1593769433.111275966, 46.704000000]: td 0.013587
+[ INFO] [1593769433.206919649, 46.800000000]: td 0.013521
+[ INFO] [1593769433.346182841, 46.884000000]: td 0.013542
+[ INFO] [1593769433.439072649, 46.972000000]: td 0.013591
+[ INFO] [1593769433.636934635, 47.168000000]: td 0.013591
+[ INFO] [1593769433.830825655, 47.364000000]: td 0.013541
+[ INFO] [1593769433.939042222, 47.468000000]: td 0.013628
+[ INFO] [1593769433.997742520, 47.516000000]: td 0.013718
+[ INFO] [1593769434.102047855, 47.604000000]: td 0.013667
+[ INFO] [1593769434.207155644, 47.692000000]: td 0.013624
+[ INFO] [1593769434.286408124, 47.772000000]: td 0.013683
+[ INFO] [1593769434.354050604, 47.840000000]: td 0.013653
+[ INFO] [1593769434.442841651, 47.920000000]: td 0.013666
+[ INFO] [1593769434.589060273, 48.056000000]: td 0.013734
+[ INFO] [1593769434.723103172, 48.164000000]: td 0.013847
+[ INFO] [1593769434.845580961, 48.228000000]: td 0.013779
+[ INFO] [1593769435.081571846, 48.424000000]: td 0.013740
+[ INFO] [1593769435.218294465, 48.548000000]: td 0.013640
+[ INFO] [1593769435.331014086, 48.652000000]: td 0.013756
+[ INFO] [1593769435.478693874, 48.804000000]: td 0.013643
+[ INFO] [1593769435.627307969, 48.928000000]: td 0.013498
+[ INFO] [1593769435.711688647, 49.004000000]: td 0.013548
+[ INFO] [1593769435.798534508, 49.044000000]: td 0.013704
+[ INFO] [1593769435.859119684, 49.100000000]: td 0.013842
+[ INFO] [1593769435.952245023, 49.176000000]: td 0.013790
+[ INFO] [1593769436.040152564, 49.240000000]: td 0.013666
+[ INFO] [1593769436.132833341, 49.340000000]: td 0.013512
+[ INFO] [1593769436.259744119, 49.456000000]: td 0.013603
+[ INFO] [1593769436.368703117, 49.556000000]: td 0.013572
+[ INFO] [1593769436.560891742, 49.732000000]: td 0.013545
+[ INFO] [1593769436.738224696, 49.900000000]: td 0.013598
+[ INFO] [1593769436.868414838, 50.016000000]: td 0.013507
+[ INFO] [1593769436.985230267, 50.140000000]: td 0.013634
+[ INFO] [1593769437.092130708, 50.240000000]: td 0.013750
+[ INFO] [1593769437.209573486, 50.356000000]: td 0.013639
+[ INFO] [1593769437.311274700, 50.440000000]: td 0.013780
+[ INFO] [1593769437.378780731, 50.476000000]: td 0.013809
+[ INFO] [1593769437.453921287, 50.540000000]: td 0.013746
+[ INFO] [1593769437.510271141, 50.592000000]: td 0.013725
+[ INFO] [1593769437.571648548, 50.656000000]: td 0.013695
+[ INFO] [1593769437.660987528, 50.740000000]: td 0.013738
+[ INFO] [1593769437.752732250, 50.804000000]: td 0.013946
+[ INFO] [1593769437.828346706, 50.852000000]: td 0.013863
+[ INFO] [1593769437.927259877, 50.908000000]: td 0.013598
+[ INFO] [1593769438.001715824, 50.984000000]: td 0.013607
+[ INFO] [1593769438.052146722, 51.036000000]: td 0.013795
+[ INFO] [1593769438.119872820, 51.096000000]: td 0.013830
+[ INFO] [1593769438.219359138, 51.200000000]: td 0.013804
+[ INFO] [1593769438.319316132, 51.304000000]: td 0.013763
+[ INFO] [1593769438.378024116, 51.368000000]: td 0.013603
+[ INFO] [1593769438.474137513, 51.468000000]: td 0.013696
+[ INFO] [1593769438.576269054, 51.572000000]: td 0.013850
+[ INFO] [1593769438.668623568, 51.668000000]: td 0.013834
+[ INFO] [1593769438.740059200, 51.740000000]: td 0.013874
+[ INFO] [1593769438.833791998, 51.836000000]: td 0.013865
+[ INFO] [1593769438.931181730, 51.932000000]: td 0.013736
+[ INFO] [1593769439.061494292, 52.056000000]: td 0.013740
+[ INFO] [1593769439.134561808, 52.128000000]: td 0.013928
+[ INFO] [1593769439.259153742, 52.256000000]: td 0.013704
+[ INFO] [1593769439.353852500, 52.340000000]: td 0.013681
+[ INFO] [1593769439.431804062, 52.408000000]: td 0.013837
+[ INFO] [1593769439.543507932, 52.520000000]: td 0.013729
+[ INFO] [1593769439.639725901, 52.616000000]: td 0.013855
+[ INFO] [1593769439.743167693, 52.720000000]: td 0.013895
+[ INFO] [1593769439.836855927, 52.812000000]: td 0.013822
+[ INFO] [1593769439.903665936, 52.880000000]: td 0.013693
+[ INFO] [1593769440.043044012, 53.012000000]: td 0.013660
+[ INFO] [1593769440.123151357, 53.092000000]: td 0.013662
+[ INFO] [1593769440.224641331, 53.200000000]: td 0.013624
+[ INFO] [1593769440.318467505, 53.292000000]: td 0.013704
+[ INFO] [1593769440.402755954, 53.372000000]: td 0.013810
+[ INFO] [1593769440.479216446, 53.448000000]: td 0.013769
+[ INFO] [1593769440.579307671, 53.544000000]: td 0.013739
+[ INFO] [1593769440.701036431, 53.664000000]: td 0.013849
+[ INFO] [1593769440.811726693, 53.768000000]: td 0.013804
+[ INFO] [1593769440.896489551, 53.856000000]: td 0.013690
+[ INFO] [1593769440.976002246, 53.932000000]: td 0.013664
+[ INFO] [1593769441.085282400, 54.036000000]: td 0.013789
+[ INFO] [1593769441.186872776, 54.144000000]: td 0.013750
+[ INFO] [1593769441.256798761, 54.216000000]: td 0.013734
+[ INFO] [1593769441.361284994, 54.316000000]: td 0.013764
+[ INFO] [1593769441.487919291, 54.420000000]: td 0.013578
+[ INFO] [1593769441.569889595, 54.504000000]: td 0.013643
+[ INFO] [1593769441.659366970, 54.596000000]: td 0.013737
+[ INFO] [1593769441.751491769, 54.688000000]: td 0.013707
+[ INFO] [1593769441.869065018, 54.796000000]: td 0.013708
+[ INFO] [1593769441.972535150, 54.888000000]: td 0.015056
+[ INFO] [1593769442.110395681, 55.016000000]: td 0.015003
+[ INFO] [1593769442.232262513, 55.124000000]: td 0.014878
+[ INFO] [1593769442.350716182, 55.236000000]: td 0.017866
+[ INFO] [1593769442.469073512, 55.352000000]: td 0.019297
+[ INFO] [1593769442.577561958, 55.444000000]: td 0.019508
+[ INFO] [1593769442.648527646, 55.516000000]: td 0.020812
+[ INFO] [1593769442.703335035, 55.572000000]: td 0.020307
+[ INFO] [1593769442.829359589, 55.700000000]: td 0.021635
+[ INFO] [1593769442.912315207, 55.788000000]: td 0.022852
+[ INFO] [1593769443.035847571, 55.888000000]: td 0.022775
+[ INFO] [1593769443.126219080, 55.948000000]: td 0.023178
+[ INFO] [1593769443.218436855, 56.040000000]: td 0.024962
+[ INFO] [1593769443.339727759, 56.160000000]: td 0.023797
+[ INFO] [1593769443.455543100, 56.276000000]: td 0.024375
+[ INFO] [1593769443.524884825, 56.344000000]: td 0.025435
+[ INFO] [1593769443.625494694, 56.448000000]: td 0.024540
+[ INFO] [1593769443.761841856, 56.580000000]: td 0.024912
+[ INFO] [1593769443.823674394, 56.632000000]: td 0.024396
+[ INFO] [1593769443.891441995, 56.696000000]: td 0.026076
+[ INFO] [1593769444.018097237, 56.816000000]: td 0.024448
+[ INFO] [1593769444.109790341, 56.908000000]: td 0.022373
+[ INFO] [1593769444.201209185, 57.004000000]: td 0.023499
+[ INFO] [1593769444.296295270, 57.100000000]: td 0.023888
+[ INFO] [1593769444.407880439, 57.216000000]: td 0.024026
+[ INFO] [1593769444.520809503, 57.324000000]: td 0.024678
+[ INFO] [1593769444.602281536, 57.396000000]: td 0.025289
+[ INFO] [1593769444.703704401, 57.500000000]: td 0.025204
+[ INFO] [1593769444.779092080, 57.572000000]: td 0.025242
+[ INFO] [1593769444.893000992, 57.680000000]: td 0.025406
+[ INFO] [1593769444.995673261, 57.772000000]: td 0.025829
+[ INFO] [1593769445.101340020, 57.884000000]: td 0.026093
+[ INFO] [1593769445.212174993, 57.992000000]: td 0.025904
+[ INFO] [1593769445.280619702, 58.060000000]: td 0.026255
+[ INFO] [1593769445.378035767, 58.156000000]: td 0.026296
+[ INFO] [1593769445.460253471, 58.236000000]: td 0.026172
+[ INFO] [1593769445.564702988, 58.348000000]: td 0.026495
+[ INFO] [1593769445.660581240, 58.444000000]: td 0.026445
+[ INFO] [1593769445.718494001, 58.496000000]: td 0.026629
+[ INFO] [1593769445.821442368, 58.600000000]: td 0.026641
+[ INFO] [1593769445.925214042, 58.700000000]: td 0.026705
+[ INFO] [1593769446.060306710, 58.828000000]: td 0.026728
+[ INFO] [1593769446.157871262, 58.924000000]: td 0.026174
+[ INFO] [1593769446.274707289, 59.024000000]: td 0.026625
+[ INFO] [1593769446.395730998, 59.124000000]: td 0.026378
+[ INFO] [1593769446.500921944, 59.232000000]: td 0.026055
+[ INFO] [1593769446.570054862, 59.300000000]: td 0.025566
+[ INFO] [1593769446.644164195, 59.364000000]: td 0.026956
+[ INFO] [1593769446.786229941, 59.508000000]: td 0.027031
+[ INFO] [1593769446.918847856, 59.624000000]: td 0.027204
+[ INFO] [1593769447.051431091, 59.728000000]: td 0.027368
+[ INFO] [1593769447.119917236, 59.756000000]: td 0.027756
+[ INFO] [1593769447.239602430, 59.860000000]: td 0.027656
+[ INFO] [1593769447.340652182, 59.968000000]: td 0.027720
+[ INFO] [1593769447.461086953, 60.092000000]: td 0.027955
+[ INFO] [1593769447.528806521, 60.156000000]: td 0.028228
+[ INFO] [1593769447.651876499, 60.272000000]: td 0.028342
+[ INFO] [1593769447.780892930, 60.400000000]: td 0.028847
+[ INFO] [1593769447.835014282, 60.448000000]: td 0.028910
+[ INFO] [1593769447.911243633, 60.532000000]: td 0.028978
+[ INFO] [1593769448.028548353, 60.644000000]: td 0.028952
+[ INFO] [1593769448.137050866, 60.748000000]: td 0.028941
+[ INFO] [1593769448.223641815, 60.836000000]: td 0.028888
+[ INFO] [1593769448.307445918, 60.916000000]: td 0.026398
+[ INFO] [1593769448.435575924, 61.048000000]: td 0.028613
+[ INFO] [1593769448.550243372, 61.160000000]: td 0.028716
+[ INFO] [1593769448.620716355, 61.228000000]: td 0.027942
+[ INFO] [1593769448.697623569, 61.304000000]: td 0.022418
+[ INFO] [1593769448.819732971, 61.428000000]: td 0.029253
+[ INFO] [1593769448.920760165, 61.520000000]: td 0.029103
+[ INFO] [1593769449.045246828, 61.632000000]: td 0.028937
+[ INFO] [1593769449.128662478, 61.712000000]: td 0.029004
+[ INFO] [1593769449.210472502, 61.796000000]: td 0.029108
+[ INFO] [1593769449.277438217, 61.828000000]: td 0.029234
+[ INFO] [1593769449.435521674, 61.988000000]: td 0.029256
+position: 20.902887, -0.011643, 8.40159[ INFO] [1593769449.552486971, 62.100000000]: td 0.029501
+position: 21.232121, -0.031216, 8.40854[ INFO] [1593769449.613133648, 62.160000000]: td 0.029543
+position: 21.564759, -0.039258, 8.43355[ INFO] [1593769449.737834979, 62.284000000]: td 0.028834
+position: 21.944817, -0.061224, 8.45198[ INFO] [1593769449.793881973, 62.340000000]: td 0.029223
+position: 22.275284, -0.070698, 8.47866[ INFO] [1593769449.880643654, 62.424000000]: td 0.029640
+position: 22.597107, -0.082039, 8.50510[ INFO] [1593769449.985537567, 62.524000000]: td 0.029620
+position: 22.950723, -0.094230, 8.53772[ INFO] [1593769450.092345917, 62.616000000]: td 0.029288
+position: 23.277824, -0.105714, 8.56859[ INFO] [1593769450.263343862, 62.776000000]: td 0.029361
+position: 23.606418, -0.130754, 8.57869[ INFO] [1593769450.324076439, 62.836000000]: td 0.029648
+position: 23.929635, -0.138810, 8.60738[ INFO] [1593769450.434728993, 62.944000000]: td 0.029404
+position: 24.361899, -0.167724, 8.63071[ INFO] [1593769450.536121632, 63.048000000]: td 0.029566
+position: 24.790166, -0.200375, 8.65488[ INFO] [1593769450.601608466, 63.108000000]: td 0.029701
+position: 25.132479, -0.211243, 8.68518[ INFO] [1593769450.701311953, 63.208000000]: td 0.029626
+position: 25.481550, -0.224021, 8.71250[ INFO] [1593769450.792210328, 63.304000000]: td 0.029775
+position: 25.842668, -0.234496, 8.74164[ INFO] [1593769450.925281738, 63.428000000]: td 0.029865
+position: 26.145400, -0.264521, 8.75266[ INFO] [1593769450.985530484, 63.488000000]: td 0.029766
+position: 26.535256, -0.276302, 8.78979[ INFO] [1593769451.081028697, 63.588000000]: td 0.029293
+position: 26.870246, -0.288739, 8.81823[ INFO] [1593769451.171035707, 63.676000000]: td 0.029889
+position: 27.225345, -0.301147, 8.84939[ INFO] [1593769451.253880986, 63.752000000]: td 0.029817
+position: 27.596143, -0.314689, 8.88372[ INFO] [1593769451.365631070, 63.868000000]: td 0.029472
+position: 27.978178, -0.328237, 8.92062[ INFO] [1593769451.465577467, 63.956000000]: td 0.029165
+position: 28.241990, -0.338318, 8.94737[ INFO] [1593769451.544811732, 64.036000000]: td 0.029842
+position: 28.598653, -0.348784, 8.97569[ INFO] [1593769451.640616793, 64.140000000]: td 0.029887
+position: 28.956042, -0.357231, 9.00259[ INFO] [1593769451.757962136, 64.256000000]: td 0.029894
+position: 29.442856, -0.395595, 9.01094[ INFO] [1593769451.890628374, 64.384000000]: td 0.029624
+position: 29.911836, -0.423266, 9.02911[ INFO] [1593769451.962561119, 64.456000000]: td 0.029786
+position: 30.256900, -0.428396, 9.06369[ INFO] [1593769452.077936590, 64.564000000]: td 0.029844
+position: 30.644576, -0.460608, 9.06860[ INFO] [1593769452.146869985, 64.628000000]: td 0.029763
+position: 30.974232, -0.472243, 9.09230[ INFO] [1593769452.212317424, 64.696000000]: td 0.028750
+position: 31.347261, -0.485574, 9.11806[ INFO] [1593769452.308305616, 64.796000000]: td 0.030046
+position: 31.729474, -0.497052, 9.14550[ INFO] [1593769452.405850134, 64.900000000]: td 0.029656
+position: 32.110254, -0.508738, 9.17025[ INFO] [1593769452.513619007, 65.008000000]: td 0.029604
+position: 32.507521, -0.525989, 9.19444[ INFO] [1593769452.628835817, 65.120000000]: td 0.029338
+position: 32.861839, -0.541625, 9.21659[ INFO] [1593769452.751544689, 65.240000000]: td 0.029969
+position: 33.197431, -0.567756, 9.21947[ INFO] [1593769452.810549668, 65.300000000]: td 0.030140
+position: 33.583410, -0.578853, 9.24751[ INFO] [1593769452.900677124, 65.388000000]: td 0.030123
+position: 33.929830, -0.592600, 9.27242[ INFO] [1593769453.012133483, 65.488000000]: td 0.030259
+position: 34.304869, -0.605067, 9.30590[ INFO] [1593769453.117900580, 65.592000000]: td 0.029457
+position: 34.687850, -0.616826, 9.34335[ INFO] [1593769453.230692737, 65.684000000]: td 0.029393
+position: 35.034666, -0.628426, 9.37668[ INFO] [1593769453.347287070, 65.800000000]: td 0.030193
+position: 35.476146, -0.658486, 9.39147[ INFO] [1593769453.463700739, 65.912000000]: td 0.030379
+position: 35.898759, -0.689050, 9.40339[ INFO] [1593769453.524176790, 65.968000000]: td 0.030222
+position: 36.141246, -0.697823, 9.42059[ INFO] [1593769453.633160603, 66.076000000]: td 0.030438
+position: 36.557602, -0.725369, 9.43464[ INFO] [1593769453.757006417, 66.192000000]: td 0.030651
+position: 36.954287, -0.742010, 9.45484[ INFO] [1593769453.858694051, 66.296000000]: td 0.030838
+position: 37.324271, -0.764684, 9.47544[ INFO] [1593769453.914823956, 66.352000000]: td 0.031079
+position: 37.684858, -0.778122, 9.50458[ INFO] [1593769453.996874703, 66.424000000]: td 0.031062
+position: 38.057602, -0.792180, 9.53442[ INFO] [1593769454.109317993, 66.532000000]: td 0.031003
+position: 38.426651, -0.806669, 9.56153[ INFO] [1593769454.204235895, 66.628000000]: td 0.030949
+position: 38.681457, -0.816570, 9.57876[ INFO] [1593769454.290754130, 66.716000000]: td 0.031047
+position: 39.053785, -0.829619, 9.60315[ INFO] [1593769454.376460914, 66.804000000]: td 0.031066
+position: 39.422227, -0.843017, 9.62773[ INFO] [1593769454.482546175, 66.904000000]: td 0.031031
+position: 39.786385, -0.855795, 9.65339[ INFO] [1593769454.608582031, 67.024000000]: td 0.030875
+position: 40.151714, -0.873512, 9.67299[ INFO] [1593769454.693956831, 67.108000000]: td 0.031167
+position: 40.534643, -0.883082, 9.70387[ INFO] [1593769454.782325483, 67.188000000]: td 0.031214
+position: 40.892699, -0.895696, 9.73290[ INFO] [1593769454.892482252, 67.308000000]: td 0.030984
+position: 41.155538, -0.903845, 9.75397[ INFO] [1593769455.018084065, 67.412000000]: td 0.031431
+position: 41.517248, -0.919814, 9.77243[ INFO] [1593769455.088279005, 67.480000000]: td 0.031585
+position: 41.888315, -0.937198, 9.80378[ INFO] [1593769455.173272326, 67.572000000]: td 0.031422
+position: 42.240331, -0.947656, 9.84206[ INFO] [1593769455.277375971, 67.672000000]: td 0.031231
+position: 42.615712, -0.957079, 9.87934[ INFO] [1593769455.423749114, 67.816000000]: td 0.031308
+position: 42.931023, -0.976262, 9.89302[ INFO] [1593769455.479783162, 67.872000000]: td 0.031459
+position: 43.275599, -0.981869, 9.92013[ INFO] [1593769455.611061794, 68.000000000]: td 0.031488
+position: 43.758441, -1.013014, 9.94069[ INFO] [1593769455.703481585, 68.088000000]: td 0.031730
+position: 44.099648, -1.019356, 9.96388[ INFO] [1593769455.783698711, 68.172000000]: td 0.031585
+position: 44.340084, -1.024631, 9.97903[ INFO] [1593769455.874835480, 68.260000000]: td 0.031564
+position: 44.720790, -1.051642, 9.98960[ INFO] [1593769455.955984222, 68.336000000]: td 0.031619
+position: 45.144913, -1.060736, 10.0163[ INFO] [1593769456.072890490, 68.452000000]: td 0.031979
+position: 45.494526, -1.069000, 10.0383[ INFO] [1593769456.169258783, 68.544000000]: td 0.031661
+position: 45.866460, -1.078248, 10.0645[ INFO] [1593769456.309835046, 68.676000000]: td 0.031907
+position: 46.261253, -1.101649, 10.0809[ INFO] [1593769456.379440020, 68.748000000]: td 0.032059
+position: 46.509569, -1.091367, 10.1003[ INFO] [1593769456.485520789, 68.852000000]: td 0.031713
+position: 46.909180, -1.131759, 10.1180[ INFO] [1593769456.541937590, 68.908000000]: td 0.032068
+position: 47.276067, -1.132260, 10.1460[ INFO] [1593769456.669699315, 69.036000000]: td 0.032231
+position: 47.650252, -1.164672, 10.1703[ INFO] [1593769456.734580481, 69.092000000]: td 0.032339
+position: 48.004127, -1.167951, 10.2035[ INFO] [1593769456.887071297, 69.224000000]: td 0.032309
+position: 48.366884, -1.187504, 10.2240[ INFO] [1593769457.002040425, 69.300000000]: td 0.031906
+position: 48.649993, -1.201983, 10.2359[ INFO] [1593769457.085779709, 69.376000000]: td 0.031987
+position: 48.985392, -1.207405, 10.2538[ INFO] [1593769457.196224345, 69.488000000]: td 0.032649
+position: 49.381162, -1.223086, 10.2676[ INFO] [1593769457.288742392, 69.580000000]: td 0.032898
+position: 49.734421, -1.228959, 10.2829[ INFO] [1593769457.373863023, 69.668000000]: td 0.032928
+position: 50.112974, -1.236282, 10.2993[ INFO] [1593769457.511781909, 69.808000000]: td 0.032910
+position: 50.505023, -1.255463, 10.3148[ INFO] [1593769457.592593715, 69.884000000]: td 0.032672
+position: 50.742765, -1.258854, 10.3274[ INFO] [1593769457.661776775, 69.944000000]: td 0.033000
+position: 51.130581, -1.266217, 10.3471[ INFO] [1593769457.770772854, 70.048000000]: td 0.033006
+position: 51.497999, -1.272399, 10.3666[ INFO] [1593769457.869539546, 70.152000000]: td 0.032711
+position: 51.849339, -1.278371, 10.3871[ INFO] [1593769457.971780321, 70.248000000]: td 0.032619
+position: 52.131830, -1.281441, 10.4039[ INFO] [1593769458.094813073, 70.368000000]: td 0.033050
+position: 52.504293, -1.301665, 10.4280[ INFO] [1593769458.153765465, 70.424000000]: td 0.033098
+position: 52.858334, -1.305685, 10.4499[ INFO] [1593769458.240857580, 70.516000000]: td 0.033060
+position: 53.238169, -1.310462, 10.4745[ INFO] [1593769458.388856965, 70.660000000]: td 0.033171
+position: 53.598248, -1.334101, 10.4958[ INFO] [1593769458.446359703, 70.724000000]: td 0.033306
+position: 53.980817, -1.338260, 10.5216[ INFO] [1593769458.548236467, 70.824000000]: td 0.033334
+position: 54.342138, -1.344478, 10.5475[ INFO] [1593769458.700150282, 70.972000000]: td 0.033301
+position: 54.726206, -1.373731, 10.5711[ INFO] [1593769458.754745374, 71.032000000]: td 0.033448
+position: 54.981845, -1.376972, 10.5910[ INFO] [1593769458.818510263, 71.096000000]: td 0.033656
+position: 55.340276, -1.385243, 10.6202[ INFO] [1593769458.907161652, 71.184000000]: td 0.033564
+position: 55.679111, -1.393688, 10.6466[ INFO] [1593769459.026104393, 71.304000000]: td 0.033395
+position: 56.021206, -1.400812, 10.6727[ INFO] [1593769459.163379636, 71.440000000]: td 0.033238
+position: 56.417274, -1.441990, 10.7010[ INFO] [1593769459.258022964, 71.520000000]: td 0.032472
+position: 56.783541, -1.473385, 10.7265[ INFO] [1593769459.359166952, 71.616000000]: td 0.032162
+position: 57.184200, -1.505236, 10.7512[ INFO] [1593769459.478055703, 71.712000000]: td 0.032219
+position: 57.460928, -1.525869, 10.7671[ INFO] [1593769459.533649062, 71.772000000]: td 0.032257
+position: 57.812767, -1.534149, 10.7955[ INFO] [1593769459.612932650, 71.856000000]: td 0.032233
+position: 58.166784, -1.543710, 10.8238[ INFO] [1593769459.714380908, 71.952000000]: td 0.032227
+position: 58.526188, -1.552993, 10.8523[ INFO] [1593769459.853303740, 72.092000000]: td 0.032335
+position: 58.908786, -1.576381, 10.8744[ INFO] [1593769459.948557077, 72.176000000]: td 0.032473
+position: 59.305157, -1.595661, 10.8944[ INFO] [1593769460.080784704, 72.288000000]: td 0.032594
+position: 59.585373, -1.606169, 10.9103[ INFO] [1593769460.140046119, 72.344000000]: td 0.032977
+position: 59.914580, -1.611491, 10.9376[ INFO] [1593769460.227286469, 72.432000000]: td 0.032653
+position: 60.278036, -1.618859, 10.9640[ INFO] [1593769460.320485581, 72.524000000]: td 0.032583
+position: 60.661020, -1.626724, 10.9881[ INFO] [1593769460.432982932, 72.640000000]: td 0.032531
+position: 61.021302, -1.632936, 11.0099[ INFO] [1593769460.528309757, 72.740000000]: td 0.031891
+position: 61.422642, -1.643694, 11.0255[ INFO] [1593769460.605490606, 72.820000000]: td 0.031999
+position: 61.787914, -1.649870, 11.0510[ INFO] [1593769460.703706045, 72.920000000]: td 0.032544
+position: 62.172039, -1.656688, 11.0755[ INFO] [1593769460.802349609, 73.016000000]: td 0.032592
+position: 62.415248, -1.659070, 11.0914[ INFO] [1593769460.874175630, 73.084000000]: td 0.032492
+position: 62.783060, -1.664178, 11.1151[ INFO] [1593769460.997457145, 73.200000000]: td 0.032026
+position: 63.212857, -1.676759, 11.1344[ INFO] [1593769461.091188571, 73.292000000]: td 0.032144
+position: 63.596084, -1.681070, 11.1598[ INFO] [1593769461.205943540, 73.404000000]: td 0.032587
+position: 64.001297, -1.698119, 11.1821[ INFO] [1593769461.283216662, 73.480000000]: td 0.032737
+position: 64.394453, -1.703314, 11.2087[ INFO] [1593769461.376131310, 73.576000000]: td 0.032726
+position: 64.801577, -1.709341, 11.2343[ INFO] [1593769461.524536519, 73.720000000]: td 0.032725
+position: 65.095801, -1.726148, 11.2434[ INFO] [1593769461.581630666, 73.780000000]: td 0.033070
+position: 65.525724, -1.731013, 11.2756[ INFO] [1593769461.671958354, 73.872000000]: td 0.033058
+position: 65.897482, -1.736739, 11.3037[ INFO] [1593769461.770522480, 73.968000000]: td 0.033236
+position: 66.297292, -1.743888, 11.3315[ INFO] [1593769461.862643525, 74.060000000]: td 0.033100
+position: 66.665119, -1.751022, 11.3545[ INFO] [1593769461.954757040, 74.152000000]: td 0.033108
+position: 66.927441, -1.756860, 11.3703[ INFO] [1593769462.046700941, 74.236000000]: td 0.033133
+position: 67.394489, -1.767803, 11.4004[ INFO] [1593769462.192797337, 74.384000000]: td 0.033155
+position: 67.662263, -1.796320, 11.4000[ INFO] [1593769462.246786110, 74.436000000]: td 0.033313
+position: 68.021573, -1.797361, 11.4291[ INFO] [1593769462.327684311, 74.516000000]: td 0.033210
+position: 68.388876, -1.805596, 11.4563[ INFO] [1593769462.417670721, 74.612000000]: td 0.033233
+position: 68.758199, -1.812891, 11.4835[ INFO] [1593769462.517644154, 74.712000000]: td 0.033201
+position: 69.118732, -1.819685, 11.5104[ INFO] [1593769462.625530091, 74.820000000]: td 0.033234
+position: 69.500580, -1.825541, 11.5416[ INFO] [1593769462.723360362, 74.916000000]: td 0.033130
+position: 69.754168, -1.829032, 11.5620[ INFO] [1593769462.833166013, 75.024000000]: td 0.033177
+position: 70.134163, -1.868069, 11.5762[ INFO] [1593769462.901470924, 75.092000000]: td 0.033271
+position: 70.507016, -1.873453, 11.6109[ INFO] [1593769463.005720935, 75.192000000]: td 0.033374
+position: 70.906180, -1.887489, 11.6432[ INFO] [1593769463.120791783, 75.304000000]: td 0.033312
+position: 71.266866, -1.897430, 11.6732[ INFO] [1593769463.252459788, 75.436000000]: td 0.032715
+position: 71.550107, -1.942882, 11.6726[ INFO] [1593769463.307982144, 75.492000000]: td 0.032973
+position: 72.017004, -1.943227, 11.7264[ INFO] [1593769463.450975501, 75.632000000]: td 0.033146
+position: 72.249070, -1.988018, 11.7253[ INFO] [1593769463.548050124, 75.728000000]: td 0.033250
+position: 72.650176, -2.015929, 11.7464[ INFO] [1593769463.617947675, 75.784000000]: td 0.033436
+position: 73.022005, -2.020153, 11.7780[ INFO] [1593769463.694358144, 75.852000000]: td 0.033408
+position: 73.373508, -2.028778, 11.8041[ INFO] [1593769463.816604848, 75.976000000]: td 0.033501
+position: 73.846047, -2.040979, 11.8376[ INFO] [1593769463.970583235, 76.108000000]: td 0.033552
+position: 74.233285, -2.066946, 11.8480[ INFO] [1593769464.075850423, 76.212000000]: td 0.033859
+position: 74.500720, -2.091201, 11.8567[ INFO] [1593769464.172405625, 76.308000000]: td 0.034461
+position: 74.875884, -2.114471, 11.8776[ INFO] [1593769464.235305610, 76.368000000]: td 0.034717
+position: 75.272834, -2.120481, 11.9131[ INFO] [1593769464.340736878, 76.476000000]: td 0.033117
+position: 75.628714, -2.135774, 11.9249[ INFO] [1593769464.441351695, 76.572000000]: td 0.033118
+position: 76.040512, -2.153391, 11.9406[ INFO] [1593769464.547215064, 76.676000000]: td 0.033160
+position: 76.430047, -2.166575, 11.9577[ INFO] [1593769464.608294145, 76.732000000]: td 0.033351
+position: 76.794703, -2.173322, 11.9797[ INFO] [1593769464.733888931, 76.856000000]: td 0.033324
+position: 77.181726, -2.189274, 11.9971[ INFO] [1593769464.808017827, 76.932000000]: td 0.033491
+position: 77.438603, -2.195261, 12.0129[ INFO] [1593769464.924941489, 77.048000000]: td 0.033444
+position: 77.825582, -2.211189, 12.0298[ INFO] [1593769465.002926411, 77.108000000]: td 0.033643
+position: 78.211230, -2.219848, 12.0557[ INFO] [1593769465.106417661, 77.220000000]: td 0.033702
+position: 78.562986, -2.229140, 12.0850[ INFO] [1593769465.190036657, 77.308000000]: td 0.033650
+position: 78.940022, -2.240102, 12.1187[ INFO] [1593769465.276636856, 77.396000000]: td 0.033661
+position: 79.293445, -2.250400, 12.1463[ INFO] [1593769465.420850235, 77.536000000]: td 0.033633
+position: 79.549444, -2.266024, 12.1580[ INFO] [1593769465.481479019, 77.592000000]: td 0.033715
+position: 79.907472, -2.273760, 12.1842[ INFO] [1593769465.546692695, 77.660000000]: td 0.033629
+position: 80.292276, -2.283991, 12.2095[ INFO] [1593769465.661518843, 77.772000000]: td 0.033657
+position: 80.644708, -2.289957, 12.2362[ INFO] [1593769465.774012415, 77.880000000]: td 0.032947
+position: 81.014447, -2.311890, 12.2491[ INFO] [1593769465.856307433, 77.968000000]: td 0.033180
+position: 81.381405, -2.320537, 12.2788[ INFO] [1593769465.984436763, 78.096000000]: td 0.033291
+position: 81.774321, -2.340816, 12.3034[ INFO] [1593769466.107581749, 78.208000000]: td 0.033453
+position: 82.002593, -2.349713, 12.3169[ INFO] [1593769466.166724345, 78.260000000]: td 0.034061
+position: 82.408141, -2.358504, 12.3475[ INFO] [1593769466.238916571, 78.332000000]: td 0.034057
+position: 82.791299, -2.366454, 12.3803[ INFO] [1593769466.370082823, 78.464000000]: td 0.033832
+position: 83.227264, -2.383893, 12.4108[ INFO] [1593769466.449735282, 78.532000000]: td 0.033759
+position: 83.527822, -2.39128[ INFO] [1593769466.556620708, 78.644000000]: td 0.033729
+position: 83.929468, -2.40395[ INFO] [1593769466.669997353, 78.756000000]: td 0.033830
+position: 84.335354, -2.42098[ INFO] [1593769466.785849304, 78.868000000]: td 0.033845
+position: 84.725398, -2.43252[ INFO] [1593769466.888507447, 78.972000000]: td 0.033902
+position: 85.141818, -2.44307[ INFO] [1593769466.979203875, 79.064000000]: td 0.033804
+position: 85.589996, -2.45581[ INFO] [1593769467.070876728, 79.148000000]: td 0.033897
+position: 85.975936, -2.46539[ INFO] [1593769467.167396845, 79.252000000]: td 0.033988
+position: 86.389268, -2.47882[ INFO] [1593769467.262044280, 79.348000000]: td 0.034059
+position: 86.812942, -2.49221[ INFO] [1593769467.364467449, 79.448000000]: td 0.034033
+position: 87.053534, -2.50275[ INFO] [1593769467.428105483, 79.512000000]: td 0.034180
+position: 87.450613, -2.51324[ INFO] [1593769467.491854835, 79.572000000]: td 0.034049
+position: 87.859911, -2.52435[ INFO] [1593769467.591391469, 79.676000000]: td 0.034176
+position: 88.244826, -2.53542[ INFO] [1593769467.685271726, 79.768000000]: td 0.034136
+position: 88.539011, -2.54375[ INFO] [1593769467.771729150, 79.860000000]: td 0.034283
+position: 88.889378, -2.55389[ INFO] [1593769467.852922602, 79.940000000]: td 0.034294
+position: 89.260105, -2.56523[ INFO] [1593769467.944385987, 80.036000000]: td 0.034334
+position: 89.648005, -2.57675[ INFO] [1593769468.052092114, 80.136000000]: td 0.034316
+position: 90.013027, -2.58835[ INFO] [1593769468.169911829, 80.256000000]: td 0.034113
+position: 90.400514, -2.59975[ INFO] [1593769468.298383509, 80.388000000]: td 0.034300
+position: 90.754470, -2.62260[ INFO] [1593769468.358491950, 80.444000000]: td 0.034334
+position: 91.022143, -2.62558[ INFO] [1593769468.460892921, 80.544000000]: td 0.034245
+position: 91.375167, -2.65222[ INFO] [1593769468.545660852, 80.628000000]: td 0.034156
+position: 91.771184, -2.66537[ INFO] [1593769468.636999575, 80.712000000]: td 0.034393
+position: 92.169536, -2.67909[ INFO] [1593769468.760789013, 80.836000000]: td 0.034336
+position: 92.515226, -2.68978[ INFO] [1593769468.888555474, 80.968000000]: td 0.034380
+position: 92.730493, -2.72234[ INFO] [1593769468.958106328, 81.032000000]: td 0.034443
+position: 93.106333, -2.73186[ INFO] [1593769469.026641069, 81.092000000]: td 0.034375
+position: 93.488412, -2.74233[ INFO] [1593769469.135734567, 81.204000000]: td 0.034142
+position: 93.835338, -2.75220[ INFO] [1593769469.224936246, 81.252000000]: td 0.034165
+position: 94.222147, -2.76078[ INFO] [1593769469.388726327, 81.420000000]: td 0.034454
+position: 94.600389, -2.78739[ INFO] [1593769469.462959490, 81.492000000]: td 0.034502
+position: 94.985031, -2.78698[ INFO] [1593769469.593774489, 81.620000000]: td 0.034500
+position: 95.218210, -2.81116[ INFO] [1593769469.689567564, 81.712000000]: td 0.034527
+position: 95.592877, -2.83207[ INFO] [1593769469.747500805, 81.772000000]: td 0.034584
+position: 95.971360, -2.83704[ INFO] [1593769469.840082056, 81.868000000]: td 0.034595
+position: 96.343632, -2.84323[ INFO] [1593769469.933978889, 81.956000000]: td 0.034594
+position: 96.721697, -2.85163[ INFO] [1593769470.086704074, 82.104000000]: td 0.034640
+position: 97.125007, -2.87298[ INFO] [1593769470.185879967, 82.196000000]: td 0.034557
+position: 97.487267, -2.90134[ INFO] [1593769470.257394629, 82.260000000]: td 0.034321
+position: 97.751151, -2.91004[ INFO] [1593769470.368685847, 82.368000000]: td 0.034279
+position: 98.106600, -2.92694[ INFO] [1593769470.476239380, 82.476000000]: td 0.034018
+position: 98.498677, -2.95010[ INFO] [1593769470.529940990, 82.528000000]: td 0.034109
+position: 98.881733, -2.95700[ INFO] [1593769470.640134398, 82.636000000]: td 0.034241
+position: 99.280630, -2.96755[ INFO] [1593769470.798255539, 82.784000000]: td 0.034227
+position: 99.564449, -2.98394[ INFO] [1593769470.867742119, 82.852000000]: td 0.034345
+position: 99.965573, -2.99100[ INFO] [1593769470.927894656, 82.904000000]: td 0.034308
+position: 100.315857, -3.0032[ INFO] [1593769471.092698912, 83.056000000]: td 0.034384
+position: 100.702519, -3.0218[ INFO] [1593769471.185477938, 83.148000000]: td 0.034500
+position: 101.033345, -3.0433[ INFO] [1593769471.269526619, 83.208000000]: td 0.034588
+position: 101.483814, -3.0653[ INFO] [1593769471.360595673, 83.300000000]: td 0.034671
+position: 101.874265, -3.0741[ INFO] [1593769471.450048904, 83.392000000]: td 0.034606
+position: 102.186862, -3.0802[ INFO] [1593769471.536747766, 83.480000000]: td 0.034532
+position: 102.583905, -3.0908[ INFO] [1593769471.660537235, 83.584000000]: td 0.034317
+position: 102.994673, -3.1130[ INFO] [1593769471.753092264, 83.672000000]: td 0.034407
+position: 103.414449, -3.1236[ INFO] [1593769471.870453143, 83.788000000]: td 0.034318
+position: 103.830774, -3.1450[ INFO] [1593769471.943162483, 83.860000000]: td 0.034518
+position: 104.279468, -3.1529[ INFO] [1593769472.092429268, 83.984000000]: td 0.034509
+position: 104.729997, -3.1768[ INFO] [1593769472.210106042, 84.104000000]: td 0.033974
+position: 104.998199, -3.1946[ INFO] [1593769472.267592524, 84.152000000]: td 0.034072
+position: 105.426558, -3.2086[ INFO] [1593769472.378075677, 84.236000000]: td 0.034163
+position: 105.857436, -3.2225[ INFO] [1593769472.473129245, 84.328000000]: td 0.034830
+position: 106.287731, -3.2384[ INFO] [1593769472.609863938, 84.468000000]: td 0.034752
+position: 106.736964, -3.2711[ INFO] [1593769472.725577702, 84.584000000]: td 0.034901
+position: 107.022432, -3.2881[ INFO] [1593769472.787847803, 84.648000000]: td 0.035011
+position: 107.412049, -3.3040[ INFO] [1593769472.855241035, 84.716000000]: td 0.035016
+position: 107.805833, -3.3236[ INFO] [1593769472.943732512, 84.804000000]: td 0.034976
+position: 108.188062, -3.3423[ INFO] [1593769473.052819034, 84.904000000]: td 0.035027
+position: 108.576418, -3.3588[ INFO] [1593769473.185934868, 85.036000000]: td 0.035029
+position: 108.975712, -3.3901[ INFO] [1593769473.267949564, 85.120000000]: td 0.034938
+position: 109.342554, -3.4080[ INFO] [1593769473.389720921, 85.244000000]: td 0.035050
+position: 109.700444, -3.4293[ INFO] [1593769473.493564862, 85.348000000]: td 0.035148
+position: 110.088288, -3.4531[ INFO] [1593769473.610443827, 85.452000000]: td 0.035306
+position: 110.331331, -3.4647[ INFO] [1593769473.668772772, 85.508000000]: td 0.035312
+position: 110.676352, -3.4813[ INFO] [1593769473.724547324, 85.568000000]: td 0.035304
+position: 111.056389, -3.5000[ INFO] [1593769473.874670396, 85.720000000]: td 0.035460
+position: 111.412032, -3.5190[ INFO] [1593769473.943773394, 85.780000000]: td 0.035492
+position: 111.770095, -3.5356[ INFO] [1593769474.052989782, 85.892000000]: td 0.035481
+position: 112.054357, -3.5476[ INFO] [1593769474.190077196, 86.020000000]: td 0.035460
+position: 112.405146, -3.5618[ INFO] [1593769474.269454152, 86.084000000]: td 0.035245
+position: 112.803054, -3.5812[ INFO] [1593769474.371941904, 86.188000000]: td 0.035303
+position: 113.185197, -3.5909[ INFO] [1593769474.438439531, 86.252000000]: td 0.035346
+position: 113.584403, -3.6080[ INFO] [1593769474.542225987, 86.356000000]: td 0.035407
+position: 113.978521, -3.6227[ INFO] [1593769474.667370860, 86.476000000]: td 0.035405
+position: 114.373430, -3.6368[ INFO] [1593769474.773515441, 86.580000000]: td 0.035410
+position: 114.650125, -3.6479[ INFO] [1593769474.830868997, 86.632000000]: td 0.035219
+position: 115.050171, -3.6635[ INFO] [1593769474.926584752, 86.728000000]: td 0.035465
+position: 115.431718, -3.6765[ INFO] [1593769475.050199132, 86.848000000]: td 0.035479
+position: 115.869541, -3.6979[ INFO] [1593769475.134076202, 86.924000000]: td 0.035591
+position: 116.157013, -3.7067[ INFO] [1593769475.219333271, 87.008000000]: td 0.035447
+position: 116.539109, -3.7206[ INFO] [1593769475.304779154, 87.096000000]: td 0.035547
+position: 116.927977, -3.7339[ INFO] [1593769475.435949000, 87.220000000]: td 0.035585
+position: 117.344639, -3.7491[ INFO] [1593769475.520231412, 87.304000000]: td 0.035630
+position: 117.728863, -3.7593[ INFO] [1593769475.609526809, 87.396000000]: td 0.035641
+position: 118.104381, -3.7702[ INFO] [1593769475.701477111, 87.488000000]: td 0.035607
+position: 118.480901, -3.7836[ INFO] [1593769475.809540053, 87.596000000]: td 0.035642
+position: 118.729489, -3.7920[ INFO] [1593769475.885771831, 87.672000000]: td 0.035668
+position: 119.099743, -3.8050[ INFO] [1593769475.975635746, 87.748000000]: td 0.035648
+position: 119.496895, -3.8171[ INFO] [1593769476.093727371, 87.872000000]: td 0.035642
+position: 119.847932, -3.8287[ INFO] [1593769476.190620731, 87.968000000]: td 0.035646
+position: 120.180372, -3.8409[ INFO] [1593769476.273493254, 88.048000000]: td 0.035615
+position: 120.545522, -3.8525[ INFO] [1593769476.423304291, 88.196000000]: td 0.035616
+position: 120.810185, -3.8745[ INFO] [1593769476.480512025, 88.244000000]: td 0.035721
+position: 121.193629, -3.8803[ INFO] [1593769476.570898504, 88.324000000]: td 0.035755
+position: 121.531655, -3.8868[ INFO] [1593769476.719596217, 88.460000000]: td 0.035716
+position: 121.941574, -3.9186[ INFO] [1593769476.844204610, 88.584000000]: td 0.035884
+position: 122.350007, -3.9466[ INFO] [1593769476.944132474, 88.664000000]: td 0.035878
+position: 122.646181, -3.9753[ INFO] [1593769477.035752121, 88.756000000]: td 0.035839
+position: 123.049022, -3.9989[ INFO] [1593769477.134543176, 88.856000000]: td 0.035762
+position: 123.450167, -4.0269[ INFO] [1593769477.201551190, 88.920000000]: td 0.035815
+position: 123.818321, -4.0379[ INFO] [1593769477.286253834, 89.008000000]: td 0.035884
+position: 124.202241, -4.0516[ INFO] [1593769477.418291086, 89.140000000]: td 0.035948
+position: 124.630882, -4.0706[ INFO] [1593769477.529537827, 89.252000000]: td 0.036009
+position: 125.063815, -4.0840[ INFO] [1593769477.602911854, 89.316000000]: td 0.036184
+position: 125.476686, -4.0972[ INFO] [1593769477.709797679, 89.408000000]: td 0.036106
+position: 125.725081, -4.1038[ INFO] [1593769477.806959399, 89.508000000]: td 0.035940
+position: 126.126521, -4.1172[ INFO] [1593769477.877781144, 89.584000000]: td 0.035752
+position: 126.515385, -4.1282[ INFO] [1593769477.971424499, 89.684000000]: td 0.035975
+position: 126.913725, -4.1406[ INFO] [1593769478.105545931, 89.804000000]: td 0.036197
+position: 127.307980, -4.1634[ INFO] [1593769478.213074503, 89.888000000]: td 0.036068
+position: 127.704564, -4.1831[ INFO] [1593769478.296295917, 89.972000000]: td 0.036119
+position: 128.106018, -4.1945[ INFO] [1593769478.421164337, 90.096000000]: td 0.036265
+position: 128.521294, -4.2161[ INFO] [1593769478.504689301, 90.180000000]: td 0.036218
+position: 128.781098, -4.2242[ INFO] [1593769478.594807359, 90.272000000]: td 0.036337
+position: 129.189883, -4.2402[ INFO] [1593769478.720586402, 90.392000000]: td 0.036340
+position: 129.557401, -4.2574[ INFO] [1593769478.773867101, 90.436000000]: td 0.036388
+position: 129.945362, -4.2733[ INFO] [1593769478.876869279, 90.536000000]: td 0.036337
+position: 130.320519, -4.2877[ INFO] [1593769478.963856708, 90.628000000]: td 0.036386
+position: 130.607122, -4.3017[ INFO] [1593769479.060811715, 90.724000000]: td 0.036406
+position: 130.958444, -4.3161[ INFO] [1593769479.142508237, 90.800000000]: td 0.036152
+position: 131.336237, -4.3305[ INFO] [1593769479.244718163, 90.904000000]: td 0.035675
+position: 131.665646, -4.3452[ INFO] [1593769479.342051764, 91.000000000]: td 0.036247
+position: 132.045161, -4.3597[ INFO] [1593769479.486830614, 91.144000000]: td 0.036407
+position: 132.409748, -4.3695[ INFO] [1593769479.561686181, 91.212000000]: td 0.036451
+position: 132.791036, -4.3830[ INFO] [1593769479.695919246, 91.336000000]: td 0.036377
+position: 133.163864, -4.3926[ INFO] [1593769479.788346194, 91.428000000]: td 0.036413
+position: 133.442497, -4.4012[ INFO] [1593769479.900541359, 91.520000000]: td 0.036427
+position: 133.778591, -4.4130[ INFO] [1593769479.957014168, 91.568000000]: td 0.036194
+position: 134.133335, -4.4259[ INFO] [1593769480.063020431, 91.668000000]: td 0.036622
+position: 134.536132, -4.4384[ INFO] [1593769480.170293100, 91.784000000]: td 0.036567
+position: 134.894016, -4.4505[ INFO] [1593769480.256329424, 91.868000000]: td 0.036127
+position: 135.165140, -4.4616[ INFO] [1593769480.331592754, 91.940000000]: td 0.036532
+position: 135.528636, -4.4762[ INFO] [1593769480.437453274, 92.048000000]: td 0.036508
+position: 135.882880, -4.4897[ INFO] [1593769480.528868045, 92.136000000]: td 0.036606
+position: 136.270357, -4.5027[ INFO] [1593769480.639157084, 92.248000000]: td 0.036566
+position: 136.643416, -4.5150[ INFO] [1593769480.734261704, 92.340000000]: td 0.036565
+position: 137.018309, -4.5283[ INFO] [1593769480.871426409, 92.480000000]: td 0.036507
+position: 137.404545, -4.5451[ INFO] [1593769480.972879515, 92.576000000]: td 0.036356
+position: 137.799655, -4.5624[ INFO] [1593769481.056112030, 92.656000000]: td 0.036424
+position: 138.055250, -4.5693[ INFO] [1593769481.106456059, 92.708000000]: td 0.036578
+position: 138.423381, -4.5829[ INFO] [1593769481.206606073, 92.800000000]: td 0.036450
+position: 138.796699, -4.5950[ INFO] [1593769481.343825388, 92.940000000]: td 0.036643
+position: 139.191868, -4.6283[ INFO] [1593769481.442515254, 93.040000000]: td 0.036661
+position: 139.574404, -4.6559[ INFO] [1593769481.543195517, 93.140000000]: td 0.036647
+position: 139.951143, -4.6758[ INFO] [1593769481.621026069, 93.212000000]: td 0.036699
+position: 140.188104, -4.6789[ INFO] [1593769481.709074737, 93.296000000]: td 0.036702
+position: 140.499809, -4.6940[ INFO] [1593769481.834839961, 93.424000000]: td 0.036769
+position: 140.814131, -4.7141[ INFO] [1593769481.959313674, 93.540000000]: td 0.036830
+position: 141.172500, -4.7359[ INFO] [1593769482.036192713, 93.616000000]: td 0.036892
+position: 141.459239, -4.7458[ INFO] [1593769482.119147569, 93.688000000]: td 0.036908
+position: 141.644657, -4.7526[ INFO] [1593769482.185377967, 93.760000000]: td 0.036813
+position: 141.946578, -4.7639[ INFO] [1593769482.312741877, 93.888000000]: td 0.036840
+position: 142.217920, -4.7811[ INFO] [1593769482.418368183, 93.996000000]: td 0.036909
+position: 142.511236, -4.7957[ INFO] [1593769482.531030849, 94.108000000]: td 0.036981
+position: 142.776349, -4.8103[ INFO] [1593769482.609364398, 94.176000000]: td 0.037038
+position: 143.022164, -4.8269[ INFO] [1593769482.688998692, 94.260000000]: td 0.037092
+position: 143.220767, -4.8363[ INFO] [1593769482.807472260, 94.376000000]: td 0.037085
+position: 143.397224, -4.8495[ INFO] [1593769482.871190015, 94.440000000]: td 0.037118
+position: 143.542457, -4.8567[ INFO] [1593769482.954309795, 94.524000000]: td 0.037124
+position: 143.698478, -4.8658[ INFO] [1593769483.067390998, 94.628000000]: td 0.037116
+position: 143.827974, -4.8732[ INFO] [1593769483.163303251, 94.728000000]: td 0.037121
+position: 143.949310, -4.8795[ INFO] [1593769483.279986916, 94.844000000]: td 0.037119
+position: 144.035302, -4.8830[ INFO] [1593769483.364560776, 94.928000000]: td 0.037110
+position: 144.102031, -4.8852[ INFO] [1593769483.471662073, 95.032000000]: td 0.037121
+position: 144.348705, -4.9070[ INFO] [1593769483.536052072, 95.100000000]: td 0.037178
+position: 144.381143, -4.9089[ INFO] [1593769483.659659203, 95.220000000]: td 0.037187
+position: 144.593155, -4.9270[ INFO] [1593769483.763883321, 95.328000000]: td 0.037259
+position: 144.708412, -4.9313[ INFO] [1593769483.868395085, 95.428000000]: td 0.037327
+position: 144.877943, -4.9515[ INFO] [1593769483.947773365, 95.508000000]: td 0.037385
+position: 144.870111, -4.9477[ INFO] [1593769484.040918009, 95.592000000]: td 0.037383
+position: 144.962724, -4.9539[ INFO] [1593769484.135760911, 95.684000000]: td 0.037424
+position: 144.958259, -4.9496[ INFO] [1593769484.262693804, 95.808000000]: td 0.037421
+position: 144.990039, -4.9514[ INFO] [1593769484.344152033, 95.888000000]: td 0.037467
+position: 145.004261, -4.9419[ INFO] [1593769484.394868147, 95.940000000]: td 0.037469
+position: 145.005399, -4.9324[ INFO] [1593769484.545032431, 96.096000000]: td 0.037468
+position: 145.023415, -4.9507[ INFO] [1593769484.597827108, 96.148000000]: td 0.037506
+position: 145.033052, -4.9381[ INFO] [1593769484.695393088, 96.244000000]: td 0.037507
+position: 145.027565, -4.9297[ INFO] [1593769484.786293499, 96.336000000]: td 0.037508
+position: 145.024062, -4.9235[ INFO] [1593769484.885411271, 96.440000000]: td 0.037505
+position: 145.018992, -4.9167[ INFO] [1593769485.014283344, 96.564000000]: td 0.037506
+position: 145.069218, -4.9226[ INFO] [1593769485.105122947, 96.624000000]: td 0.037543
+position: 145.062321, -4.9079[ INFO] [1593769485.222324286, 96.744000000]: td 0.037539
+position: 145.073105, -4.9016[ INFO] [1593769485.290221961, 96.800000000]: td 0.037537
+position: 145.074440, -4.8917[ INFO] [1593769485.408966896, 96.920000000]: td 0.037534
+position: 145.081003, -4.8813[ INFO] [1593769485.503638050, 97.016000000]: td 0.037536
+position: 145.081334, -4.8701[ INFO] [1593769485.604830319, 97.088000000]: td 0.037535
+position: 145.082995, -4.8645[ INFO] [1593769485.711212945, 97.192000000]: td 0.037527
+position: 145.072518, -4.8502[ INFO] [1593769485.794461619, 97.280000000]: td 0.037526
+position: 145.067649, -4.8407[ INFO] [1593769485.899989926, 97.380000000]: td 0.037531
+position: 145.058578, -4.8301[ INFO] [1593769486.014017638, 97.484000000]: td 0.037532
+position: 145.061137, -4.8212[ INFO] [1593769486.101412550, 97.560000000]: td 0.037529
+position: 145.051453, -4.8025[ INFO] [1593769486.224508544, 97.684000000]: td 0.037531
+position: 145.071504, -4.8005[ INFO] [1593769486.322043654, 97.784000000]: td 0.037531
+position: 145.073102, -4.7915[ INFO] [1593769486.424085446, 97.888000000]: td 0.037525
+position: 145.086137, -4.7896[ INFO] [1593769486.497725109, 97.960000000]: td 0.037524
+position: 145.101085, -4.7775[ INFO] [1593769486.592431706, 98.052000000]: td 0.037526
+position: 145.115998, -4.7616[ INFO] [1593769486.695729306, 98.160000000]: td 0.037528
+position: 145.143290, -4.7635[ INFO] [1593769486.773910896, 98.240000000]: td 0.037523
+position: 145.185993, -4.7637[ INFO] [1593769486.889920691, 98.356000000]: td 0.037521
+position: 145.226183, -4.7796[ INFO] [1593769486.991735621, 98.452000000]: td 0.037521
+position: 145.263920, -4.7730[ INFO] [1593769487.085731168, 98.544000000]: td 0.037518
+position: 145.305563, -4.7697[ INFO] [1593769487.164397236, 98.624000000]: td 0.037521
+position: 145.326605, -4.7683[ INFO] [1593769487.257972807, 98.716000000]: td 0.037519
+position: 145.345395, -4.7546[ INFO] [1593769487.366755377, 98.824000000]: td 0.037520
+position: 145.372488, -4.7490[ INFO] [1593769487.459108804, 98.920000000]: td 0.037523
+position: 145.395686, -4.7325[ INFO] [1593769487.558224857, 99.016000000]: td 0.037522
+position: 145.395880, -4.7304[ INFO] [1593769487.666920251, 99.120000000]: td 0.037519
+position: 145.433267, -4.7454[ INFO] [1593769487.753501344, 99.204000000]: td 0.037553
+position: 145.460025, -4.7275[ INFO] [1593769487.860667462, 99.304000000]: td 0.037555
+position: 145.486331, -4.7075[ INFO] [1593769487.960986535, 99.392000000]: td 0.037554
+position: 145.506226, -4.6893[ INFO] [1593769488.085345453, 99.508000000]: td 0.037554
+position: 145.526219, -4.6476[ INFO] [1593769488.149214061, 99.576000000]: td 0.037557
+position: 145.553647, -4.6530[ INFO] [1593769488.243923257, 99.676000000]: td 0.037558
+position: 145.574548, -4.5935[ INFO] [1593769488.351396566, 99.784000000]: td 0.037561
+position: 145.585085, -4.5765[ INFO] [1593769488.437001366, 99.872000000]: td 0.037562
+position: 145.612920, -4.5920[ INFO] [1593769488.550664861, 99.988000000]: td 0.037560
+position: 145.625417, -4.5521[ INFO] [1593769488.608443212, 100.044000000]: td 0.037560
+position: 145.646520, -4.5425[ INFO] [1593769488.707378885, 100.144000000]: td 0.037563
+position: 145.665370, -4.5259[ INFO] [1593769488.804539259, 100.240000000]: td 0.037565
+position: 145.682550, -4.5036[ INFO] [1593769488.907174202, 100.348000000]: td 0.037563
+position: 145.693735, -4.4764[ INFO] [1593769489.012668779, 100.448000000]: td 0.037561
+position: 145.708100, -4.4459[ INFO] [1593769489.121384563, 100.560000000]: td 0.037560
+position: 145.719573, -4.4369[ INFO] [1593769489.218863510, 100.656000000]: td 0.037561
+position: 145.726936, -4.4138[ INFO] [1593769489.290868007, 100.728000000]: td 0.037560
+position: 145.745978, -4.3905[ INFO] [1593769489.384315136, 100.824000000]: td 0.037560
+^Cposition: 145.760582, -4.36[ INFO] [1593769489.480714117, 100.924000000]: td 0.037563
+[pose_graph-3] killing on exit
+[vins_estimator-2] killing on exit
+[feature_tracker-1] killing on exit
+terminate called without an active exception
+terminate called without an active exception
+shutting down processing monitor...
+... shutting down processing monitor complete
+done
+ 
