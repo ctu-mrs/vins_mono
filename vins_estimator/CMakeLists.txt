@@ -4,7 +4,10 @@ project(vins_estimator)
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++11")
 #-DEIGEN_USE_MKL_ALL")
+
+# -O3 flag for optimalization, do not use for debugging. rather use -O0
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
+# set(CMAKE_CXX_FLAGS_RELEASE "-O0 -Wall -g")
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
