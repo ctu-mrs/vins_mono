@@ -1,0 +1,3 @@
+# pirouette:
+#   speed: 0.35 # [rad/s]
+#   timer_rate: 10 # [Hz]

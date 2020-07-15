@@ -1,0 +1,4 @@
+# wiggle:
+#   enabled: false
+#   amplitude: 0.5 # [m]
+#   frequency: 0.3 # [Hz]
