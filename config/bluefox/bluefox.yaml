@@ -3,7 +3,7 @@
 #common parameters
 imu_topic: "/uav44/xsens/imu/data"
 image_topic: "/mv_25003659/image_raw"
-output_path: "/home/honzabednar/git/vins-mono/output/"
+output_path: "/home/mrs/git/vins-mono/output/"
 
 model_type: KANNALA_BRANDT
 camera_name: camera
@@ -48,7 +48,7 @@ show_track: 1           # publish tracking image as topic
 flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
 equalize: 1             # if image is too dark or light, trun on equalize to find enough features
 fisheye: 1              # if using fisheye, turn on it. A fisheye_mask_name has to be specified and placed into /config folder
-fisheye_mask_name: "fisheye_mask_848x800.jpg"              # name of the mask file 
+fisheye_mask_name: "fisheye_mask_752x480.jpg"              # name of the mask file 
 
 #optimization parameters
 max_solver_time: 0.05  # max solver itration time (ms), to guarantee real time
@@ -66,7 +66,7 @@ g_norm: 9.81007     # gravity magnitude
 loop_closure: 0                    # start loop closure
 load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
 fast_relocalization: 0            # useful in real-time and large project
-pose_graph_save_path: "/home/honzabednar/git/vins-mono/output/pose_graph/" # save and load path
+pose_graph_save_path: "/home/mrs/git/vins-mono/output/pose_graph/" # save and load path
 
 #unsynchronization parameters
 estimate_td: 1                      # online estimate time offset between camera and imu
