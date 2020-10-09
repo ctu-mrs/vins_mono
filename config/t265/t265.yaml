@@ -1,8 +1,8 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/uav47/rs_t265/imu"
-image_topic: "/uav47/rs_t265/fisheye1/image_raw"
+imu_topic: "/uav1/rs_t265/realsense2_camera/imu_sync"
+image_topic: "/uav1/rs_t265/realsense2_camera/fisheye1/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
 #camera calibration - taken from kalibr, it is pinhole with equi
@@ -65,9 +65,9 @@ gyr_w: 0.0001       # gyroscope bias random work noise standard deviation.
 g_norm: 9.81007     # gravity magnitude
 
 #loop closure parameters
-loop_closure: 1                    # start loop closure
+loop_closure: 0                    # start loop closure
 load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
-fast_relocalization: 1            # useful in real-time and large project
+fast_relocalization: 0            # useful in real-time and large project
 pose_graph_save_path: "/home/honzabednar/git/vins-mono/output/pose_graph/" # save and load path
 
 #unsynchronization parameters
