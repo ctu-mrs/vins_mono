@@ -10,7 +10,7 @@ windows:
   - gazebo:
       layout: tiled
       panes:
-        - waitForRos; roslaunch mrs_simulation simulation.launch world_name:=calibration gui:=true
+        - waitForRos; roslaunch mrs_simulation simulation.launch world_name:=desert gui:=true
         - waitForOdometry; gz camera -c gzclient_camera -f uav1; history -s gz camera -c gzclient_camera -f uav1
   - status:
       layout: tiled
@@ -19,17 +19,21 @@ windows:
   - VINS:
       layout: tiled
       panes:
-        -  'history -s roslaunch vins_estimator simulation.launch'
+        # -  'history -s roslaunch vins_estimator simulation_fisheye.launch'
+        # -  'history -s roslaunch vins_estimator simulation_realsense.launch'
+        # -  waitForOffboard; sleep 0; roslaunch vins_estimator simulation_realsense.launch
         # -  waitForOdometry; rostopic echo /vins_estimator/odometry/pose
         -  waitForOdometry; rostopic echo /vins_estimator/odometry_tf/pose
-        -  waitForOdometry; rostopic echo /uav1/odometry/gps_local_odom
+        -  waitForOdometry; rostopic echo /uav1/odometry/gps_local_odom/pose
+        -  waitForOdometry; rostopic echo /uav1/odometry/odom_main/pose
         - 'history -s rosservice call /uav1/control_manager/pirouette'
-        - 'history -s rosservice call /uav1/odometry/change_estimator_type_string VIO'
+        # - 'history -s rosservice call /uav1/odometry/change_estimator_type_string VIO'
+        - waitForOffboard; rosrun mrs_uav_general record.sh
   - spawn:
       layout: tiled
       panes:
-        - waitForSimulation; spawn_uav 1 --file pos.txt --$UAV_TYPE --run --delete --enable-rangefinder --enable-fisheye-camera --enable-realsense-down
-        # - waitForSimulation; spawn_uav 1 --file pos.txt --$UAV_TYPE --run --delete --enable-rangefinder --enable-realsense-down
+        # - waitForSimulation; spawn_uav 1 --file pos.txt --$UAV_TYPE --run --delete --enable-rangefinder --enable-fisheye-camera
+        - waitForSimulation; spawn_uav 1 --file pos.txt --$UAV_TYPE --run --delete --enable-rangefinder --enable-realsense-down
         # - waitForSimulation; spawn_uav 1 --$UAV_TYPE --run --delete --enable-rangefinder --enable-realsese-down
   - control:
       layout: tiled
@@ -58,16 +62,16 @@ windows:
   #     layout: tiled
   #     panes:
   #       - waitForControl; rosrun rqt_reconfigure rqt_reconfigure
-  - image_view:
-      layout: tiled
-      panes:
-        - waitForSimulation; rosrun rqt_image_view rqt_image_view
-        # - waitForSimulation; rosrun rqt_image_view rqt_image_view
-        - waitForSimulation; rostopic hz /uav1/fisheye/image_raw -w 200
+  # - image_view:
+  #     layout: tiled
+  #     panes:
+  #       # - waitForSimulation; rosrun rqt_image_view rqt_image_view
+  #       # - waitForSimulation; rosrun rqt_image_view rqt_image_view
+  #       - waitForSimulation; rostopic hz /uav1/fisheye/image_raw -w 200
   - VINS_help:
       layout: tiled
       panes:
-        - waitForOdometry; rosrun tf static_transform_publisher 0 0 0 0 0 0 vio_tf uav1/local_origin 1
+        - waitForOdometry; rosrun tf static_transform_publisher 0 0 0 0 0 0 uav1/local_origin vio_tf 1
         - waitForOdometry; roslaunch simulation_filter simulation_filter.launch
         - waitForOdometry; roslaunch vins_republish vins_republish.launch
   - easy_control:
