@@ -1,8 +1,8 @@
 %YAML:1.0
 
 #common parameters
-# imu_topic: "/uav1/vio_imu/imu_raw"
-imu_topic: "/uav1/vio_imu/imu_filtered"
+imu_topic: "/uav35/vio_imu/imu_raw"
+# imu_topic: "/uav1/vio_imu/imu_filtered"
 image_topic: "/mv_25003659/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
@@ -30,9 +30,12 @@ extrinsicRotation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [0.9999460372304865, -0.010299564485700676, -0.0013570550661971632,
-          0.010299441097893785, 0.9999469545593301, -9.788050568631622e-05,
-          0.0013579912071933714, 8.389831506225192e-05, 0.9999990744100494]
+   # data: [0.9999460372304865, -0.010299564485700676, -0.0013570550661971632,
+   #        0.010299441097893785, 0.9999469545593301, -9.788050568631622e-05,
+   #        0.0013579912071933714, 8.389831506225192e-05, 0.9999990744100494]
+   data: [1.0, 0.0, 0.0,
+          0.0, 1.0, 0.0,
+          0.0, 0.0, 1.0]
 #Translation from camera frame to imu frame, imu^T_cam
 extrinsicTranslation: !!opencv-matrix
    rows: 3
@@ -58,10 +61,10 @@ max_num_iterations: 100   # max solver itrations, to guarantee real time
 keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
 
 #imu parameters       The more accurate parameters you provide, the better performance
-acc_n: 0.4          # accelerometer measurement noise standard deviation. #0.2   0.04
-gyr_n: 0.1         # gyroscope measurement noise standard deviation.     #0.05  0.004
-acc_w: 0.1         # accelerometer bias random work noise standard deviation.  #0.02
-gyr_w: 0.1       # gyroscope bias random work noise standard deviation.     #4.0e-5
+acc_n: 0.8          # accelerometer measurement noise standard deviation. #0.2   0.04
+gyr_n: 0.01         # gyroscope measurement noise standard deviation.     #0.05  0.004
+acc_w: 0.01         # accelerometer bias random work noise standard deviation.  #0.02
+gyr_w: 0.01       # gyroscope bias random work noise standard deviation.     #4.0e-5
 g_norm: 9.81007     # gravity magnitude
 
 #loop closure parameters
