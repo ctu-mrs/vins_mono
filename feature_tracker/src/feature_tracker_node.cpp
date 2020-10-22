@@ -228,7 +228,7 @@ int main(int argc, char **argv)
         }
     }
 
-    ros::Subscriber sub_img = n.subscribe(IMAGE_TOPIC, 100, img_callback);
+    ros::Subscriber sub_img = n.subscribe(IMAGE_TOPIC, 100, img_callback, ros::TransportHints().tcpNoDelay());
 
     pub_img = n.advertise<sensor_msgs::PointCloud>("feature", 1000);
     pub_match = n.advertise<sensor_msgs::Image>("feature_img",1000);
