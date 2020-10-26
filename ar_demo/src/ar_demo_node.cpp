@@ -509,14 +509,14 @@ int main( int argc, char** argv )
         ROW = 600;
         COL = 480;
         FOCAL_LENGTH = 320.0;
-        sub_img = n.subscribe("image_undistored", 100, img_callback);
+        sub_img = n.subscribe("image_undistored", 100, img_callback, ros::TransportHints().tcpNoDelay());
     }
     else
     {
         ROW = 752;
         COL = 480;
         FOCAL_LENGTH = 460.0;
-        sub_img = n.subscribe("image_raw", 100, img_callback);
+        sub_img = n.subscribe("image_raw", 100, img_callback, ros::TransportHints().tcpNoDelay());
     }
 
     Axis[0] = Vector3d(0, 1.5, -1.2);
@@ -531,8 +531,8 @@ int main( int argc, char** argv )
     Cube_center[1] = Vector3d(4, -2, -1.2 + box_length / 2.0);
     Cube_center[2] = Vector3d(0, -2, -1.2 + box_length / 2.0);
 
-    ros::Subscriber pose_img = n.subscribe("camera_pose", 100, pose_callback);
-    ros::Subscriber sub_point = n.subscribe("pointcloud", 2000, point_callback);
+    ros::Subscriber pose_img = n.subscribe("camera_pose", 100, pose_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_point = n.subscribe("pointcloud", 2000, point_callback, ros::TransportHints().tcpNoDelay());
     image_transport::ImageTransport it(n);
     pub_ARimage = it.advertise("AR_image", 1000);
 

@@ -153,7 +153,7 @@ int main(int argc, char **argv)
     pub_odom = n.advertise<nav_msgs::Odometry>("odometry", 1000);
     pub_path = n.advertise<nav_msgs::Path>("path", 1000);
 
-    ros::Subscriber sub_odom = n.subscribe("estimated_odometry", 1000, odom_callback);
+    ros::Subscriber sub_odom = n.subscribe("estimated_odometry", 1000, odom_callback, ros::TransportHints().tcpNoDelay());
     
     ros::Rate r(20);
     ros::spin();

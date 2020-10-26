@@ -149,13 +149,12 @@ void imu_callback(const sensor_msgs::ImuConstPtr &imu_msg)
     m_buf.unlock();
     con.notify_one();
 
-    last_imu_t = imu_msg->header.stamp.toSec();
+    /* last_imu_t = imu_msg->header.stamp.toSec(); */
 
     {
         std::lock_guard<std::mutex> lg(m_state);
         predict(imu_msg);
         std_msgs::Header header = imu_msg->header;
-        header.frame_id = "world";
         if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
             pubLatestOdometry(tmp_P, tmp_Q, tmp_V, header);
     }
@@ -353,9 +352,9 @@ int main(int argc, char **argv)
     registerPub(n);
 
     ros::Subscriber sub_imu = n.subscribe(IMU_TOPIC, 2000, imu_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_image = n.subscribe("/feature_tracker/feature", 2000, feature_callback);
-    ros::Subscriber sub_restart = n.subscribe("/feature_tracker/restart", 2000, restart_callback);
-    ros::Subscriber sub_relo_points = n.subscribe("/pose_graph/match_points", 2000, relocalization_callback);
+    ros::Subscriber sub_image = n.subscribe("/feature_tracker/feature", 2000, feature_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_restart = n.subscribe("/feature_tracker/restart", 2000, restart_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_relo_points = n.subscribe("/pose_graph/match_points", 2000, relocalization_callback, ros::TransportHints().tcpNoDelay());
 
     std::thread measurement_process{process};
     ros::spin();
