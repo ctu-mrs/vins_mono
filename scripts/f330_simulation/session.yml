@@ -20,10 +20,13 @@ windows:
       layout: tiled
       panes:
         -  waitForOdometry; roslaunch vins_estimator simulation_fisheye.launch
-        -  'history -s roslaunch vins_republisher vins_republisher_simulation.launch'
         # -  waitForOdometry; rostopic echo /vins_estimator/odometry_tf/pose
         # -  waitForOdometry; rostopic echo /uav1/odometry/gps_local_odom/pose
         # -  waitForOdometry; rostopic echo /uav1/odometry/odom_main/pose
+  - VINS republisher:
+      layout: tiled
+      panes:
+        -  'history -s roslaunch vins_republisher vins_republisher_simulation.launch'
   - VINS help:
       layout: tiled
       panes:
