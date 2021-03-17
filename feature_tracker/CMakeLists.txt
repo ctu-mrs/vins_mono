@@ -4,6 +4,7 @@ project(feature_tracker)
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++11")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
+# set(CMAKE_CXX_FLAGS_RELEASE "-O0 -Wall -g")
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp

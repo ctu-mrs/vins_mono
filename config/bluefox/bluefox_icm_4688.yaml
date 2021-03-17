@@ -1,11 +1,12 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/uav35/vio_imu/imu_raw"
+imu_topic: "/uav1/vio_imu/imu_raw"
 # imu_topic: "/uav1/vio_imu/imu_filtered"
 image_topic: "/mv_25003659/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
+# # Equidistant model
 model_type: KANNALA_BRANDT
 camera_name: camera
 image_width: 752
@@ -19,6 +20,69 @@ projection_parameters:
    mv: 218.84544019573178
    u0: 374.186243114997
    v0: 203.57046644527676
+
+# DID NOT WORK WELL BOTH VERSIONS
+# Scaramuzaa model, OCamCalib - od Viktora
+# model_type: SCARAMUZZA
+# camera_name: camera
+# image_width: 752
+# image_height: 480
+# poly_parameters:
+#    p0: -2.193928e+02
+#    p1: 0.000000e+00
+#    p2: 1.914791e-03
+#    p3: -3.544075e-06
+#    p4: 1.303288e-08
+# inv_poly_parameters:
+#    p0: 321.501578
+#    p1: 172.408814
+#    p2: -12.227759
+#    p3: 29.872492
+#    p4: 9.798679
+#    p5: -4.753607
+#    p6: 14.269778
+#    p7: 10.019348
+#    p8: -7.242087
+#    p9: -7.252085
+#    p10: -1.548145
+# affine_parameters:
+#    ac: -0.007054279635535503
+#    ad: -0.013010999471709818
+#    ae: 0.007672805064263297
+#    cx: 374.349329
+#    cy: 202.309325 
+
+
+
+# Scaramuzaa model, OCamCalib - od Honzy
+# model_type: SCARAMUZZA
+# camera_name: camera
+# image_width: 752
+# image_height: 480
+# poly_parameters:
+#    p0: 2.1612320123235395e+03
+#    p1: 0.
+#    p2: -5.2132787441756437e-02
+#    p3: 3.0067118097194020e-04
+#    p4: -7.4919493076323004e-07
+# inv_poly_parameters:
+#    p0: -3.0290708143702108e+02
+#    p1: -5.2911157906893223e+01
+#    p2: 3.0781767600891664e+02
+#    p3: 2.7511256047285207e+02
+#    p4: 1.4497617151338149e+01
+#    p5: -1.5519380602596459e+02
+#    p6: -5.6938992124242553e+01
+#    p7: 4.5601920104329672e+01
+#    p8: 1.9648313134741706e+01
+#    p9: -9.8791470299014552e+00
+#    p10: -4.5721872358462772e+00
+# affine_parameters:
+#    ac: 9.9985914226548755e-01
+#    ad: 9.1867459831550817e-06
+#    ae: -3.4241518562740965e-06
+#    cx: 3.7391584823479280e+02
+#    cy: 2.0398603129380800e+02
 
 # Extrinsic parameter between IMU and Camera.
 estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
@@ -75,7 +139,8 @@ pose_graph_save_path: "/home/mrs/git/vins-mono/output/pose_graph/" # save and lo
 
 #unsynchronization parameters
 estimate_td: 0                      # online estimate time offset between camera and imu
-td: 0.01                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+td: 0.03                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+# camera delay is 10 ms
 
 #rolling shutter parameters
 rolling_shutter: 0                  # 0: global shutter camera, 1: rolling shutter camera
