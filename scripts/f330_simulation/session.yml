@@ -10,7 +10,7 @@ windows:
   - gazebo:
       layout: tiled
       panes:
-        - waitForRos; roslaunch mrs_simulation simulation.launch world_name:=grass_plane gui:=false
+        - waitForRos; roslaunch mrs_simulation simulation.launch world_name:=grass_plane gui:=true
         - waitForOdometry; gz camera -c gzclient_camera -f uav1; history -s gz camera -c gzclient_camera -f uav1
   - status:
       layout: tiled
@@ -27,7 +27,7 @@ windows:
   - VINS help:
       layout: tiled
       panes:
-        # - 'history -s rosservice call /uav1/odometry/change_estimator_type_string VIO; rosservice call /uav1/odometry/change_hdg_estimator_type_string VIO; rosservice call /uav1/odometry/change_alt_estimator_type_string VIO'
+        - 'history -s rosservice call /uav1/odometry/change_estimator_type_string VIO; rosservice call /uav1/odometry/change_hdg_estimator_type_string VIO; rosservice call /uav1/odometry/change_alt_estimator_type_string VIO'
         # -  waitForOdometry; roslaunch camera_republisher camera_republisher.launch
         # -  waitForOdometry; roslaunch tf_publisher tf_publisher.launch
         # -  waitForOdometry; roslaunch flame_ros flame_nodelet.launch
