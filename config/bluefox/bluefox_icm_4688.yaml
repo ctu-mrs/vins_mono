@@ -75,7 +75,10 @@ pose_graph_save_path: "/home/mrs/git/vins-mono/output/pose_graph/" # save and lo
 
 #unsynchronization parameters
 estimate_td: 0                      # online estimate time offset between camera and imu
-td: 0.01                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+# td: 0.010125                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+# td: 0.0101                            # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+td: 0.01025                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+# camera delay is 10 ms plus half of the exposure time
 
 #rolling shutter parameters
 rolling_shutter: 0                  # 0: global shutter camera, 1: rolling shutter camera

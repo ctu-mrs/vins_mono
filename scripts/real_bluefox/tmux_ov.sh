@@ -36,13 +36,13 @@ input=(
 '
   'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch
 '
-  'VINS-Mono' 'waitForRos; roslaunch vins_estimator bluefox.launch
+  'Open-VINS' 'waitForRos; roslaunch ov_repub bluefox_test_real.launch
 '
-  'Republisher' 'waitForRos; roslaunch vins_republisher vins_republisher.launch
+  'Republisher' 'waitForRos; roslaunch vins_republisher ov_republisher.launch
 '
   'Camera' 'waitForRos; roslaunch bluefox2 single_nodelet_hw_trig.launch device:=25003659 aec:=1 rate:=30
 '
-  'IMU' 'waitForRos; roslaunch mrs_serial vio_imu.launch
+' IMU' 'waitForRos; roslaunch mrs_serial vio_imu.launch
 '
   # 'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
 # '
