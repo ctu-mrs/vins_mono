@@ -1,8 +1,8 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/uav1/mavros/imu/data_rep"
-image_topic: "/uav1/fisheye_camera/image_raw_rep"
+imu_topic: "/uav1/vio/imu"
+image_topic: "/uav1/vio/camera/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
 
@@ -27,7 +27,8 @@ estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trus
 #If you choose 0 or 1, you should write down the following matrix.
 #Rotation from camera frame to imu frame, imu^R_cam
 
-# Realsense front
+# REALSENSE FRONT
+# rosrun tf tf_echo uav1/fcu uav1/rs_d435/infra1_optical
 #extrinsicRotation: !!opencv-matrix
 #   rows: 3
 #   cols: 3
@@ -43,32 +44,47 @@ estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trus
 #   data: [0.155, 0.018,-0.089]
    
 
-# Realsense down
+# REALSENSE DOWN
+#extrinsicRotation: !!opencv-matrix
+#   rows: 3
+#   cols: 3
+#   dt: d
+#   data: [0.0,-1.0, 0.0,
+#         -1.0, 0.0, 0.0,
+#          0.0, 0.0,-1.0]
+##Translation from camera frame to imu frame, imu^T_cam
+#extrinsicTranslation: !!opencv-matrix
+#   rows: 3
+#   cols: 1
+#   dt: d
+#   data: [0.05, 0.0, -0.093]
+
+# BLUEFOX FISHEYE
 extrinsicRotation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [0.0,-1.0, 0.0,
-         -1.0, 0.0, 0.0,
-          0.0, 0.0,-1.0]
+   data: [1.0, 0.0, 0.0,
+          0.0, 1.0, 0.0,
+          0.0, 0.0, 1.0]
 #Translation from camera frame to imu frame, imu^T_cam
 extrinsicTranslation: !!opencv-matrix
    rows: 3
    cols: 1
    dt: d
-   data: [0.05, 0.0, -0.093]
+   data: [0.0, 0.0, 0.0]
 
 #Multiple thread support
 multiple_thread: 1
 
 #feature traker paprameters
-max_cnt: 150            # max feature number in feature tracking
+max_cnt: 100            # max feature number in feature tracking
 min_dist: 30            # min distance between two features 
 freq: 10                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
 F_threshold: 1.0        # ransac threshold (pixel)
 show_track: 1           # publish tracking image as topic
-flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
-equalize: 1             # if image is too dark or light, trun on equalize to find enough features
+flow_back: 0            # perform forward and backward optical flow to improve feature tracking accuracy
+equalize: 0             # if image is too dark or light, trun on equalize to find enough features
 fisheye: 1              # if using fisheye, turn on it. A fisheye_mask_name has to be specified and placed into /config folder
 fisheye_mask_name: "fisheye_mask_752x480.jpg"              # name of the mask file 
 

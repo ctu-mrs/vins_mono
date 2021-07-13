@@ -1,0 +1,20 @@
+# max_default_altitude: 1000.0
+
+# Lateral state estimator:
+# OPTFLOW, GPS, OPTFLOWGPS, RTK, LIDAR, VIO, VSLAM,  HECTOR
+lateral_estimator: "GPS"
+
+# Altitude state estimator:
+# HEIGHT - rangefinder, PLANE - height above plane estimated from realsense, BRICK - height above BRICK
+altitude_estimator: "HEIGHT"
+
+# Heading state estimator:
+# GYRO - gyro, COMPASS - gyro, compass, OPTFLOW - gyro, optflow, HECTOR - gyro, hector slam
+heading_estimator: "PIXHAWK" 
+
+# Active estimators are started at node launch and can be switched to during flight
+state_estimators:
+  active: ["GPS", "VIO"]
+
+heading_estimators:
+  active: ["PIXHAWK", "VIO"]
