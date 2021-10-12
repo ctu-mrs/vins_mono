@@ -18,3 +18,6 @@ state_estimators:
 
 heading_estimators:
   active: ["PIXHAWK", "VIO"]
+
+altitude_estimators:
+  active: ["HEIGHT", "VIO"]
