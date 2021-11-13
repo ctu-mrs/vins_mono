@@ -40,7 +40,7 @@ input=(
 '
   'Republisher' 'waitForRos; roslaunch vins_republisher vins_republisher.launch
 '
-  'Camera' 'waitForRos; roslaunch bluefox2 single_nodelet_hw_trig.launch device:=25003659 aec:=1 rate:=30
+  'Camera' 'waitForRos; roslaunch bluefox2 single_nodelet_hw_trig.launch device:=25003659 aec:=1
 '
   'IMU' 'waitForRos; roslaunch mrs_serial vio_imu.launch
 '
