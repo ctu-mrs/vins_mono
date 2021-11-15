@@ -34,8 +34,8 @@ input=(
 '
   'Control' 'waitForRos; roslaunch mrs_uav_general core.launch config_odometry:=./custom_configs/default_config.yaml config_uav_manager:=./custom_configs/uav_manager.yaml config_mpc_tracker:=./custom_configs/mpc_tracker.yaml config_constraint_manager:=./custom_configs/constraints.yaml config_control_manager:=./custom_configs/control_manager.yaml
 '
-  # 'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch
-# '
+  'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch
+'
   'VINS-Mono' 'waitForRos; roslaunch vins_estimator bluefox.launch
 '
   'Republisher' 'waitForRos; roslaunch vins_republisher vins_republisher.launch

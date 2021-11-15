@@ -5,4 +5,4 @@ takeoff:
     controller: "Se3Controller"
     # controller: "MpcController"
 
-  takeoff_height: 2
+  takeoff_height: 1
