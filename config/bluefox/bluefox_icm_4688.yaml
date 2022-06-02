@@ -138,7 +138,7 @@ fast_relocalization: 0            # useful in real-time and large project
 pose_graph_save_path: "/home/mrs/git/vins-mono/output/pose_graph/" # save and load path
 
 #unsynchronization parameters
-estimate_td: 0                      # online estimate time offset between camera and imu
+estimate_td: 1                      # online estimate time offset between camera and imu
 # td: 0.010125                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
 # td: 0.0101                            # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
 td: 0.01                            # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
