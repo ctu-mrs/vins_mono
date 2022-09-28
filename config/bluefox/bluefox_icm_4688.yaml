@@ -1,9 +1,6 @@
 %YAML:1.0
 
 #common parameters
-# imu_topic: "/uav35/vio_imu/imu_raw"
-imu_topic: "/uav35/vio_imu/imu_filtered"
-image_topic: "/mv_25003659/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
 # # Equidistant model

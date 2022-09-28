@@ -476,7 +476,6 @@ int main(int argc, char **argv)
 
 
     LOOP_CLOSURE = fsSettings["loop_closure"];
-    std::string IMAGE_TOPIC;
     int LOAD_PREVIOUS_POSE_GRAPH;
     if (LOOP_CLOSURE)
     {
@@ -491,7 +490,6 @@ int main(int argc, char **argv)
         cout << "BRIEF_PATTERN_FILE" << BRIEF_PATTERN_FILE << endl;
         m_camera = camodocal::CameraFactory::instance()->generateCameraFromYamlFile(config_file.c_str());
 
-        fsSettings["image_topic"] >> IMAGE_TOPIC;        
         fsSettings["pose_graph_save_path"] >> POSE_GRAPH_SAVE_PATH;
         fsSettings["output_path"] >> VINS_RESULT_PATH;
         fsSettings["save_image"] >> DEBUG_IMAGE;
@@ -526,13 +524,13 @@ int main(int argc, char **argv)
 
     fsSettings.release();
 
-    ros::Subscriber sub_imu_forward = n.subscribe("/vins_estimator/imu_propagate", 2000, imu_forward_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_vio = n.subscribe("/vins_estimator/odometry", 2000, vio_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_image = n.subscribe(IMAGE_TOPIC, 2000, image_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_pose = n.subscribe("/vins_estimator/keyframe_pose", 2000, pose_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_extrinsic = n.subscribe("/vins_estimator/extrinsic", 2000, extrinsic_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_point = n.subscribe("/vins_estimator/keyframe_point", 2000, point_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_relo_relative_pose = n.subscribe("/vins_estimator/relo_relative_pose", 2000, relo_relative_pose_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_imu_forward = n.subscribe("vins_estimator/imu_propagate", 2000, imu_forward_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_vio = n.subscribe("vins_estimator/odometry", 2000, vio_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_image = n.subscribe("image_in", 2000, image_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_pose = n.subscribe("vins_estimator/keyframe_pose", 2000, pose_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_extrinsic = n.subscribe("vins_estimator/extrinsic", 2000, extrinsic_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_point = n.subscribe("vins_estimator/keyframe_point", 2000, point_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_relo_relative_pose = n.subscribe("vins_estimator/relo_relative_pose", 2000, relo_relative_pose_callback, ros::TransportHints().tcpNoDelay());
 
     pub_match_img = n.advertise<sensor_msgs::Image>("match_image", 1000);
     pub_camera_pose_visual = n.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 1000);

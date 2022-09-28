@@ -1,8 +1,6 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/uav1/mavros/imu/data_rep"
-image_topic: "/uav1/rs_d435/infra1/image_raw_rep"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
 model_type: PINHOLE

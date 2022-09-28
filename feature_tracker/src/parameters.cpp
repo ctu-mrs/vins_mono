@@ -1,7 +1,5 @@
 #include "parameters.h"
 
-std::string IMAGE_TOPIC;
-std::string IMU_TOPIC;
 std::vector<std::string> CAM_NAMES;
 std::string FISHEYE_MASK;
 std::string FISHEYE_MASK_NAME;
@@ -46,8 +44,6 @@ void readParameters(ros::NodeHandle &n)
     }
     std::string VINS_FOLDER_PATH = readParam<std::string>(n, "vins_folder");
 
-    fsSettings["image_topic"] >> IMAGE_TOPIC;
-    fsSettings["imu_topic"] >> IMU_TOPIC;
     MAX_CNT = fsSettings["max_cnt"];
     MIN_DIST = fsSettings["min_dist"];
     ROW = fsSettings["image_height"];

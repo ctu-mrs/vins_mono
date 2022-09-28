@@ -19,7 +19,6 @@ int ESTIMATE_TD;
 int ROLLING_SHUTTER;
 std::string EX_CALIB_RESULT_PATH;
 std::string VINS_RESULT_PATH;
-std::string IMU_TOPIC;
 double ROW, COL;
 double TD, TR;
 
@@ -48,8 +47,6 @@ void readParameters(ros::NodeHandle &n)
     {
         std::cerr << "ERROR: Wrong path to settings" << std::endl;
     }
-
-    fsSettings["imu_topic"] >> IMU_TOPIC;
 
     SOLVER_TIME = fsSettings["max_solver_time"];
     NUM_ITERATIONS = fsSettings["max_num_iterations"];

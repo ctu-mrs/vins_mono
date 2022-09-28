@@ -1,8 +1,6 @@
 %YAML:1.0
 
 #common parameters
-imu_topic: "/uav1/vio/imu"
-image_topic: "/uav1/vio/camera/image_raw"
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
 

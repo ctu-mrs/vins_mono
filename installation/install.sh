@@ -55,28 +55,3 @@ while true; do
   fi
 done
 
-#VINS-Mono
-while true; do
-  [[ -t 0 ]] && { read -t 5 -n 2 -p $'\e[1;32mInstall VINS-Mono? [y/n] (default: '"$default"$')\e[0m\n' resp || resp=$default ; }
-  response=`echo $resp | sed -r 's/(.*)$/\1=/'`
-
-  if [[ $response =~ ^(y|Y)=$ ]]
-  then
-    cd ~/git
-
-    # Clone of VINS-Mono repo
-    git clone git@mrs.felk.cvut.cz:visual-localization/vins-mono.git
-    ln -s ~/git/vins-mono ~/workspace/src
-
-    echo "Building VINS-Mono"
-    cd ~/workspace
-    catkin build
-
-    break
-  elif [[ $response =~ ^(n|N)=$ ]]
-  then
-    break
-  else
-    echo " What? \"$resp\" is not a correct answer. Try y+Enter."
-  fi
-done
