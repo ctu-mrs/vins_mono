@@ -24,6 +24,7 @@ int pub_count = 1;
 bool first_image_flag = true;
 double last_image_time = 0;
 bool init_pub = 0;
+string uav_name = "";
 
 void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
@@ -121,7 +122,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
         sensor_msgs::ChannelFloat32 velocity_y_of_point;
 
         feature_points->header = img_msg->header;
-        feature_points->header.frame_id = "world";
+        feature_points->header.frame_id = uav_name + "/vins_world";
 
         vector<set<int>> hash_ids(NUM_OF_CAM);
         for (int i = 0; i < NUM_OF_CAM; i++)
@@ -209,6 +210,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n("~");
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
     readParameters(n);
+    n.param<std::string>("uav_name", uav_name, "uav1");
 
     for (int i = 0; i < NUM_OF_CAM; i++)
         trackerData[i].readIntrinsicParameter(CAM_NAMES[i]);

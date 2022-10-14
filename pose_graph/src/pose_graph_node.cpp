@@ -39,6 +39,7 @@ int skip_cnt = 0;
 bool load_flag = 0;
 bool start_flag = 0;
 double SKIP_DIS = 0;
+string uav_name = "";
 
 int VISUALIZATION_SHIFT_X;
 int VISUALIZATION_SHIFT_Y;
@@ -234,7 +235,7 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
 
     visualization_msgs::Marker key_odometrys;
     key_odometrys.header = pose_msg->header;
-    key_odometrys.header.frame_id = "world";
+    key_odometrys.header.frame_id = uav_name + "/vins_world";
     key_odometrys.ns = "key_odometrys";
     key_odometrys.type = visualization_msgs::Marker::SPHERE_LIST;
     key_odometrys.action = visualization_msgs::Marker::ADD;
@@ -267,12 +268,12 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
     {
         geometry_msgs::PoseStamped pose_stamped;
         pose_stamped.header = pose_msg->header;
-        pose_stamped.header.frame_id = "world";
+        pose_stamped.header.frame_id = uav_name + "/vins_world";
         pose_stamped.pose.position.x = vio_t.x();
         pose_stamped.pose.position.y = vio_t.y();
         pose_stamped.pose.position.z = vio_t.z();
         no_loop_path.header = pose_msg->header;
-        no_loop_path.header.frame_id = "world";
+        no_loop_path.header.frame_id = uav_name + "/vins_world";
         no_loop_path.poses.push_back(pose_stamped);
         pub_vio_path.publish(no_loop_path);
     }
@@ -455,6 +456,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pose_graph");
     ros::NodeHandle n("~");
+    n.param<std::string>("uav_name", uav_name, "uav1");
     posegraph.registerPub(n);
 
     // read param

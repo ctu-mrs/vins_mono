@@ -84,6 +84,7 @@ private:
 	ros::Publisher pub_base_path;
 	ros::Publisher pub_pose_graph;
 	ros::Publisher pub_path[10];
+  string uav_name = "";
 };
 
 template <typename T>

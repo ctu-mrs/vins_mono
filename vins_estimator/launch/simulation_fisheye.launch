@@ -12,6 +12,7 @@
     <arg name="vins_path" default = "$(find feature_tracker)/../config/../" />
     
     <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
+        <param name="uav_name" type="string" value="$(arg UAV_NAME)" />
         <param name="config_file" type="string" value="$(arg config_path)" />
         <param name="vins_folder" type="string" value="$(arg vins_path)" />
 
@@ -21,6 +22,7 @@
     </node>
 
     <node name="vins_estimator" pkg="vins_estimator" type="vins_estimator" output="screen">
+        <param name="uav_name" type="string" value="$(arg UAV_NAME)" />
        <param name="config_file" type="string" value="$(arg config_path)" />
        <param name="vins_folder" type="string" value="$(arg vins_path)" />
 
@@ -33,6 +35,7 @@
     </node>
 
     <node name="pose_graph" pkg="pose_graph" type="pose_graph" output="screen">
+        <param name="uav_name" type="string" value="$(arg UAV_NAME)" />
         <param name="config_file" type="string" value="$(arg config_path)" />
         <param name="visualization_shift_x" type="int" value="0" />
         <param name="visualization_shift_y" type="int" value="0" />

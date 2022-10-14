@@ -38,6 +38,7 @@ Eigen::Vector3d gyr_0;
 bool init_feature = 0;
 bool init_imu = 1;
 double last_imu_t = 0;
+string uav_name = "";
 
 void predict(const sensor_msgs::ImuConstPtr &imu_msg)
 {
@@ -315,7 +316,7 @@ void process()
             double whole_t = t_s.toc();
             printStatistics(estimator, whole_t);
             std_msgs::Header header = img_msg->header;
-            header.frame_id = "world";
+            header.frame_id = uav_name + "/vins_world";
 
             pubOdometry(estimator, header);
             pubKeyPoses(estimator, header);
@@ -343,6 +344,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n("~");
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
     readParameters(n);
+    n.param<std::string>("uav_name", uav_name, "uav1");
     estimator.setParameter();
 #ifdef EIGEN_DONT_PARALLELIZE
     ROS_DEBUG("EIGEN_DONT_PARALLELIZE");
