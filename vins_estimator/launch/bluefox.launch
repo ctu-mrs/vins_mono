@@ -5,7 +5,7 @@
   <group ns="$(arg UAV_NAME)">
 
     <!-- SENSOR TOPICS -->
-    <arg name="imu_topic" default="vio/imu_filtered" />
+    <arg name="imu_topic" default="vio_imu/imu_filtered" />
     <arg name="image_topic" default="/mv_25003659/image_raw" />
 
     <arg name="config_path" default = "$(find feature_tracker)/../config/bluefox/bluefox_icm_4688.yaml" />
