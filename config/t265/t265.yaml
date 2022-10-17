@@ -9,35 +9,61 @@ camera_name: camera
 image_width: 848
 image_height: 800
 projection_parameters:
-   k2: 0.015376196314016226
-   k3: -0.00784022349071264
-   k4: 0.021489186560738952
-   k5: -0.020066975809051545
-   mu: 293.4251407468656
-   mv: 292.5117270094008
-   u0: 424.6945241654842
-   v0: 403.72272194863837
+   # orig from this file
+   # k2: 0.015376196314016226
+   # k3: -0.00784022349071264
+   # k4: 0.021489186560738952
+   # k5: -0.020066975809051545
+   # mu: 293.4251407468656
+   # mv: 292.5117270094008
+   # u0: 424.6945241654842
+   # v0: 403.72272194863837
 
+   # from camera_info
+   k2: -0.004136050119996071
+   k3: 0.038597311824560165
+   k4: -0.0369558110833168
+   k5: 0.006087019108235836
+   mu: 284.37860107421875
+   mv: 285.3648986816406
+   u0: 423.2235107421875
+   v0: 402.2760009765625
 
 # Extrinsic parameter between IMU and Camera.
-estimate_extrinsic: 1   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
                         # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
                         # 2  Don't know anything about extrinsic parameters. You don't need to give R,T. We will try to calibrate it. Do some rotation movement at beginning.                        
 #If you choose 0 or 1, you should write down the following matrix.
 #Rotation from camera frame to imu frame, imu^R_cam
+# orig from Honza
+#extrinsicRotation: !!opencv-matrix
+#   rows: 3
+#   cols: 3
+#   dt: d
+#   data: [-0.9997541340649516, -0.021284281252301453, 0.006216976082604166,
+#          0.021399233299414476, -0.9995895189764269, 0.019049051595095515,
+#          0.005808978760158633, 0.019177406603821827, 0.9997992212648076]
+##Translation from camera frame to imu frame, imu^T_cam
+#extrinsicTranslation: !!opencv-matrix
+#   rows: 3
+#   cols: 1
+#   dt: d
+#   data: [0.01825910015989575, -0.004215659989976112, 0.0736738228498533]
+
+# from t265 factory calibration
 extrinsicRotation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [-0.9997541340649516, -0.021284281252301453, 0.006216976082604166,
-          0.021399233299414476, -0.9995895189764269, 0.019049051595095515,
-          0.005808978760158633, 0.019177406603821827, 0.9997992212648076]
+   data: [-0.99988, 0.00102315, 0.0154821,
+          -0.00100478, -0.999999, 0.00119407,
+           0.0154833, 0.00117837, 0.999879]
 #Translation from camera frame to imu frame, imu^T_cam
 extrinsicTranslation: !!opencv-matrix
    rows: 3
    cols: 1
    dt: d
-   data: [0.01825910015989575, -0.004215659989976112, 0.0736738228498533]
+   data: [0.0106987114995718, 1.07511405076366e-05, -0.000165671401191503]
      
 #feature tracker paprameters
 max_cnt: 150            # max feature number in feature tracking. The bigger number the longer computational time. Default 150.
