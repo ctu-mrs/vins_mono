@@ -1,0 +1,151 @@
+%YAML:1.0
+
+#common parameters
+output_path: "/home/honzabednar/git/vins-mono/output/"
+
+# # Equidistant model
+model_type: KANNALA_BRANDT
+camera_name: camera
+image_width: 752
+image_height: 480
+projection_parameters:
+   k2: -0.007054279635535503
+   k3: -0.013010999471709818
+   k4: 0.007672805064263297
+   k5: -0.0034608152598251778
+   mu: 218.62328342963636
+   mv: 218.84544019573178
+   u0: 374.186243114997
+   v0: 203.57046644527676
+
+# DID NOT WORK WELL BOTH VERSIONS
+# Scaramuzaa model, OCamCalib - od Viktora
+# model_type: SCARAMUZZA
+# camera_name: camera
+# image_width: 752
+# image_height: 480
+# poly_parameters:
+#    p0: -2.193928e+02
+#    p1: 0.000000e+00
+#    p2: 1.914791e-03
+#    p3: -3.544075e-06
+#    p4: 1.303288e-08
+# inv_poly_parameters:
+#    p0: 321.501578
+#    p1: 172.408814
+#    p2: -12.227759
+#    p3: 29.872492
+#    p4: 9.798679
+#    p5: -4.753607
+#    p6: 14.269778
+#    p7: 10.019348
+#    p8: -7.242087
+#    p9: -7.252085
+#    p10: -1.548145
+# affine_parameters:
+#    ac: -0.007054279635535503
+#    ad: -0.013010999471709818
+#    ae: 0.007672805064263297
+#    cx: 374.349329
+#    cy: 202.309325 
+
+
+
+# Scaramuzaa model, OCamCalib - od Honzy
+# model_type: SCARAMUZZA
+# camera_name: camera
+# image_width: 752
+# image_height: 480
+# poly_parameters:
+#    p0: 2.1612320123235395e+03
+#    p1: 0.
+#    p2: -5.2132787441756437e-02
+#    p3: 3.0067118097194020e-04
+#    p4: -7.4919493076323004e-07
+# inv_poly_parameters:
+#    p0: -3.0290708143702108e+02
+#    p1: -5.2911157906893223e+01
+#    p2: 3.0781767600891664e+02
+#    p3: 2.7511256047285207e+02
+#    p4: 1.4497617151338149e+01
+#    p5: -1.5519380602596459e+02
+#    p6: -5.6938992124242553e+01
+#    p7: 4.5601920104329672e+01
+#    p8: 1.9648313134741706e+01
+#    p9: -9.8791470299014552e+00
+#    p10: -4.5721872358462772e+00
+# affine_parameters:
+#    ac: 9.9985914226548755e-01
+#    ad: 9.1867459831550817e-06
+#    ae: -3.4241518562740965e-06
+#    cx: 3.7391584823479280e+02
+#    cy: 2.0398603129380800e+02
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+                        # 2  Don't know anything about extrinsic parameters. You don't need to give R,T. We will try to calibrate it. Do some rotation movement at beginning.                        
+#If you choose 0 or 1, you should write down the following matrix.
+#Rotation from camera frame to imu frame, imu^R_cam
+extrinsicRotation: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   # data: [0.9999460372304865, -0.010299564485700676, -0.0013570550661971632,
+   #        0.010299441097893785, 0.9999469545593301, -9.788050568631622e-05,
+   #        0.0013579912071933714, 8.389831506225192e-05, 0.9999990744100494]
+   data: [1.0, 0.0, 0.0,
+          0.0, 1.0, 0.0,
+          0.0, 0.0, 1.0]
+#Translation from camera frame to imu frame, imu^T_cam
+extrinsicTranslation: !!opencv-matrix
+   rows: 3
+   cols: 1
+   dt: d
+   # data: [ 0.0005912074257153667, 0.004133075192077947, 0.024406107641651704]
+   data: [ 0.0, 0.0, 0.007]
+
+#feature traker paprameters
+max_cnt: 200            # max feature number in feature tracking
+min_dist: 20            # min distance between two features 
+freq: 10                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # publish tracking image as topic
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+equalize: 1             # if image is too dark or light, trun on equalize to find enough features
+fisheye: 1              # if using fisheye, turn on it. A fisheye_mask_name has to be specified and placed into /config folder
+fisheye_mask_name: "fisheye_mask_752x480.jpg"              # name of the mask file 
+
+#optimization parameters
+max_solver_time: 0.05  # max solver itration time (ms), to guarantee real time
+max_num_iterations: 100   # max solver itrations, to guarantee real time
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#imu parameters       The more accurate parameters you provide, the better performance
+acc_n: 0.2          # accelerometer measurement noise standard deviation. #0.2   0.04
+gyr_n: 0.01         # gyroscope measurement noise standard deviation.     #0.05  0.004
+acc_w: 0.01         # accelerometer bias random work noise standard deviation.  #0.02
+gyr_w: 0.01       # gyroscope bias random work noise standard deviation.     #4.0e-5
+g_norm: 9.81007     # gravity magnitude
+
+#loop closure parameters
+loop_closure: 0                    # start loop closure
+load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
+fast_relocalization: 0            # useful in real-time and large project
+pose_graph_save_path: "/home/mrs/git/vins-mono/output/pose_graph/" # save and load path
+
+#unsynchronization parameters
+estimate_td: 1                      # online estimate time offset between camera and imu
+# td: 0.010125                             # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+# td: 0.0101                            # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+td: 0.01                            # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+# camera delay is 10 ms plus half of the exposure time
+
+#rolling shutter parameters
+rolling_shutter: 0                  # 0: global shutter camera, 1: rolling shutter camera
+rolling_shutter_tr: 0               # unit: s. rolling shutter read out time per frame (from data sheet). 
+
+#visualization parameters
+save_image: 0                   # save image in pose graph for visualization prupose; you can close this function by setting 0 
+visualize_imu_forward: 1        # output imu forward propogation to achieve low latency and high frequence results
+visualize_camera_size: 0.3      # size of camera marker in RVIZ

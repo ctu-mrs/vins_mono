@@ -6,9 +6,10 @@
 
     <!-- SENSOR TOPICS -->
     <arg name="imu_topic" default="vio_imu/imu_filtered" />
-    <arg name="image_topic" default="/mv_25003659/image_raw" />
+    <arg name="device" default="25003659" />
+    <arg name="image_topic" default="/mv_$(arg device)/image_raw" />
 
-    <arg name="config_path" default = "$(find feature_tracker)/../config/bluefox/bluefox_icm_4688.yaml" />
+    <arg name="config_path" default = "$(find feature_tracker)/../config/bluefox/bluefox_icm_4688_$(arg device).yaml" />
     <arg name="vins_path" default = "$(find feature_tracker)/../config/../" />
     
     <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
