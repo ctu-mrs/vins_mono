@@ -3,6 +3,8 @@
 #common parameters
 output_path: "/home/honzabednar/git/vins-mono/output/"
 
+#uav26_old
+
 # # Equidistant model
 model_type: KANNALA_BRANDT
 camera_name: camera
