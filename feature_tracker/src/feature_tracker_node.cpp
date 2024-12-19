@@ -28,16 +28,27 @@ string uav_name = "";
 
 void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
+
     if(first_image_flag)
     {
         first_image_flag = false;
         first_image_time = img_msg->header.stamp.toSec();
         last_image_time = img_msg->header.stamp.toSec();
+        ROS_INFO("[%s]: Got first camera image.", ros::this_node::getName().c_str());
         return;
     }
+
     // detect unstable camera stream
-    if (img_msg->header.stamp.toSec() - last_image_time > 1.0 || img_msg->header.stamp.toSec() < last_image_time)
+    if (img_msg->header.stamp.toSec() <= last_image_time) 
     {
+        ROS_WARN("[%s]: Image dt: %.2f, skipping image.", ros::this_node::getName().c_str(), img_msg->header.stamp.toSec() - last_image_time);
+        return;
+    }
+
+    if (img_msg->header.stamp.toSec() - last_image_time > 1.0)
+    /* if (img_msg->header.stamp.toSec() - last_image_time > 1.0 || img_msg->header.stamp.toSec() < last_image_time) */
+    {
+        ROS_WARN("[%s]: Image dt: %.2f", ros::this_node::getName().c_str(), img_msg->header.stamp.toSec() - last_image_time);
         ROS_WARN("image discontinue! reset the feature tracker!");
         first_image_flag = true; 
         last_image_time = 0;
@@ -204,7 +215,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
             pub_match.publish(ptr->toImageMsg());
         }
     }
-    ROS_INFO("whole feature tracker processing costs: %f", t_r.toc());
+    ROS_DEBUG("whole feature tracker processing costs: %f", t_r.toc());
 }
 
 int main(int argc, char **argv)
@@ -222,18 +233,20 @@ int main(int argc, char **argv)
     {
         for (int i = 0; i < NUM_OF_CAM; i++)
         {
+            ROS_INFO("[%s]: Loading fisheye mask: %s", ros::this_node::getName().c_str(), FISHEYE_MASK.c_str());
             trackerData[i].fisheye_mask = cv::imread(FISHEYE_MASK, 0);
             if(!trackerData[i].fisheye_mask.data)
             {
-                ROS_INFO("load mask fail");
-                ROS_BREAK();
+                ROS_ERROR("load mask fail");
+                return 1;
+                /* ROS_BREAK(); */
             }
             else
                 ROS_INFO("load mask success");
         }
     }
 
-    ros::Subscriber sub_img = n.subscribe("image_in", 100, img_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_img = n.subscribe("image_in", 1, img_callback, ros::TransportHints().tcpNoDelay());
 
     pub_img = n.advertise<sensor_msgs::PointCloud>("feature", 1000);
     pub_match = n.advertise<sensor_msgs::Image>("feature_img",1000);

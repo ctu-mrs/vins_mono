@@ -42,7 +42,7 @@ void readParameters(ros::NodeHandle &n)
     {
         std::cerr << "ERROR: Wrong path to settings" << std::endl;
     }
-    std::string VINS_FOLDER_PATH = readParam<std::string>(n, "vins_folder");
+    std::string CONFIG_PATH = readParam<std::string>(n, "config_path");
 
     MAX_CNT = fsSettings["max_cnt"];
     MIN_DIST = fsSettings["min_dist"];
@@ -55,7 +55,7 @@ void readParameters(ros::NodeHandle &n)
     FISHEYE = fsSettings["fisheye"];
     fsSettings["fisheye_mask_name"] >> FISHEYE_MASK_NAME;
     if (FISHEYE == 1)
-        FISHEYE_MASK = VINS_FOLDER_PATH + "config/"+ FISHEYE_MASK_NAME;
+        FISHEYE_MASK = CONFIG_PATH + "/"+ FISHEYE_MASK_NAME;
     CAM_NAMES.push_back(config_file);
 
     WINDOW_SIZE = 20;

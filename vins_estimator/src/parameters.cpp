@@ -40,6 +40,12 @@ T readParam(ros::NodeHandle &n, std::string name)
 
 void readParameters(ros::NodeHandle &n)
 {
+
+    // Output path is loaded from parameters to be able to change the path from launch file and avoid absolute path in configs
+    std::string OUTPUT_PATH = readParam<std::string>(n, "output_path");
+    VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
+    std::cout << "result path " << VINS_RESULT_PATH << std::endl;
+
     std::string config_file;
     config_file = readParam<std::string>(n, "config_file");
     cv::FileStorage fsSettings(config_file, cv::FileStorage::READ);
@@ -53,10 +59,6 @@ void readParameters(ros::NodeHandle &n)
     MIN_PARALLAX = fsSettings["keyframe_parallax"];
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
 
-    std::string OUTPUT_PATH;
-    fsSettings["output_path"] >> OUTPUT_PATH;
-    VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
-    std::cout << "result path " << VINS_RESULT_PATH << std::endl;
 
     // create folder if not exists
     FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
@@ -90,7 +92,7 @@ void readParameters(ros::NodeHandle &n)
             EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
         }
         if (ESTIMATE_EXTRINSIC == 0)
-            ROS_WARN(" fix extrinsic param ");
+            ROS_WARN(" Fixed extrinsic param. No online optimization of extrinsic params. ");
 
         cv::Mat cv_R, cv_T;
         fsSettings["extrinsicRotation"] >> cv_R;
