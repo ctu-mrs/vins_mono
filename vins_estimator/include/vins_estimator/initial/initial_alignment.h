@@ -1,11 +1,13 @@
 #pragma once
 #include <eigen3/Eigen/Dense>
 #include <iostream>
-#include "../factor/imu_factor.h"
-#include "../utility/utility.h"
+
 #include <ros/ros.h>
 #include <map>
-#include "../feature_manager.h"
+
+#include <vins_estimator/factor/imu_factor.h>
+#include <vins_estimator/utility/utility.h>
+#include <vins_estimator/feature_manager.h>
 
 using namespace Eigen;
 using namespace std;

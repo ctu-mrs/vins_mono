@@ -2,7 +2,8 @@
 
 #include <eigen3/Eigen/Dense>
 #include <ceres/ceres.h>
-#include "../utility/utility.h"
+
+#include <vins_estimator/utility/utility.h>
 
 class PoseLocalParameterization : public ceres::LocalParameterization
 {

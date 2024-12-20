@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../utility/utility.h"
-#include "../parameters.h"
+#include <vins_estimator/utility/utility.h>
+#include <vins_estimator/parameters.h>
 
 #include <ceres/ceres.h>
 using namespace Eigen;

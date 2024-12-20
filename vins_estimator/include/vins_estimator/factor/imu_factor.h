@@ -3,9 +3,9 @@
 #include <iostream>
 #include <eigen3/Eigen/Dense>
 
-#include "../utility/utility.h"
-#include "../parameters.h"
-#include "integration_base.h"
+#include <vins_estimator/utility/utility.h>
+#include <vins_estimator/parameters.h>
+#include <vins_estimator/factor/integration_base.h>
 
 #include <ceres/ceres.h>
 

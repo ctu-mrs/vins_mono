@@ -13,11 +13,12 @@
 #include <geometry_msgs/PointStamped.h>
 #include <visualization_msgs/Marker.h>
 #include <tf/transform_broadcaster.h>
-#include "CameraPoseVisualization.h"
 #include <eigen3/Eigen/Dense>
-#include "../estimator.h"
-#include "../parameters.h"
 #include <fstream>
+
+#include <vins_estimator/utility/CameraPoseVisualization.h>
+#include <vins_estimator/estimator.h>
+#include <vins_estimator/parameters.h>
 
 extern ros::Publisher pub_odometry;
 extern ros::Publisher pub_path, pub_pose;

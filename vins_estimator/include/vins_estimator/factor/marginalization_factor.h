@@ -7,8 +7,8 @@
 #include <ceres/ceres.h>
 #include <unordered_map>
 
-#include "../utility/utility.h"
-#include "../utility/tic_toc.h"
+#include <vins_estimator/utility/utility.h>
+#include <vins_estimator/utility/tic_toc.h>
 
 const int NUM_THREADS = 4;
 

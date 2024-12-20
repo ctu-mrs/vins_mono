@@ -3,10 +3,11 @@
 #include <ros/ros.h>
 #include <vector>
 #include <eigen3/Eigen/Dense>
-#include "utility/utility.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
 #include <fstream>
+
+#include <vins_estimator/utility/utility.h>
 
 const double FOCAL_LENGTH = 460.0;
 const int WINDOW_SIZE = 10;
