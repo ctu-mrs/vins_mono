@@ -1,5 +1,6 @@
 #include <vins_estimator/factor/marginalization_factor.h>
 
+/*//{ Evaluate() */
 void ResidualBlockInfo::Evaluate()
 {
     residuals.resize(cost_function->num_residuals());
@@ -67,7 +68,9 @@ void ResidualBlockInfo::Evaluate()
         residuals *= residual_scaling_;
     }
 }
+/*//}*/
 
+/*//{ ~MarginalizationInfo() */
 MarginalizationInfo::~MarginalizationInfo()
 {
     //ROS_WARN("release marginlizationinfo");
@@ -85,7 +88,9 @@ MarginalizationInfo::~MarginalizationInfo()
         delete factors[i];
     }
 }
+/*//}*/
 
+/*//{ addResidualBlockInfo() */
 void MarginalizationInfo::addResidualBlockInfo(ResidualBlockInfo *residual_block_info)
 {
     factors.emplace_back(residual_block_info);
@@ -106,7 +111,9 @@ void MarginalizationInfo::addResidualBlockInfo(ResidualBlockInfo *residual_block
         parameter_block_idx[reinterpret_cast<long>(addr)] = 0;
     }
 }
+/*//}*/
 
+/*//{ preMarginalize() */
 void MarginalizationInfo::preMarginalize()
 {
     for (auto it : factors)
@@ -127,17 +134,23 @@ void MarginalizationInfo::preMarginalize()
         }
     }
 }
+/*//}*/
 
+/*//{ localSize() */
 int MarginalizationInfo::localSize(int size) const
 {
     return size == 7 ? 6 : size;
 }
+/*//}*/
 
+/*//{ globalSize() */
 int MarginalizationInfo::globalSize(int size) const
 {
     return size == 6 ? 7 : size;
 }
+/*//}*/
 
+/*//{ ThreadsConstructA() */
 void* ThreadsConstructA(void* threadsstruct)
 {
     ThreadsStruct* p = ((ThreadsStruct*)threadsstruct);
@@ -170,7 +183,9 @@ void* ThreadsConstructA(void* threadsstruct)
     }
     return threadsstruct;
 }
+/*//}*/
 
+/*//{ marginalize() */
 void MarginalizationInfo::marginalize()
 {
     int pos = 0;
@@ -295,7 +310,9 @@ void MarginalizationInfo::marginalize()
     //printf("error2: %f %f\n", (linearized_jacobians.transpose() * linearized_jacobians - A).sum(),
     //      (linearized_jacobians.transpose() * linearized_residuals - b).sum());
 }
+/*//}*/
 
+/*//{ getParameterBlocks() */
 std::vector<double *> MarginalizationInfo::getParameterBlocks(std::unordered_map<long, double *> &addr_shift)
 {
     std::vector<double *> keep_block_addr;
@@ -317,7 +334,9 @@ std::vector<double *> MarginalizationInfo::getParameterBlocks(std::unordered_map
 
     return keep_block_addr;
 }
+/*//}*/
 
+/*//{ MarginalizationFactor() */
 MarginalizationFactor::MarginalizationFactor(MarginalizationInfo* _marginalization_info):marginalization_info(_marginalization_info)
 {
     int cnt = 0;
@@ -329,7 +348,9 @@ MarginalizationFactor::MarginalizationFactor(MarginalizationInfo* _marginalizati
     //printf("residual size: %d, %d\n", cnt, n);
     set_num_residuals(marginalization_info->n);
 };
+/*//}*/
 
+/*//{ Evaluate() */
 bool MarginalizationFactor::Evaluate(double const *const *parameters, double *residuals, double **jacobians) const
 {
     //printf("internal addr,%d, %d\n", (int)parameter_block_sizes().size(), num_residuals());
@@ -379,3 +400,4 @@ bool MarginalizationFactor::Evaluate(double const *const *parameters, double *re
     }
     return true;
 }
+/*//}*/

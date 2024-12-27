@@ -2,6 +2,8 @@
 
 
 namespace cv {
+
+/*//{ decomposeEssentialMat() */
     void decomposeEssentialMat( InputArray _E, OutputArray _R1, OutputArray _R2, OutputArray _t )
     {
 
@@ -26,7 +28,9 @@ namespace cv {
         R2.copyTo(_R2);
         t.copyTo(_t);
     }
+/*//}*/
 
+/*//{ recoverPose() */
     int recoverPose( InputArray E, InputArray _points1, InputArray _points2, InputArray _cameraMatrix,
                          OutputArray _R, OutputArray _t, InputOutputArray _mask)
     {
@@ -180,19 +184,23 @@ namespace cv {
             return good4;
         }
     }
+/*//}*/
 
+/*//{ recoverPose() */
     int recoverPose( InputArray E, InputArray _points1, InputArray _points2, OutputArray _R,
                          OutputArray _t, double focal, Point2d pp, InputOutputArray _mask)
     {
         Mat cameraMatrix = (Mat_<double>(3,3) << focal, 0, pp.x, 0, focal, pp.y, 0, 0, 1);
         return cv::recoverPose(E, _points1, _points2, cameraMatrix, _R, _t, _mask);
     }
+/*//}*/
+
 }
 
-
-bool MotionEstimator::solveRelativeRT(const vector<pair<Vector3d, Vector3d>> &corres, Matrix3d &Rotation, Vector3d &Translation)
+/*//{ solveRelativeRT() */
+bool MotionEstimator::solveRelativeRT(const vector<pair<Vector3d, Vector3d>> &corres, Matrix3d &Rotation, Vector3d &Translation, const unsigned int min_features, const double focal_length)
 {
-    if (corres.size() >= 15)
+    if (corres.size() >= min_features)
     {
         vector<cv::Point2f> ll, rr;
         for (int i = 0; i < int(corres.size()); i++)
@@ -201,7 +209,7 @@ bool MotionEstimator::solveRelativeRT(const vector<pair<Vector3d, Vector3d>> &co
             rr.push_back(cv::Point2f(corres[i].second(0), corres[i].second(1)));
         }
         cv::Mat mask;
-        cv::Mat E = cv::findFundamentalMat(ll, rr, cv::FM_RANSAC, 0.3 / 460, 0.99, mask);
+        cv::Mat E = cv::findFundamentalMat(ll, rr, cv::FM_RANSAC, 0.3 / focal_length, 0.99, mask);
         cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 1, 0, 0, 0, 1, 0, 0, 0, 1);
         cv::Mat rot, trans;
         int inlier_cnt = cv::recoverPose(E, ll, rr, cameraMatrix, rot, trans, mask);
@@ -218,13 +226,18 @@ bool MotionEstimator::solveRelativeRT(const vector<pair<Vector3d, Vector3d>> &co
 
         Rotation = R.transpose();
         Translation = -R.transpose() * T;
-        if(inlier_cnt > 12)
+        if(inlier_cnt > 12) 
+        {
+          ROS_INFO("[VinsEstimator]: solved RT with %d inliers", inlier_cnt);
             return true;
+        }
         else
+        {
+            ROS_INFO_THROTTLE(1.0, "[VinsEstimator]: not enough inliers to solve RT  %d <= 12", inlier_cnt);
             return false;
+        }
     }
     return false;
 }
-
-
+/*//}*/
 

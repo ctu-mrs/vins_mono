@@ -70,13 +70,14 @@ void printStatistics(const Estimator &estimator, double t)
     if (estimator.solver_flag != Estimator::SolverFlag::NON_LINEAR)
         return;
     printf("position: %f, %f, %f\r", estimator.Ps[WINDOW_SIZE].x(), estimator.Ps[WINDOW_SIZE].y(), estimator.Ps[WINDOW_SIZE].z());
-    ROS_DEBUG_STREAM("position: " << estimator.Ps[WINDOW_SIZE].transpose());
+    ROS_INFO_THROTTLE(1.0, "[%s]: position: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), estimator.Ps[WINDOW_SIZE].x(), estimator.Ps[WINDOW_SIZE].y(), estimator.Ps[WINDOW_SIZE].z());
     ROS_DEBUG_STREAM("orientation: " << estimator.Vs[WINDOW_SIZE].transpose());
     for (int i = 0; i < NUM_OF_CAM; i++)
     {
         //ROS_DEBUG("calibration result for camera %d", i);
-        ROS_DEBUG_STREAM("extirnsic tic: " << estimator.tic[i].transpose());
-        ROS_DEBUG_STREAM("extrinsic ric: " << Utility::R2ypr(estimator.ric[i]).transpose());
+        ROS_INFO_THROTTLE(1.0, "[%s]: extrinsic tic: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), estimator.tic[i].x(), estimator.tic[i].y(), estimator.tic[i].z());
+        const Eigen::Vector3d extr_ypr = Utility::R2ypr(estimator.ric[i]).transpose();
+        ROS_INFO_THROTTLE(1.0, "[%s]: extrinsic ric: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), extr_ypr.x(), extr_ypr.y(), extr_ypr.z());
         if (ESTIMATE_EXTRINSIC)
         {
             cv::FileStorage fs(EX_CALIB_RESULT_PATH, cv::FileStorage::WRITE);
@@ -96,14 +97,15 @@ void printStatistics(const Estimator &estimator, double t)
     static int sum_of_calculation = 0;
     sum_of_time += t;
     sum_of_calculation++;
-    ROS_DEBUG("vo solver costs: %f ms", t);
+    ROS_INFO_THROTTLE(1.0, "[%s]: vo solver costs: %f ms", ros::this_node::getName().c_str(), t);
     ROS_DEBUG("average of time %f ms", sum_of_time / sum_of_calculation);
 
     sum_of_path += (estimator.Ps[WINDOW_SIZE] - last_path).norm();
     last_path = estimator.Ps[WINDOW_SIZE];
     ROS_DEBUG("sum of path %f", sum_of_path);
     if (ESTIMATE_TD)
-        ROS_INFO("td %f", estimator.td);
+        ROS_INFO_THROTTLE(1.0, "[%s]: td %f", ros::this_node::getName().c_str(), estimator.td);
+    ROS_INFO_THROTTLE(1.0, "[%s]: ---", ros::this_node::getName().c_str());
 }
 
 void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
@@ -266,6 +268,8 @@ void pubPointCloud(const Estimator &estimator, const std_msgs::Header &header)
         point_cloud.points.push_back(p);
     }
     pub_point_cloud.publish(point_cloud);
+
+    ROS_INFO_THROTTLE(1.0, "[%s]: feature points: %lu", ros::this_node::getName().c_str(), point_cloud.points.size());
 
 
     // pub margined potin

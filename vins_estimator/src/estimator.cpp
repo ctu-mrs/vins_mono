@@ -1,11 +1,14 @@
 #include <vins_estimator/estimator.h>
 
+/*//{ Estimator() */
 Estimator::Estimator(): f_manager{Rs}
 {
     ROS_INFO("init begins");
     clearState();
 }
+/*//}*/
 
+/*//{ setParameter() */
 void Estimator::setParameter()
 {
     for (int i = 0; i < NUM_OF_CAM; i++)
@@ -18,7 +21,9 @@ void Estimator::setParameter()
     ProjectionTdFactor::sqrt_info = FOCAL_LENGTH / 1.5 * Matrix2d::Identity();
     td = TD;
 }
+/*//}*/
 
+/*//{ clearState() */
 void Estimator::clearState()
 {
     for (int i = 0; i < WINDOW_SIZE + 1; i++)
@@ -80,7 +85,9 @@ void Estimator::clearState()
     drift_correct_r = Matrix3d::Identity();
     drift_correct_t = Vector3d::Zero();
 }
+/*//}*/
 
+/*//{ processIMU() */
 void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const Vector3d &angular_velocity)
 {
     if (!first_imu)
@@ -116,7 +123,9 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
     acc_0 = linear_acceleration;
     gyr_0 = angular_velocity;
 }
+/*//}*/
 
+/*//{ processImage() */
 void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> &image, const std_msgs::Header &header)
 {
     ROS_DEBUG("new image coming ------------------------------------------");
@@ -215,6 +224,9 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
         last_P0 = Ps[0];
     }
 }
+/*//}*/
+
+/*//{ initialStructure() */
 bool Estimator::initialStructure()
 {
     TicToc t_sfm;
@@ -239,10 +251,9 @@ bool Estimator::initialStructure()
             //cout << "frame g " << tmp_g.transpose() << endl;
         }
         var = sqrt(var / ((int)all_image_frame.size() - 1));
-        //ROS_WARN("IMU variation %f!", var);
-        if(var < 0.25)
+        if(var < INIT_MIN_IMU_VARIANCE)
         {
-            ROS_INFO("IMU excitation not enouth!");
+            ROS_INFO_THROTTLE(1.0, "[%s]: Init: not enough IMU variance %.2f < %.2f", ros::this_node::getName().c_str(), var, INIT_MIN_IMU_VARIANCE);
             //return false;
         }
     }
@@ -270,7 +281,7 @@ bool Estimator::initialStructure()
     int l;
     if (!relativePose(relative_R, relative_T, l))
     {
-        ROS_INFO("Not enough features or parallax; Move device around");
+        ROS_INFO_THROTTLE(1.0, "[%s]: Not enough features or parallax; Move device around", ros::this_node::getName().c_str());
         return false;
     }
     GlobalSFM sfm;
@@ -360,7 +371,9 @@ bool Estimator::initialStructure()
     }
 
 }
+/*//}*/
 
+/*//{ visualInitialAlign() */
 bool Estimator::visualInitialAlign()
 {
     TicToc t_g;
@@ -438,15 +451,17 @@ bool Estimator::visualInitialAlign()
 
     return true;
 }
+/*//}*/
 
+/*//{ relativePose() */
 bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 {
-    // find previous frame which contians enough correspondance and parallex with newest frame
+    // find previous frame which contians enough correspondence and parallax with newest frame
     for (int i = 0; i < WINDOW_SIZE; i++)
     {
         vector<pair<Vector3d, Vector3d>> corres;
         corres = f_manager.getCorresponding(i, WINDOW_SIZE);
-        if (corres.size() > 20)
+        if (corres.size() >= (unsigned int) INIT_MIN_FEATURES)
         {
             double sum_parallax = 0;
             double average_parallax;
@@ -459,17 +474,32 @@ bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 
             }
             average_parallax = 1.0 * sum_parallax / int(corres.size());
-            if(average_parallax * 460 > 30 && m_estimator.solveRelativeRT(corres, relative_R, relative_T))
+            if(average_parallax * FOCAL_LENGTH > INIT_MIN_PARALLAX) 
             {
+              if (m_estimator.solveRelativeRT(corres, relative_R, relative_T, INIT_MIN_FEATURES, FOCAL_LENGTH))
+              { 
                 l = i;
-                ROS_DEBUG("average_parallax %f choose l %d and newest frame to triangulate the whole structure", average_parallax * 460, l);
+                ROS_DEBUG("average_parallax %f choose l %d and newest frame to triangulate the whole structure", average_parallax * FOCAL_LENGTH, l);
                 return true;
+              } else {
+                ROS_INFO_THROTTLE(1.0, "[%s]: could not solve RT", ros::this_node::getName().c_str());
+              }
             }
+            else 
+            {
+              ROS_INFO_THROTTLE(1.0, "[%s]: Init: not enough parallax %.2f <= %.2f", ros::this_node::getName().c_str(), average_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX);
+            }
+        } 
+        else 
+        {
+          ROS_INFO_THROTTLE(1.0, "[%s]: Init: not enough correspondences %lu < %d" , ros::this_node::getName().c_str(), corres.size(), INIT_MIN_FEATURES);
         }
     }
     return false;
 }
+/*//}*/
 
+/*//{ solveOdometry() */
 void Estimator::solveOdometry()
 {
     if (frame_count < WINDOW_SIZE)
@@ -482,7 +512,9 @@ void Estimator::solveOdometry()
         optimization();
     }
 }
+/*//}*/
 
+/*//{ vector2double() */
 void Estimator::vector2double()
 {
     for (int i = 0; i <= WINDOW_SIZE; i++)
@@ -526,7 +558,9 @@ void Estimator::vector2double()
     if (ESTIMATE_TD)
         para_Td[0][0] = td;
 }
+/*//}*/
 
+/*//{ double2vector() */
 void Estimator::double2vector()
 {
     Vector3d origin_R0 = Utility::R2ypr(Rs[0]);
@@ -617,7 +651,9 @@ void Estimator::double2vector()
 
     }
 }
+/*//}*/
 
+/*//{ failureDetection() */
 bool Estimator::failureDetection()
 {
     if (f_manager.last_track_num < 2)
@@ -665,8 +701,9 @@ bool Estimator::failureDetection()
     }
     return false;
 }
+/*//}*/
 
-
+/*//{ optimalization() */
 void Estimator::optimization()
 {
     ceres::Problem problem;
@@ -1001,7 +1038,9 @@ void Estimator::optimization()
     
     ROS_DEBUG("whole time for ceres: %f", t_whole.toc());
 }
+/*//}*/
 
+/*//{ slideWindow() */
 void Estimator::slideWindow()
 {
     TicToc t_margin;
@@ -1098,13 +1137,18 @@ void Estimator::slideWindow()
         }
     }
 }
+/*//}*/
 
+/*//{ slideWindowNew() */
 // real marginalization is removed in solve_ceres()
 void Estimator::slideWindowNew()
 {
     sum_of_front++;
     f_manager.removeFront(frame_count);
 }
+/*//}*/
+
+/*//{ slideWindowOld() */
 // real marginalization is removed in solve_ceres()
 void Estimator::slideWindowOld()
 {
@@ -1124,7 +1168,9 @@ void Estimator::slideWindowOld()
     else
         f_manager.removeBack();
 }
+/*//}*/
 
+/*//{ setReloFrame() */
 void Estimator::setReloFrame(double _frame_stamp, int _frame_index, vector<Vector3d> &_match_points, Vector3d _relo_t, Matrix3d _relo_r)
 {
     relo_frame_stamp = _frame_stamp;
@@ -1144,4 +1190,4 @@ void Estimator::setReloFrame(double _frame_stamp, int _frame_index, vector<Vecto
         }
     }
 }
-
+/*//}*/

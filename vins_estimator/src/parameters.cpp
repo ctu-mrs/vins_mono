@@ -5,6 +5,12 @@ double MIN_PARALLAX;
 double ACC_N, ACC_W;
 double GYR_N, GYR_W;
 
+double FOCAL_LENGTH;
+
+double INIT_MIN_PARALLAX;
+int INIT_MIN_FEATURES;
+double INIT_MIN_IMU_VARIANCE;
+
 std::vector<Eigen::Matrix3d> RIC;
 std::vector<Eigen::Vector3d> TIC;
 
@@ -54,12 +60,28 @@ void readParameters(ros::NodeHandle &n)
         std::cerr << "ERROR: Wrong path to settings" << std::endl;
     }
 
+    cv::FileNode projection_parameters = fsSettings["projection_parameters"];
+    double mu = static_cast<double>(projection_parameters["mu"]);
+    double mv = static_cast<double>(projection_parameters["mv"]);
+    double m = (mu + mv) / 2.0;
+
+    double fx = static_cast<double>(projection_parameters["fx"]);
+    double fy = static_cast<double>(projection_parameters["fy"]);
+    double f = (fx + fy) / 2.0;
+
+    // TODO petrlmat: check and replace all places with hardcoded 460 focal length
+    /* FOCAL_LENGTH = 460; */
+    FOCAL_LENGTH = m > f ? m : f;
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
+
     SOLVER_TIME = fsSettings["max_solver_time"];
     NUM_ITERATIONS = fsSettings["max_num_iterations"];
     MIN_PARALLAX = fsSettings["keyframe_parallax"];
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
 
-
+    INIT_MIN_PARALLAX = fsSettings["init_min_parallax"];
+    INIT_MIN_FEATURES = fsSettings["init_min_features"];
+    INIT_MIN_IMU_VARIANCE = fsSettings["init_min_imu_variance"];
     // create folder if not exists
     FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
 

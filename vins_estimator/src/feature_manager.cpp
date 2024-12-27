@@ -1,17 +1,22 @@
 #include <vins_estimator/feature_manager.h>
 
+/*//{ endFrame() */
 int FeaturePerId::endFrame()
 {
     return start_frame + feature_per_frame.size() - 1;
 }
+/*//}*/
 
+/*//{ FeatureManager() */
 FeatureManager::FeatureManager(Matrix3d _Rs[])
     : Rs(_Rs)
 {
     for (int i = 0; i < NUM_OF_CAM; i++)
         ric[i].setIdentity();
 }
+/*//}*/
 
+/*//{ setRic() */
 void FeatureManager::setRic(Matrix3d _ric[])
 {
     for (int i = 0; i < NUM_OF_CAM; i++)
@@ -19,29 +24,34 @@ void FeatureManager::setRic(Matrix3d _ric[])
         ric[i] = _ric[i];
     }
 }
+/*//}*/
 
+/*//{ clearState() */
 void FeatureManager::clearState()
 {
     feature.clear();
 }
+/*//}*/
 
-int FeatureManager::getFeatureCount()
+/*//{ getFeatureCount() */
+int FeatureManager::getFeatureCount() const
 {
     int cnt = 0;
     for (auto &it : feature)
     {
 
-        it.used_num = it.feature_per_frame.size();
+        const int used_num = it.feature_per_frame.size();
 
-        if (it.used_num >= 2 && it.start_frame < WINDOW_SIZE - 2)
+        if (used_num >= 2 && it.start_frame < WINDOW_SIZE - 2)
         {
             cnt++;
         }
     }
     return cnt;
 }
+/*//}*/
 
-
+/*//{ addFeatureCheckParallax() */
 bool FeatureManager::addFeatureCheckParallax(int frame_count, const map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> &image, double td)
 {
     ROS_DEBUG("input feature: %d", (int)image.size());
@@ -95,7 +105,9 @@ bool FeatureManager::addFeatureCheckParallax(int frame_count, const map<int, vec
         return parallax_sum / parallax_num >= MIN_PARALLAX;
     }
 }
+/*//}*/
 
+/*//{ debugShow() */
 void FeatureManager::debugShow()
 {
     ROS_DEBUG("debug show");
@@ -116,7 +128,9 @@ void FeatureManager::debugShow()
         ROS_ASSERT(it.used_num == sum);
     }
 }
+/*//}*/
 
+/*//{ getCorresponding() */
 vector<pair<Vector3d, Vector3d>> FeatureManager::getCorresponding(int frame_count_l, int frame_count_r)
 {
     vector<pair<Vector3d, Vector3d>> corres;
@@ -137,7 +151,9 @@ vector<pair<Vector3d, Vector3d>> FeatureManager::getCorresponding(int frame_coun
     }
     return corres;
 }
+/*//}*/
 
+/*//{ setDepth() */
 void FeatureManager::setDepth(const VectorXd &x)
 {
     int feature_index = -1;
@@ -157,7 +173,9 @@ void FeatureManager::setDepth(const VectorXd &x)
             it_per_id.solve_flag = 1;
     }
 }
+/*//}*/
 
+/*//{ removeFailures() */
 void FeatureManager::removeFailures()
 {
     for (auto it = feature.begin(), it_next = feature.begin();
@@ -168,7 +186,9 @@ void FeatureManager::removeFailures()
             feature.erase(it);
     }
 }
+/*//}*/
 
+/*//{ clearDepth()*/
 void FeatureManager::clearDepth(const VectorXd &x)
 {
     int feature_index = -1;
@@ -180,7 +200,9 @@ void FeatureManager::clearDepth(const VectorXd &x)
         it_per_id.estimated_depth = 1.0 / x(++feature_index);
     }
 }
+/*//}*/
 
+/*//{ getDepthVector() */
 VectorXd FeatureManager::getDepthVector()
 {
     VectorXd dep_vec(getFeatureCount());
@@ -198,7 +220,9 @@ VectorXd FeatureManager::getDepthVector()
     }
     return dep_vec;
 }
+/*//}*/
 
+/*//{ triangulate() */
 void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
 {
     for (auto &it_per_id : feature)
@@ -255,7 +279,9 @@ void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
 
     }
 }
+/*//}*/
 
+/*//{ removeOutliers() */
 void FeatureManager::removeOutlier()
 {
     ROS_BREAK();
@@ -271,7 +297,9 @@ void FeatureManager::removeOutlier()
         }
     }
 }
+/*//}*/
 
+/*//{ removeBackShiftDepth() */
 void FeatureManager::removeBackShiftDepth(Eigen::Matrix3d marg_R, Eigen::Vector3d marg_P, Eigen::Matrix3d new_R, Eigen::Vector3d new_P)
 {
     for (auto it = feature.begin(), it_next = feature.begin();
@@ -311,7 +339,9 @@ void FeatureManager::removeBackShiftDepth(Eigen::Matrix3d marg_R, Eigen::Vector3
         */
     }
 }
+/*//}*/
 
+/*//{ removeBack() */
 void FeatureManager::removeBack()
 {
     for (auto it = feature.begin(), it_next = feature.begin();
@@ -329,7 +359,9 @@ void FeatureManager::removeBack()
         }
     }
 }
+/*//}*/
 
+/*//{ removeFront() */
 void FeatureManager::removeFront(int frame_count)
 {
     for (auto it = feature.begin(), it_next = feature.begin(); it != feature.end(); it = it_next)
@@ -351,7 +383,9 @@ void FeatureManager::removeFront(int frame_count)
         }
     }
 }
+/*//}*/
 
+/*//{ compensatedParallax2() */
 double FeatureManager::compensatedParallax2(const FeaturePerId &it_per_id, int frame_count)
 {
     //check the second last frame is keyframe or not
@@ -386,3 +420,4 @@ double FeatureManager::compensatedParallax2(const FeaturePerId &it_per_id, int f
 
     return ans;
 }
+/*//}*/

@@ -40,6 +40,7 @@ bool init_imu = 1;
 double last_imu_t = 0;
 string uav_name = "";
 
+/*//{ predict() */
 void predict(const sensor_msgs::ImuConstPtr &imu_msg)
 {
     double t = imu_msg->header.stamp.toSec();
@@ -77,7 +78,9 @@ void predict(const sensor_msgs::ImuConstPtr &imu_msg)
     acc_0 = linear_acceleration;
     gyr_0 = angular_velocity;
 }
+/*//}*/
 
+/*//{ update() */
 void update()
 {
     TicToc t_predict;
@@ -95,7 +98,9 @@ void update()
         predict(tmp_imu_buf.front());
 
 }
+/*//}*/
 
+/*//{ getMeasurements() */
 std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>>
 getMeasurements()
 {
@@ -135,7 +140,9 @@ getMeasurements()
     }
     return measurements;
 }
+/*//}*/
 
+/*//{ imu_callback() */
 void imu_callback(const sensor_msgs::ImuConstPtr &imu_msg)
 {
     if (imu_msg->header.stamp.toSec() <= last_imu_t)
@@ -160,8 +167,9 @@ void imu_callback(const sensor_msgs::ImuConstPtr &imu_msg)
             pubLatestOdometry(tmp_P, tmp_Q, tmp_V, header);
     }
 }
+/*//}*/
 
-
+/*//{ feature_callback() */
 void feature_callback(const sensor_msgs::PointCloudConstPtr &feature_msg)
 {
     if (!init_feature)
@@ -175,7 +183,9 @@ void feature_callback(const sensor_msgs::PointCloudConstPtr &feature_msg)
     m_buf.unlock();
     con.notify_one();
 }
+/*//}*/
 
+/*//{ restart_callback() */
 void restart_callback(const std_msgs::BoolConstPtr &restart_msg)
 {
     if (restart_msg->data == true)
@@ -196,7 +206,9 @@ void restart_callback(const std_msgs::BoolConstPtr &restart_msg)
     }
     return;
 }
+/*//}*/
 
+/*//{ relocalization_callback() */
 void relocalization_callback(const sensor_msgs::PointCloudConstPtr &points_msg)
 {
     //printf("relocalization callback! \n");
@@ -204,7 +216,9 @@ void relocalization_callback(const sensor_msgs::PointCloudConstPtr &points_msg)
     relo_buf.push(points_msg);
     m_buf.unlock();
 }
+/*//}*/
 
+/*//{ process() */
 // thread: visual-inertial odometry
 void process()
 {
@@ -337,29 +351,44 @@ void process()
         m_buf.unlock();
     }
 }
+/*//}*/
 
+/*//{ main() */
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "vins_estimator");
     ros::NodeHandle n("~");
-    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
-    readParameters(n);
     n.param<std::string>("uav_name", uav_name, "uav1");
+    bool debug;
+    n.param<bool>("debug", debug, false);
+    if (debug)
+    {
+    ROS_INFO("[%s]: debug: true", ros::this_node::getName().c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
+    }
+    else
+    {
+    ROS_INFO("[%s]: debug: false", ros::this_node::getName().c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
+    }
+
+    readParameters(n);
     estimator.setParameter();
 #ifdef EIGEN_DONT_PARALLELIZE
     ROS_DEBUG("EIGEN_DONT_PARALLELIZE");
 #endif
-    ROS_WARN("waiting for image and imu...");
+    ROS_INFO("[%s]: waiting for image and imu...", ros::this_node::getName().c_str());
 
     registerPub(n);
 
-    ros::Subscriber sub_imu = n.subscribe("imu_in", 2000, imu_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_image = n.subscribe("feature_tracker/feature", 2000, feature_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_restart = n.subscribe("feature_tracker/restart", 2000, restart_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_relo_points = n.subscribe("pose_graph/match_points", 2000, relocalization_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_imu = n.subscribe("imu_in", 100, imu_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_image = n.subscribe("feature_tracker/feature", 10, feature_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_restart = n.subscribe("feature_tracker/restart", 10, restart_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_relo_points = n.subscribe("pose_graph/match_points", 10, relocalization_callback, ros::TransportHints().tcpNoDelay());
 
     std::thread measurement_process{process};
     ros::spin();
 
     return 0;
 }
+/*//}*/

@@ -75,7 +75,7 @@ class FeatureManager
 
     void clearState();
 
-    int getFeatureCount();
+    int getFeatureCount() const;
 
     bool addFeatureCheckParallax(int frame_count, const map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> &image, double td);
     void debugShow();
