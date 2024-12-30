@@ -13,7 +13,7 @@ int STEREO_TRACK;
 int EQUALIZE;
 int ROW;
 int COL;
-int FOCAL_LENGTH;
+double FOCAL_LENGTH;
 int FISHEYE;
 bool PUB_THIS_FRAME;
 
@@ -60,8 +60,19 @@ void readParameters(ros::NodeHandle &n)
 
     WINDOW_SIZE = 20;
     STEREO_TRACK = false;
-    FOCAL_LENGTH = 460;
     PUB_THIS_FRAME = false;
+
+    cv::FileNode projection_parameters = fsSettings["projection_parameters"];
+    double mu = static_cast<double>(projection_parameters["mu"]);
+    double mv = static_cast<double>(projection_parameters["mv"]);
+    double m = (mu + mv) / 2.0;
+
+    double fx = static_cast<double>(projection_parameters["fx"]);
+    double fy = static_cast<double>(projection_parameters["fy"]);
+    double f = (fx + fy) / 2.0;
+
+    FOCAL_LENGTH = m > f ? m : f;
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
 
     if (FREQ == 0)
         FREQ = 100;

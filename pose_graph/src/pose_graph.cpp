@@ -34,6 +34,12 @@ void PoseGraph::registerPub(ros::NodeHandle &n)
         pub_path[i] = n.advertise<nav_msgs::Path>("path_" + to_string(i), 1000);
 }
 
+void PoseGraph::setFocalLength(double focal_length)
+{
+  FOCAL_LENGTH = focal_length;
+  ROS_INFO("[%s]: focal length set to: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
+}
+
 void PoseGraph::loadVocabulary(std::string voc_path)
 {
     voc = new BriefVocabulary(voc_path);
@@ -857,7 +863,7 @@ void PoseGraph::loadPoseGraph()
         brief_file.close();
         fclose(keypoints_file);
 
-        KeyFrame* keyframe = new KeyFrame(time_stamp, index, VIO_T, VIO_R, PG_T, PG_R, image, loop_index, loop_info, keypoints, keypoints_norm, brief_descriptors);
+        KeyFrame* keyframe = new KeyFrame(time_stamp, index, VIO_T, VIO_R, PG_T, PG_R, image, loop_index, loop_info, keypoints, keypoints_norm, brief_descriptors, FOCAL_LENGTH);
         loadKeyFrame(keyframe, 0);
         if (cnt % 20 == 0)
         {

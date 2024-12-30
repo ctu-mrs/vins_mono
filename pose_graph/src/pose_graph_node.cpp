@@ -49,6 +49,7 @@ int DEBUG_IMAGE;
 int VISUALIZE_IMU_FORWARD;
 int LOOP_CLOSURE;
 int FAST_RELOCALIZATION;
+double FOCAL_LENGTH;
 
 camodocal::CameraPtr m_camera;
 Eigen::Vector3d tic;
@@ -413,7 +414,7 @@ void process()
                 }
 
                 KeyFrame* keyframe = new KeyFrame(pose_msg->header.stamp.toSec(), frame_index, T, R, image,
-                                   point_3d, point_2d_uv, point_2d_normal, point_id, sequence);   
+                                   point_3d, point_2d_uv, point_2d_normal, point_id, sequence, FOCAL_LENGTH);   
                 m_process.lock();
                 start_flag = 1;
                 posegraph.addKeyFrame(keyframe, 1);
@@ -475,6 +476,20 @@ int main(int argc, char **argv)
     double camera_visual_size = fsSettings["visualize_camera_size"];
     cameraposevisual.setScale(camera_visual_size);
     cameraposevisual.setLineWidth(camera_visual_size / 10.0);
+
+    cv::FileNode projection_parameters = fsSettings["projection_parameters"];
+    double mu = static_cast<double>(projection_parameters["mu"]);
+    double mv = static_cast<double>(projection_parameters["mv"]);
+    double m = (mu + mv) / 2.0;
+
+    double fx = static_cast<double>(projection_parameters["fx"]);
+    double fy = static_cast<double>(projection_parameters["fy"]);
+    double f = (fx + fy) / 2.0;
+
+    FOCAL_LENGTH = m > f ? m : f;
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
+
+    posegraph.setFocalLength(FOCAL_LENGTH);
 
 
     LOOP_CLOSURE = fsSettings["loop_closure"];

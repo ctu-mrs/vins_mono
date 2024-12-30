@@ -69,8 +69,6 @@ void readParameters(ros::NodeHandle &n)
     double fy = static_cast<double>(projection_parameters["fy"]);
     double f = (fx + fy) / 2.0;
 
-    // TODO petrlmat: check and replace all places with hardcoded 460 focal length
-    /* FOCAL_LENGTH = 460; */
     FOCAL_LENGTH = m > f ? m : f;
     ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
 
