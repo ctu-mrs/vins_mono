@@ -36,13 +36,18 @@ add_executable(feature_tracker
   src/feature_tracker.cpp
   )
 
+add_dependencies(feature_tracker
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+  )
+
 target_link_libraries(feature_tracker ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 ## --------------------------------------------------------------
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS ${LIBRARIES}
+install(TARGETS feature_tracker
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
