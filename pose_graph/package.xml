@@ -11,6 +11,8 @@
   <author email="tony-ws@todo.todo">tony-ws</author>
 
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>roslib</depend>
   <depend>std_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>cv_bridge</depend>
