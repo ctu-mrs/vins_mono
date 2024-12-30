@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pose_graph)
 
-set(CMAKE_CXX_FLAGS "-std=c++11")
+# Enable compile optimizations
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
+
+# Enable debug flags (use if you want to debug in gdb)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -Wall -Wuninitialized -Wmaybe-uninitialized -fno-omit-frame-pointer")
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
