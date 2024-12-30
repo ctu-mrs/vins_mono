@@ -42,7 +42,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
-  <depend>libboost-program-options</depend>
+  <depend>libboost-program-options-dev</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
