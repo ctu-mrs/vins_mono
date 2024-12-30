@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(feature_tracker)
 
-set(CMAKE_CXX_FLAGS "-std=c++11")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
-# set(CMAKE_CXX_FLAGS_RELEASE "-O0 -Wall -g")
+# Enable compile optimizations
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
+
+# Enable debug flags (use if you want to debug in gdb)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -Wall -Wuninitialized -Wmaybe-uninitialized -fno-omit-frame-pointer")
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
