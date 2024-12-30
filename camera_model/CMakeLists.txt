@@ -79,6 +79,6 @@ install(TARGETS camera_model
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
   )
 
-install(DIRECTORY include
+install(DIRECTORY include/camera_model/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   )
