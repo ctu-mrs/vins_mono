@@ -4,9 +4,12 @@
   <version>0.0.1</version>
   <description>pose_graph package</description>
 
-  <atuthor email="tony-ws@todo.todo">tony-ws</author>
+  <maintainer email="matej.petrlik@fel.cvut.cz">Matej Petrlik</maintainer>
 
   <license>MIT</license>
+
+  <author email="tony-ws@todo.todo">tony-ws</author>
+
   <buildtool_depend>catkin</buildtool_depend>
   <depend>std_msgs</depend>
   <depend>nav_msgs</depend>
