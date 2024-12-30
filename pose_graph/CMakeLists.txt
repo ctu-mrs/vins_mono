@@ -11,6 +11,7 @@ set(CATKIN_DEPENDENCIES
   roscpp
   std_msgs
   nav_msgs
+  visualization_msgs
   camera_model
   cv_bridge
   roslib
