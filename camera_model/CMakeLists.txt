@@ -37,8 +37,6 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
   )
 
-# include_directories("include")
-
 add_executable(Calibration
   src/intrinsic_calib.cc
   src/chessboard/Chessboard.cc
@@ -75,7 +73,7 @@ target_link_libraries(camera_model ${Boost_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIB
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS ${LIBRARIES}
+install(TARGETS camera_model
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
