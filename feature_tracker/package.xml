@@ -16,6 +16,7 @@
   <depend>sensor_msgs</depend>
   <depend>message_runtime</depend>
   <depend>libopencv-dev</depend>
+  <depend>cv_bridge</depend>
   <depend>camera_model</depend>
 
 </package>
