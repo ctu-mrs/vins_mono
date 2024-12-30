@@ -4,7 +4,7 @@
 #include <eigen3/Eigen/Dense>
 
 #include "ceres/rotation.h"
-#include "camodocal/gpl/gpl.h"
+#include <camera_model/camodocal/gpl/gpl.h>
 
 namespace camodocal
 {

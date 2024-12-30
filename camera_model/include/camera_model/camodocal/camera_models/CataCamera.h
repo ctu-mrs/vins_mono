@@ -5,7 +5,7 @@
 #include <string>
 
 #include "ceres/rotation.h"
-#include "Camera.h"
+#include <camera_model/camodocal/camera_models/Camera.h>
 
 namespace camodocal
 {

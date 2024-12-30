@@ -1,11 +1,11 @@
-#include "camodocal/chessboard/Chessboard.h"
+#include <camera_model/camodocal/chessboard/Chessboard.h>
 
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "camodocal/chessboard/ChessboardQuad.h"
-#include "camodocal/chessboard/Spline.h"
+#include <camera_model/camodocal/chessboard/ChessboardQuad.h>
+#include <camera_model/camodocal/chessboard/Spline.h>
 
 #define MAX_CONTOUR_APPROX  7
 

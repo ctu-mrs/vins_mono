@@ -8,9 +8,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-#include "camodocal/chessboard/Chessboard.h"
-#include "camodocal/calib/CameraCalibration.h"
-#include "camodocal/gpl/gpl.h"
+#include <camera_model/camodocal/chessboard/Chessboard.h>
+#include <camera_model/camodocal/calib/CameraCalibration.h>
+#include <camera_model/camodocal/gpl/gpl.h>
 
 int main(int argc, char** argv)
 {

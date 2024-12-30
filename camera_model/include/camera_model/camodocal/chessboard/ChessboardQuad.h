@@ -3,7 +3,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "camodocal/chessboard/ChessboardCorner.h"
+#include <camera_model/camodocal/chessboard/ChessboardCorner.h>
 
 namespace camodocal
 {
