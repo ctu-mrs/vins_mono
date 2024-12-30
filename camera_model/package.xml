@@ -43,6 +43,8 @@
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
   <depend>libboost-program-options-dev</depend>
+  <depend>libopencv-dev</depend>
+  <depend>libceres-dev</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
