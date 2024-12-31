@@ -1,8 +1,8 @@
 #pragma once
 
-#include <camera_model/camodocal/camera_models/CameraFactory.h>
-#include <camera_model/camodocal/camera_models/CataCamera.h>
-#include <camera_model/camodocal/camera_models/PinholeCamera.h>
+#include <vins_mono_camera_model/camodocal/camera_models/CameraFactory.h>
+#include <vins_mono_camera_model/camodocal/camera_models/CataCamera.h>
+#include <vins_mono_camera_model/camodocal/camera_models/PinholeCamera.h>
 #include <eigen3/Eigen/Dense>
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
