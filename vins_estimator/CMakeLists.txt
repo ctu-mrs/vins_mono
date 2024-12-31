@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(vins_estimator)
+project(vins_mono_vins_estimator)
 
 # Enable compile optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
@@ -40,7 +40,7 @@ catkin_package(
   CATKIN_DEPENDS ${CATKIN_DEPENDENCIES}
   )
 
-add_executable(vins_estimator
+add_executable(${PROJECT_NAME}
   src/estimator_node.cpp
   src/parameters.cpp
   src/estimator.cpp
@@ -58,18 +58,22 @@ add_executable(vins_estimator
   src/initial/initial_ex_rotation.cpp
   )
 
-add_dependencies(vins_estimator
+add_dependencies(${PROJECT_NAME}
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
   ${catkin_EXPORTED_TARGETS}
   )
 
-target_link_libraries(vins_estimator ${catkin_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${CERES_LIBRARIES}
+  )
 
 ## --------------------------------------------------------------
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS vins_estimator
+install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

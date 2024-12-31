@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>pose_graph</name>
-  <version>0.0.1</version>
+  <name>vins_mono_pose_graph</name>
+  <version>1.0.0</version>
   <description>pose_graph package</description>
 
   <maintainer email="matej.petrlik@fel.cvut.cz">Matej Petrlik</maintainer>
@@ -19,6 +19,6 @@
   <depend>cv_bridge</depend>
   <depend>libceres-dev</depend>
   <depend>libopencv-dev</depend>
-  <depend>camera_model</depend>
+  <depend>vins_mono_camera_model</depend>
 
 </package>

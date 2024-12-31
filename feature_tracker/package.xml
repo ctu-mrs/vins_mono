@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>feature_tracker</name>
+  <name>vins_mono_feature_tracker</name>
   <version>0.0.0</version>
   <description>The feature_tracker package</description>
 
@@ -17,6 +17,6 @@
   <depend>message_runtime</depend>
   <depend>libopencv-dev</depend>
   <depend>cv_bridge</depend>
-  <depend>camera_model</depend>
+  <depend>vins_mono_camera_model</depend>
 
 </package>

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(feature_tracker)
+project(vins_mono_feature_tracker)
 
 # Enable compile optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
@@ -12,7 +12,7 @@ set(CATKIN_DEPENDENCIES
   std_msgs
   sensor_msgs
   cv_bridge
-  camera_model
+  vins_mono_camera_model
   )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -34,24 +34,24 @@ include_directories(
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-add_executable(feature_tracker
+add_executable(${PROJECT_NAME}
   src/feature_tracker_node.cpp
   src/parameters.cpp
   src/feature_tracker.cpp
   )
 
-add_dependencies(feature_tracker
+add_dependencies(${PROJECT_NAME}
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
   ${catkin_EXPORTED_TARGETS}
   )
 
-target_link_libraries(feature_tracker ${catkin_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 ## --------------------------------------------------------------
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS feature_tracker
+install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

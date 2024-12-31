@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(camera_model)
+project(vins_mono_camera_model)
 
 # Enable compile optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fPIC -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
@@ -26,7 +26,7 @@ find_package(Ceres REQUIRED)
 
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES camera_model
+  LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS ${CATKIN_DEPENDENCIES}
   )
 
@@ -37,7 +37,7 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
   )
 
-add_executable(Calibration
+add_executable(vins_mono_calibration
   src/intrinsic_calib.cc
   src/chessboard/Chessboard.cc
   src/calib/CameraCalibration.cc
@@ -52,7 +52,7 @@ add_executable(Calibration
   src/gpl/gpl.cc
   src/gpl/EigenQuaternionParameterization.cc)
 
-add_library(camera_model
+add_library(${PROJECT_NAME}
   src/chessboard/Chessboard.cc
   src/calib/CameraCalibration.cc
   src/camera_models/Camera.cc
@@ -66,14 +66,14 @@ add_library(camera_model
   src/gpl/gpl.cc
   src/gpl/EigenQuaternionParameterization.cc)
 
-target_link_libraries(Calibration ${Boost_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES})
-target_link_libraries(camera_model ${Boost_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES})
+target_link_libraries(vins_mono_calibration ${Boost_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${OpenCV_LIBS} ${CERES_LIBRARIES})
 
 ## --------------------------------------------------------------
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS camera_model
+install(TARGETS ${PROJECT_NAME} vins_mono_calibration
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

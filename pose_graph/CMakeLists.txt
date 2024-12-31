@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(pose_graph)
+project(vins_mono_pose_graph)
 
 # Enable compile optimizations
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
@@ -9,12 +9,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g3 -Wall -Wuninitialized -Wmaybe-uninit
 
 set(CATKIN_DEPENDENCIES
   roscpp
+  roslib
   std_msgs
   nav_msgs
   visualization_msgs
-  camera_model
   cv_bridge
-  roslib
+  vins_mono_camera_model
   )
 
 find_package(catkin REQUIRED COMPONENTS
@@ -39,7 +39,7 @@ include_directories(
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-add_executable(pose_graph
+add_executable(${PROJECT_NAME}
   src/pose_graph_node.cpp
   src/pose_graph.cpp
   src/keyframe.cpp
@@ -55,13 +55,17 @@ add_executable(pose_graph
   src/ThirdParty/VocabularyBinary.cpp
   )
 
-target_link_libraries(pose_graph ${catkin_LIBRARIES}  ${OpenCV_LIBS} ${CERES_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${CERES_LIBRARIES}
+  )
 
 ## --------------------------------------------------------------
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS ${LIBRARIES}
+install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
