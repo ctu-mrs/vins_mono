@@ -38,6 +38,7 @@ public:
 	PoseGraph();
 	~PoseGraph();
 	void registerPub(ros::NodeHandle &n);
+	void setFocalLength(double focal_length);
 	void addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop);
 	void loadKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop);
 	void loadVocabulary(std::string voc_path);
@@ -76,6 +77,8 @@ private:
 	map<int, cv::Mat> image_pool;
 	int earliest_loop_index;
 	int base_sequence;
+
+  double FOCAL_LENGTH;
 
 	BriefDatabase db;
 	BriefVocabulary* voc;

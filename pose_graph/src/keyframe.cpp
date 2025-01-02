@@ -13,8 +13,9 @@ static void reduceVector(vector<Derived> &v, vector<uchar> status)
 // create keyframe online
 KeyFrame::KeyFrame(double _time_stamp, int _index, Vector3d &_vio_T_w_i, Matrix3d &_vio_R_w_i, cv::Mat &_image,
 		           vector<cv::Point3f> &_point_3d, vector<cv::Point2f> &_point_2d_uv, vector<cv::Point2f> &_point_2d_norm,
-		           vector<double> &_point_id, int _sequence)
+		           vector<double> &_point_id, int _sequence, double _focal_length)
 {
+  FOCAL_LENGTH = _focal_length;
 	time_stamp = _time_stamp;
 	index = _index;
 	vio_T_w_i = _vio_T_w_i;
@@ -43,8 +44,9 @@ KeyFrame::KeyFrame(double _time_stamp, int _index, Vector3d &_vio_T_w_i, Matrix3
 // load previous keyframe
 KeyFrame::KeyFrame(double _time_stamp, int _index, Vector3d &_vio_T_w_i, Matrix3d &_vio_R_w_i, Vector3d &_T_w_i, Matrix3d &_R_w_i,
 					cv::Mat &_image, int _loop_index, Eigen::Matrix<double, 8, 1 > &_loop_info,
-					vector<cv::KeyPoint> &_keypoints, vector<cv::KeyPoint> &_keypoints_norm, vector<BRIEF::bitset> &_brief_descriptors)
+					vector<cv::KeyPoint> &_keypoints, vector<cv::KeyPoint> &_keypoints_norm, vector<BRIEF::bitset> &_brief_descriptors, double _focal_length)
 {
+  FOCAL_LENGTH = _focal_length;
 	time_stamp = _time_stamp;
 	index = _index;
 	//vio_T_w_i = _vio_T_w_i;
@@ -183,7 +185,6 @@ void KeyFrame::FundmantalMatrixRANSAC(const std::vector<cv::Point2f> &matched_2d
         vector<cv::Point2f> tmp_cur(n), tmp_old(n);
         for (int i = 0; i < (int)matched_2d_cur_norm.size(); i++)
         {
-            double FOCAL_LENGTH = 460.0;
             double tmp_x, tmp_y;
             tmp_x = FOCAL_LENGTH * matched_2d_cur_norm[i].x + COL / 2.0;
             tmp_y = FOCAL_LENGTH * matched_2d_cur_norm[i].y + ROW / 2.0;
@@ -223,13 +224,13 @@ void KeyFrame::PnPRANSAC(const vector<cv::Point2f> &matched_2d_old_norm,
     TicToc t_pnp_ransac;
 
     if (CV_MAJOR_VERSION < 3)
-        solvePnPRansac(matched_3d, matched_2d_old_norm, K, D, rvec, t, true, 100, 10.0 / 460.0, 100, inliers);
+        solvePnPRansac(matched_3d, matched_2d_old_norm, K, D, rvec, t, true, 100, 10.0 / FOCAL_LENGTH, 100, inliers);
     else
     {
         if (CV_MINOR_VERSION < 2)
-            solvePnPRansac(matched_3d, matched_2d_old_norm, K, D, rvec, t, true, 100, sqrt(10.0 / 460.0), 0.99, inliers);
+            solvePnPRansac(matched_3d, matched_2d_old_norm, K, D, rvec, t, true, 100, sqrt(10.0 / FOCAL_LENGTH), 0.99, inliers);
         else
-            solvePnPRansac(matched_3d, matched_2d_old_norm, K, D, rvec, t, true, 100, 10.0 / 460.0, 0.99, inliers);
+            solvePnPRansac(matched_3d, matched_2d_old_norm, K, D, rvec, t, true, 100, 10.0 / FOCAL_LENGTH, 0.99, inliers);
 
     }
 
