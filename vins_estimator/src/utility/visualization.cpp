@@ -25,19 +25,19 @@ void registerPub(ros::NodeHandle &n)
 {
     n.param<std::string>("uav_name", uav_name_, "uav1");
     ROS_INFO("uav_name_: %s", uav_name_.c_str());
-    pub_latest_odometry = n.advertise<nav_msgs::Odometry>("imu_propagate", 1000);
-    pub_path = n.advertise<nav_msgs::Path>("path", 1000);
-    pub_relo_path = n.advertise<nav_msgs::Path>("relocalization_path", 1000);
-    pub_odometry = n.advertise<nav_msgs::Odometry>("odometry", 1000);
-    pub_point_cloud = n.advertise<sensor_msgs::PointCloud>("point_cloud", 1000);
-    pub_margin_cloud = n.advertise<sensor_msgs::PointCloud>("history_cloud", 1000);
-    pub_key_poses = n.advertise<visualization_msgs::Marker>("key_poses", 1000);
-    pub_camera_pose = n.advertise<nav_msgs::Odometry>("camera_pose", 1000);
-    pub_camera_pose_visual = n.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 1000);
-    pub_keyframe_pose = n.advertise<nav_msgs::Odometry>("keyframe_pose", 1000);
-    pub_keyframe_point = n.advertise<sensor_msgs::PointCloud>("keyframe_point", 1000);
-    pub_extrinsic = n.advertise<nav_msgs::Odometry>("extrinsic", 1000);
-    pub_relo_relative_pose=  n.advertise<nav_msgs::Odometry>("relo_relative_pose", 1000);
+    pub_latest_odometry = n.advertise<nav_msgs::Odometry>("imu_propagate", 1);
+    pub_path = n.advertise<nav_msgs::Path>("path", 1);
+    pub_relo_path = n.advertise<nav_msgs::Path>("relocalization_path", 1);
+    pub_odometry = n.advertise<nav_msgs::Odometry>("odometry", 1);
+    pub_point_cloud = n.advertise<sensor_msgs::PointCloud>("point_cloud", 1);
+    pub_margin_cloud = n.advertise<sensor_msgs::PointCloud>("history_cloud", 1);
+    pub_key_poses = n.advertise<visualization_msgs::Marker>("key_poses", 1);
+    pub_camera_pose = n.advertise<nav_msgs::Odometry>("camera_pose", 1);
+    pub_camera_pose_visual = n.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 1);
+    pub_keyframe_pose = n.advertise<nav_msgs::Odometry>("keyframe_pose", 1);
+    pub_keyframe_point = n.advertise<sensor_msgs::PointCloud>("keyframe_point", 1);
+    pub_extrinsic = n.advertise<nav_msgs::Odometry>("extrinsic", 1);
+    pub_relo_relative_pose=  n.advertise<nav_msgs::Odometry>("relo_relative_pose", 1);
 
     cameraposevisual.setScale(1);
     cameraposevisual.setLineWidth(0.05);

@@ -221,7 +221,18 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "feature_tracker");
     ros::NodeHandle n("~");
+    bool debug;
+    n.param<bool>("debug", debug, false);
+    if (debug)
+    {
+    ROS_INFO("[%s]: debug: true", ros::this_node::getName().c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
+    }
+    else
+    {
+    ROS_INFO("[%s]: debug: false", ros::this_node::getName().c_str());
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
+    }
     readParameters(n);
     n.param<std::string>("uav_name", uav_name, "uav1");
 
@@ -247,9 +258,9 @@ int main(int argc, char **argv)
 
     ros::Subscriber sub_img = n.subscribe("image_in", 1, img_callback, ros::TransportHints().tcpNoDelay());
 
-    pub_img = n.advertise<sensor_msgs::PointCloud>("feature", 1000);
-    pub_match = n.advertise<sensor_msgs::Image>("feature_img",1000);
-    pub_restart = n.advertise<std_msgs::Bool>("restart",1000);
+    pub_img = n.advertise<sensor_msgs::PointCloud>("feature", 1);
+    pub_match = n.advertise<sensor_msgs::Image>("feature_img",1);
+    pub_restart = n.advertise<std_msgs::Bool>("restart",1);
     /*
     if (SHOW_TRACK)
         cv::namedWindow("vis", cv::WINDOW_NORMAL);

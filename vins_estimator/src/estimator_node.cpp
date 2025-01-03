@@ -381,10 +381,10 @@ int main(int argc, char **argv)
 
     registerPub(n);
 
-    ros::Subscriber sub_imu = n.subscribe("imu_in", 100, imu_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_image = n.subscribe("feature_tracker/feature", 10, feature_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_restart = n.subscribe("feature_tracker/restart", 10, restart_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_relo_points = n.subscribe("pose_graph/match_points", 10, relocalization_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_imu = n.subscribe("imu_in", 1, imu_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_image = n.subscribe("feature_tracker/feature", 1, feature_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_restart = n.subscribe("feature_tracker/restart", 1, restart_callback, ros::TransportHints().tcpNoDelay());
+    ros::Subscriber sub_relo_points = n.subscribe("pose_graph/match_points", 1, relocalization_callback, ros::TransportHints().tcpNoDelay());
 
     std::thread measurement_process{process};
     ros::spin();
