@@ -69,9 +69,11 @@ void printStatistics(const Estimator &estimator, double t)
 {
     if (estimator.solver_flag != Estimator::SolverFlag::NON_LINEAR)
         return;
-    printf("position: %f, %f, %f\r", estimator.Ps[WINDOW_SIZE].x(), estimator.Ps[WINDOW_SIZE].y(), estimator.Ps[WINDOW_SIZE].z());
     ROS_INFO_THROTTLE(1.0, "[%s]: position: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), estimator.Ps[WINDOW_SIZE].x(), estimator.Ps[WINDOW_SIZE].y(), estimator.Ps[WINDOW_SIZE].z());
-    ROS_DEBUG_STREAM("orientation: " << estimator.Vs[WINDOW_SIZE].transpose());
+    Eigen::Vector3d orientation = Utility::R2ypr(estimator.Rs[WINDOW_SIZE]);
+    ROS_INFO_THROTTLE(1.0, "[%s]: orientation: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), orientation[0], orientation[1], orientation[2]);
+    ROS_INFO_THROTTLE(1.0, "[%s]: bias acc: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), estimator.Bas[WINDOW_SIZE].x(), estimator.Bas[WINDOW_SIZE].y(), estimator.Bas[WINDOW_SIZE].z());
+    ROS_INFO_THROTTLE(1.0, "[%s]: bias gyro: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), estimator.Bgs[WINDOW_SIZE].x(), estimator.Bgs[WINDOW_SIZE].y(), estimator.Bgs[WINDOW_SIZE].z());
     for (int i = 0; i < NUM_OF_CAM; i++)
     {
         //ROS_DEBUG("calibration result for camera %d", i);

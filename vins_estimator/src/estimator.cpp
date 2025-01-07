@@ -90,6 +90,12 @@ void Estimator::clearState()
 /*//{ processIMU() */
 void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const Vector3d &angular_velocity)
 {
+
+    if (dt < 0.00001) {
+      ROS_INFO("[%s]: skipping too small dt: %f", ros::this_node::getName().c_str(), dt);
+      return;
+    }
+
     if (!first_imu)
     {
         first_imu = true;
@@ -171,6 +177,7 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
             bool result = false;
             if( ESTIMATE_EXTRINSIC != 2 && (header.stamp.toSec() - initial_timestamp) > 0.1)
             {
+               ROS_INFO("[%s]: ---", ros::this_node::getName().c_str());
                result = initialStructure();
                initial_timestamp = header.stamp.toSec();
             }
@@ -180,7 +187,8 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
                 solveOdometry();
                 slideWindow();
                 f_manager.removeFailures();
-                ROS_INFO("Initialization finish!");
+                ROS_INFO("[%s]: Initialization finish!", ros::this_node::getName().c_str());
+                ROS_INFO("[%s]: ---", ros::this_node::getName().c_str());
                 last_R = Rs[WINDOW_SIZE];
                 last_P = Ps[WINDOW_SIZE];
                 last_R0 = Rs[0];
@@ -233,11 +241,18 @@ bool Estimator::initialStructure()
     //check imu observibility
     {
         map<double, ImageFrame>::iterator frame_it;
-        Vector3d sum_g;
+        Vector3d sum_g = Vector3d::Zero();
         for (frame_it = all_image_frame.begin(), frame_it++; frame_it != all_image_frame.end(); frame_it++)
         {
             double dt = frame_it->second.pre_integration->sum_dt;
+            if (dt < 0.00001 || dt > 1000) {
+              ROS_INFO("[%s]: Init: invalid dt %.2f!", ros::this_node::getName().c_str(), dt);
+              return false;
+            }
             Vector3d tmp_g = frame_it->second.pre_integration->delta_v / dt;
+            if (tmp_g[0] > 100) {
+              ROS_INFO("[%s]: tmp_g: %.2f %.2f %.2f", ros::this_node::getName().c_str(), tmp_g[0], tmp_g[1], tmp_g[2]);
+            }
             sum_g += tmp_g;
         }
         Vector3d aver_g;
@@ -246,15 +261,29 @@ bool Estimator::initialStructure()
         for (frame_it = all_image_frame.begin(), frame_it++; frame_it != all_image_frame.end(); frame_it++)
         {
             double dt = frame_it->second.pre_integration->sum_dt;
+            if (dt < 0.00001 || dt > 1000) {
+              ROS_INFO("[%s]: Init: invalid dt %.2f!", ros::this_node::getName().c_str(), dt);
+              return false;
+            }
             Vector3d tmp_g = frame_it->second.pre_integration->delta_v / dt;
             var += (tmp_g - aver_g).transpose() * (tmp_g - aver_g);
+            if (var > 1000) {
+              ROS_INFO("[%s]: Init: var: %.2f!", ros::this_node::getName().c_str(), var);
+            }
             //cout << "frame g " << tmp_g.transpose() << endl;
         }
         var = sqrt(var / ((int)all_image_frame.size() - 1));
-        if(var < INIT_MIN_IMU_VARIANCE)
+        if (all_image_frame.size() <= 1) {
+          ROS_INFO("[%s]: Init: not enough image frames: %lu", ros::this_node::getName().c_str(), all_image_frame.size());
+        }
+        if(!std::isfinite(var) || var > 1000 || var < INIT_MIN_IMU_VARIANCE)
         {
-            ROS_INFO_THROTTLE(1.0, "[%s]: Init: not enough IMU variance %.2f < %.2f", ros::this_node::getName().c_str(), var, INIT_MIN_IMU_VARIANCE);
-            //return false;
+            ROS_INFO("[%s]: Init: not enough IMU variance %.2f < %.2f", ros::this_node::getName().c_str(), var, INIT_MIN_IMU_VARIANCE);
+            return false;
+        }
+        else
+        {
+            ROS_INFO("[%s]: Init: attempting init with IMU variance %.2f", ros::this_node::getName().c_str(), var);
         }
     }
     // global sfm
@@ -281,7 +310,7 @@ bool Estimator::initialStructure()
     int l;
     if (!relativePose(relative_R, relative_T, l))
     {
-        ROS_INFO_THROTTLE(1.0, "[%s]: Not enough features or parallax; Move device around", ros::this_node::getName().c_str());
+        /* ROS_INFO("[%s]: Init: Not enough features or parallax; Move device around", ros::this_node::getName().c_str()); */
         return false;
     }
     GlobalSFM sfm;
@@ -289,7 +318,7 @@ bool Estimator::initialStructure()
               relative_R, relative_T,
               sfm_f, sfm_tracked_points))
     {
-        ROS_DEBUG("global SFM failed!");
+        ROS_INFO("[%s]: Init: global SFM failed!", ros::this_node::getName().c_str());
         marginalization_flag = MARGIN_OLD;
         return false;
     }
@@ -343,13 +372,12 @@ bool Estimator::initialStructure()
         cv::Mat K = (cv::Mat_<double>(3, 3) << 1, 0, 0, 0, 1, 0, 0, 0, 1);     
         if(pts_3_vector.size() < 6)
         {
-            cout << "pts_3_vector size " << pts_3_vector.size() << endl;
-            ROS_DEBUG("Not enough points for solve pnp !");
+            ROS_INFO("[%s]: Init: Not enough points for solve pnp! %lu < %d", ros::this_node::getName().c_str(), pts_3_vector.size(), 6);
             return false;
         }
         if (! cv::solvePnP(pts_3_vector, pts_2_vector, K, D, rvec, t, 1))
         {
-            ROS_DEBUG("solve pnp fail!");
+            ROS_INFO("[%s]: Init: Could not solve pnp!", ros::this_node::getName().c_str());
             return false;
         }
         cv::Rodrigues(rvec, r);
@@ -366,7 +394,7 @@ bool Estimator::initialStructure()
         return true;
     else
     {
-        ROS_INFO("misalign visual structure with IMU");
+        ROS_INFO("[%s]: Init: Misalign visual structure with IMU!", ros::this_node::getName().c_str());
         return false;
     }
 
@@ -382,7 +410,7 @@ bool Estimator::visualInitialAlign()
     bool result = VisualIMUAlignment(all_image_frame, Bgs, g, x);
     if(!result)
     {
-        ROS_DEBUG("solve g failed!");
+        ROS_INFO("solve g failed!");
         return false;
     }
 
@@ -446,8 +474,8 @@ bool Estimator::visualInitialAlign()
         Rs[i] = rot_diff * Rs[i];
         Vs[i] = rot_diff * Vs[i];
     }
-    ROS_DEBUG_STREAM("g0     " << g.transpose());
-    ROS_DEBUG_STREAM("my R0  " << Utility::R2ypr(Rs[0]).transpose()); 
+    ROS_INFO_STREAM("g0     " << g.transpose());
+    ROS_INFO_STREAM("my R0  " << Utility::R2ypr(Rs[0]).transpose()); 
 
     return true;
 }
@@ -456,9 +484,13 @@ bool Estimator::visualInitialAlign()
 /*//{ relativePose() */
 bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 {
+
+    double highest_parallax = 0;
+
     // find previous frame which contians enough correspondence and parallax with newest frame
     for (int i = 0; i < WINDOW_SIZE; i++)
     {
+      ROS_INFO("[%s]: Trying init with frame %d/%d", ros::this_node::getName().c_str(), i, WINDOW_SIZE);
         vector<pair<Vector3d, Vector3d>> corres;
         corres = f_manager.getCorresponding(i, WINDOW_SIZE);
         if (corres.size() >= (unsigned int) INIT_MIN_FEATURES)
@@ -474,27 +506,23 @@ bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 
             }
             average_parallax = 1.0 * sum_parallax / int(corres.size());
+            highest_parallax = average_parallax > highest_parallax ? average_parallax : highest_parallax;
             if(average_parallax * FOCAL_LENGTH > INIT_MIN_PARALLAX) 
             {
               if (m_estimator.solveRelativeRT(corres, relative_R, relative_T, INIT_MIN_FEATURES, FOCAL_LENGTH))
               { 
                 l = i;
-                ROS_DEBUG("average_parallax %f choose l %d and newest frame to triangulate the whole structure", average_parallax * FOCAL_LENGTH, l);
+                ROS_INFO("[%s]: Init: using parallax %f between frame %d/%d and the newest frame to triangulate the whole structure", ros::this_node::getName().c_str(), average_parallax * FOCAL_LENGTH, l, WINDOW_SIZE);
                 return true;
-              } else {
-                ROS_INFO_THROTTLE(1.0, "[%s]: could not solve RT", ros::this_node::getName().c_str());
-              }
-            }
-            else 
-            {
-              ROS_INFO_THROTTLE(1.0, "[%s]: Init: not enough parallax %.2f <= %.2f", ros::this_node::getName().c_str(), average_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX);
+              } 
             }
         } 
         else 
         {
-          ROS_INFO_THROTTLE(1.0, "[%s]: Init: not enough correspondences %lu < %d" , ros::this_node::getName().c_str(), corres.size(), INIT_MIN_FEATURES);
+          ROS_INFO("[%s]: Init: not enough correspondences %lu < %d in frame %d in window of size %d" , ros::this_node::getName().c_str(), corres.size(), INIT_MIN_FEATURES, i, WINDOW_SIZE);
         }
     }
+    ROS_INFO("[%s]: Init: not enough parallax %.2f <= %.2f", ros::this_node::getName().c_str(), highest_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX);
     return false;
 }
 /*//}*/
@@ -656,20 +684,23 @@ void Estimator::double2vector()
 /*//{ failureDetection() */
 bool Estimator::failureDetection()
 {
-    if (f_manager.last_track_num < 2)
+    // TODO petrlmat: parametrize whether reset after failure detection
+    if (f_manager.last_track_num < 5)
     {
-        ROS_INFO(" little feature %d", f_manager.last_track_num);
-        //return true;
+        ROS_WARN("[%s]: Failure detected: Not enough features: %d < %d", ros::this_node::getName().c_str(), f_manager.last_track_num, 5);
+        /* return true; */
     }
     if (Bas[WINDOW_SIZE].norm() > 2.5)
     {
-        ROS_INFO(" big IMU acc bias estimation %f", Bas[WINDOW_SIZE].norm());
-        return true;
+        ROS_WARN("[%s]: Failure detected: Too large IMU acc bias estimated %.2f", ros::this_node::getName().c_str(), Bas[WINDOW_SIZE].norm());
+        ROS_WARN("[%s]: Your accelerometer bias random walk noise parameter might be set too high", ros::this_node::getName().c_str());
+        /* return true; */
     }
     if (Bgs[WINDOW_SIZE].norm() > 1.0)
     {
-        ROS_INFO(" big IMU gyr bias estimation %f", Bgs[WINDOW_SIZE].norm());
-        return true;
+        ROS_WARN("[%s]: Failure detected: Too large IMU gyro bias estimated %.2f", ros::this_node::getName().c_str(), Bgs[WINDOW_SIZE].norm());
+        ROS_WARN("[%s]: Your gyroscope bias random walk noise parameter might be set too high", ros::this_node::getName().c_str());
+        /* return true; */
     }
     /*
     if (tic(0) > 1)
@@ -681,13 +712,13 @@ bool Estimator::failureDetection()
     Vector3d tmp_P = Ps[WINDOW_SIZE];
     if ((tmp_P - last_P).norm() > 5)
     {
-        ROS_INFO(" big translation");
-        return true;
+        ROS_WARN("[%s]: Failure detected: Too large translation: %.2f", ros::this_node::getName().c_str(), (tmp_P - last_P).norm());
+        /* return true; */
     }
     if (abs(tmp_P.z() - last_P.z()) > 1)
     {
-        ROS_INFO(" big z translation");
-        return true; 
+        ROS_WARN("[%s]: Failure detected: Too large z translation: %.2f", ros::this_node::getName().c_str(), abs(tmp_P.z() - last_P.z()));
+        /* return true; */ 
     }
     Matrix3d tmp_R = Rs[WINDOW_SIZE];
     Matrix3d delta_R = tmp_R.transpose() * last_R;
@@ -696,8 +727,8 @@ bool Estimator::failureDetection()
     delta_angle = acos(delta_Q.w()) * 2.0 / 3.14 * 180.0;
     if (delta_angle > 50)
     {
-        ROS_INFO(" big delta_angle ");
-        //return true;
+        ROS_WARN("[%s]: Failure detected: Too large delta_angle: %.2f", ros::this_node::getName().c_str(), delta_angle);
+        /* return true; */
     }
     return false;
 }
