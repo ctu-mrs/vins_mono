@@ -16,6 +16,27 @@ set(CATKIN_DEPENDENCIES
   cv_bridge
   )
 
+set(LIBRARIES
+  VinsMonoVinsEstimator
+  )
+
+set(SRC_FILES
+  src/parameters.cpp
+  src/estimator.cpp
+  src/feature_manager.cpp
+  src/factor/pose_local_parameterization.cpp
+  src/factor/projection_factor.cpp
+  src/factor/projection_td_factor.cpp
+  src/factor/marginalization_factor.cpp
+  src/utility/utility.cpp
+  src/utility/visualization.cpp
+  src/utility/CameraPoseVisualization.cpp
+  src/initial/solve_5pts.cpp
+  src/initial/initial_aligment.cpp
+  src/initial/initial_sfm.cpp
+  src/initial/initial_ex_rotation.cpp
+  )
+
 find_package(catkin REQUIRED COMPONENTS
   ${CATKIN_DEPENDENCIES}
   )
@@ -42,20 +63,7 @@ catkin_package(
 
 add_executable(${PROJECT_NAME}
   src/estimator_node.cpp
-  src/parameters.cpp
-  src/estimator.cpp
-  src/feature_manager.cpp
-  src/factor/pose_local_parameterization.cpp
-  src/factor/projection_factor.cpp
-  src/factor/projection_td_factor.cpp
-  src/factor/marginalization_factor.cpp
-  src/utility/utility.cpp
-  src/utility/visualization.cpp
-  src/utility/CameraPoseVisualization.cpp
-  src/initial/solve_5pts.cpp
-  src/initial/initial_aligment.cpp
-  src/initial/initial_sfm.cpp
-  src/initial/initial_ex_rotation.cpp
+  ${SRC_FILES}
   )
 
 add_dependencies(${PROJECT_NAME}
@@ -69,11 +77,22 @@ target_link_libraries(${PROJECT_NAME}
   ${CERES_LIBRARIES}
   )
 
+add_library(VinsMonoVinsEstimator
+  src/estimator_nodelet.cpp
+  ${SRC_FILES}
+  )
+
+target_link_libraries(VinsMonoVinsEstimator
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${CERES_LIBRARIES}
+  )
+
 ## --------------------------------------------------------------
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME} ${LIBRARIES}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
@@ -81,4 +100,8 @@ install(TARGETS ${PROJECT_NAME}
 
 install(DIRECTORY include
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  )
+
+install(FILES nodelets.xml
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )

@@ -1,0 +1,5 @@
+<library path="lib/libVinsMonoVinsEstimator">
+  <class name="vins_mono/VinsEstimator" type="vins_mono::VinsEstimator" base_class_type="nodelet::Nodelet">
+    <description>VinsEstimator nodelet</description>
+  </class>
+</library>
