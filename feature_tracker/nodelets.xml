@@ -1,0 +1,5 @@
+<library path="lib/libVinsMonoFeatureTracker">
+  <class name="vins_mono/FeatureTracker" type="vins_mono::FeatureTrackerNodelet" base_class_type="nodelet::Nodelet">
+    <description>FeatureTracker nodelet</description>
+  </class>
+</library>
