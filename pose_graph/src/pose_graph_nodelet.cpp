@@ -1,5 +1,14 @@
-#include <vector>
 #include <ros/ros.h>
+#include <nodelet/nodelet.h>
+#include <pluginlib/class_list_macros.h>
+#include <ros/package.h>
+
+#include <vector>
+#include <iostream>
+#include <mutex>
+#include <queue>
+#include <thread>
+
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/Path.h>
 #include <sensor_msgs/PointCloud.h>
@@ -7,54 +16,226 @@
 #include <sensor_msgs/image_encodings.h>
 #include <visualization_msgs/Marker.h>
 #include <std_msgs/Bool.h>
+
 #include <cv_bridge/cv_bridge.h>
-#include <iostream>
-#include <ros/package.h>
-#include <mutex>
-#include <queue>
-#include <thread>
 #include <eigen3/Eigen/Dense>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
+
 #include "keyframe.h"
 #include "utility/tic_toc.h"
 #include "pose_graph.h"
 #include "utility/CameraPoseVisualization.h"
 #include "parameters.h"
+
 #define SKIP_FIRST_CNT 10
 using namespace std;
 
-queue<sensor_msgs::ImageConstPtr> image_buf;
-queue<sensor_msgs::PointCloudConstPtr> point_buf;
-queue<nav_msgs::Odometry::ConstPtr> pose_buf;
-queue<Eigen::Vector3d> odometry_buf;
-std::mutex m_buf;
-std::mutex m_process;
-int frame_index  = 0;
-int sequence = 1;
-PoseGraph posegraph;
-int skip_first_cnt = 0;
-int SKIP_CNT;
-int skip_cnt = 0;
-bool load_flag = 0;
-bool start_flag = 0;
-double SKIP_DIS = 0;
-string uav_name = "";
+namespace vins_mono
+{
 
-int VISUALIZE_IMU_FORWARD;
-int LOOP_CLOSURE;
-double FOCAL_LENGTH;
+/*//{ class PoseGraphNodelet */
+class PoseGraphNodelet : public nodelet::Nodelet {
 
-ros::Publisher pub_camera_pose_visual;
-ros::Publisher pub_key_odometrys;
-ros::Publisher pub_vio_path;
-nav_msgs::Path no_loop_path;
+public:
+  virtual void onInit();
 
-CameraPoseVisualization cameraposevisual(1, 0, 0, 1);
-Eigen::Vector3d last_t(-100, -100, -100);
-double last_image_time = -1;
+private:
 
-void new_sequence()
+  bool is_initialized_ = false;
+
+  queue<sensor_msgs::ImageConstPtr> image_buf;
+  queue<sensor_msgs::PointCloudConstPtr> point_buf;
+  queue<nav_msgs::Odometry::ConstPtr> pose_buf;
+  queue<Eigen::Vector3d> odometry_buf;
+  std::mutex m_buf;
+  std::mutex m_process;
+  int frame_index  = 0;
+  int sequence = 1;
+  PoseGraph posegraph;
+  int skip_first_cnt = 0;
+  int SKIP_CNT;
+  int skip_cnt = 0;
+  bool load_flag = 0;
+  bool start_flag = 0;
+  double SKIP_DIS = 0;
+  string uav_name = "";
+
+  int VISUALIZE_IMU_FORWARD;
+  int LOOP_CLOSURE;
+  double FOCAL_LENGTH;
+
+  nav_msgs::Path no_loop_path;
+
+  CameraPoseVisualization cameraposevisual;
+  Eigen::Vector3d last_t;
+  double last_image_time = -1;
+
+  ros::Publisher pub_camera_pose_visual;
+  ros::Publisher pub_key_odometrys;
+  ros::Publisher pub_vio_path;
+
+  void newSequence();
+
+  ros::Subscriber sub_image;
+  void callbackImage(const sensor_msgs::ImageConstPtr &image_msg);
+
+  ros::Subscriber sub_point;
+  void callbackPoint(const sensor_msgs::PointCloudConstPtr &point_msg);
+
+  ros::Subscriber sub_pose;
+  void callbackPose(const nav_msgs::Odometry::ConstPtr &pose_msg);
+
+  ros::Subscriber sub_imu_forward;
+  void callbackImuForward(const nav_msgs::Odometry::ConstPtr &forward_msg);
+
+  ros::Subscriber sub_relo_relative_pose;
+  void callbackReloRelativePose(const nav_msgs::Odometry::ConstPtr &pose_msg);
+
+  ros::Subscriber sub_vio;
+  void callbackVio(const nav_msgs::Odometry::ConstPtr &pose_msg);
+
+  ros::Subscriber sub_extrinsic;
+  void callbackExtrinsic(const nav_msgs::Odometry::ConstPtr &pose_msg);
+
+  void process();
+  void command();
+};
+/*//}*/
+
+/*//{ onInit() */
+void PoseGraphNodelet::onInit()
+{
+
+    const std::string node_name("PoseGraph");
+
+    ros::NodeHandle nh = nodelet::Nodelet::getMTPrivateNodeHandle();
+
+    ROS_INFO("[%s]: Initializing", ros::this_node::getName().c_str());
+
+    /* waits for the ROS to publish clock */
+    ros::Time::waitForValid();
+
+    cameraposevisual = CameraPoseVisualization(1, 0, 0, 1);
+    last_t = Eigen::Vector3d(-100, -100, -100);
+
+    nh.param<std::string>("uav_name", uav_name, "uav1");
+
+    posegraph.registerPub(nh);
+
+    // read param
+    nh.getParam("visualization_shift_x", VISUALIZATION_SHIFT_X);
+    nh.getParam("visualization_shift_y", VISUALIZATION_SHIFT_Y);
+    nh.getParam("skip_cnt", SKIP_CNT);
+    nh.getParam("skip_dis", SKIP_DIS);
+    std::string config_file;
+    nh.getParam("config_file", config_file);
+    cv::FileStorage fsSettings(config_file, cv::FileStorage::READ);
+    if(!fsSettings.isOpened())
+    {
+        ROS_ERROR("[%s]: Wrong path to settings!", ros::this_node::getName().c_str());
+        return;
+    }
+
+    double camera_visual_size = fsSettings["visualize_camera_size"];
+    cameraposevisual.setScale(camera_visual_size);
+    cameraposevisual.setLineWidth(camera_visual_size / 10.0);
+
+    cv::FileNode projection_parameters = fsSettings["projection_parameters"];
+    double mu = static_cast<double>(projection_parameters["mu"]);
+    double mv = static_cast<double>(projection_parameters["mv"]);
+    double m = (mu + mv) / 2.0;
+
+    double fx = static_cast<double>(projection_parameters["fx"]);
+    double fy = static_cast<double>(projection_parameters["fy"]);
+    double f = (fx + fy) / 2.0;
+
+    FOCAL_LENGTH = m > f ? m : f;
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
+
+    posegraph.setFocalLength(FOCAL_LENGTH);
+
+
+    LOOP_CLOSURE = fsSettings["loop_closure"];
+    int LOAD_PREVIOUS_POSE_GRAPH;
+    if (LOOP_CLOSURE)
+    {
+        ROW = fsSettings["image_height"];
+        COL = fsSettings["image_width"];
+
+        // TODO petrlmat: parametrize path to vocabulary in config
+        std::string pkg_path = ros::package::getPath("vins_mono_pose_graph");
+        string vocabulary_file = pkg_path + "/../support_files/brief_k10L6.bin";
+        ROS_INFO("[%s]: vocabulary file: %s", ros::this_node::getName().c_str(), vocabulary_file.c_str());
+        posegraph.loadVocabulary(vocabulary_file);
+
+        BRIEF_PATTERN_FILE = pkg_path + "/../support_files/brief_pattern.yml";
+        ROS_INFO("[%s]: brief pattern file: %s", ros::this_node::getName().c_str(), BRIEF_PATTERN_FILE.c_str());
+        m_camera = camodocal::CameraFactory::instance()->generateCameraFromYamlFile(config_file.c_str());
+
+        fsSettings["pose_graph_save_path"] >> POSE_GRAPH_SAVE_PATH;
+        fsSettings["output_path"] >> VINS_RESULT_PATH;
+        fsSettings["save_image"] >> DEBUG_IMAGE;
+
+        // create folder if not exists
+        FileSystemHelper::createDirectoryIfNotExists(POSE_GRAPH_SAVE_PATH.c_str());
+        FileSystemHelper::createDirectoryIfNotExists(VINS_RESULT_PATH.c_str());
+
+        VISUALIZE_IMU_FORWARD = fsSettings["visualize_imu_forward"];
+        LOAD_PREVIOUS_POSE_GRAPH = fsSettings["load_previous_pose_graph"];
+        FAST_RELOCALIZATION = fsSettings["fast_relocalization"];
+        VINS_RESULT_PATH = VINS_RESULT_PATH + "/vins_result_loop.csv";
+        std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
+        fout.close();
+        fsSettings.release();
+
+        if (LOAD_PREVIOUS_POSE_GRAPH)
+        {
+            printf("load pose graph\n");
+            m_process.lock();
+            posegraph.loadPoseGraph();
+            m_process.unlock();
+            printf("load pose graph finish\n");
+            load_flag = 1;
+        }
+        else
+        {
+            printf("no previous pose graph\n");
+            load_flag = 1;
+        }
+    }
+
+    fsSettings.release();
+
+    sub_imu_forward = nh.subscribe("vins_estimator/imu_propagate", 1, &PoseGraphNodelet::callbackImuForward, this, ros::TransportHints().tcpNoDelay());
+    sub_vio = nh.subscribe("vins_estimator/odometry", 1, &PoseGraphNodelet::callbackVio, this, ros::TransportHints().tcpNoDelay());
+    sub_image = nh.subscribe("image_in", 1, &PoseGraphNodelet::callbackImage, this, ros::TransportHints().tcpNoDelay());
+    sub_pose = nh.subscribe("vins_estimator/keyframe_pose", 1, &PoseGraphNodelet::callbackPose, this, ros::TransportHints().tcpNoDelay());
+    sub_extrinsic = nh.subscribe("vins_estimator/extrinsic", 1, &PoseGraphNodelet::callbackExtrinsic, this, ros::TransportHints().tcpNoDelay());
+    sub_point = nh.subscribe("vins_estimator/keyframe_point", 1, &PoseGraphNodelet::callbackPoint, this, ros::TransportHints().tcpNoDelay());
+    sub_relo_relative_pose = nh.subscribe("vins_estimator/relo_relative_pose", 1, &PoseGraphNodelet::callbackReloRelativePose, this, ros::TransportHints().tcpNoDelay());
+
+    pub_match_img = nh.advertise<sensor_msgs::Image>("match_image", 1);
+    pub_camera_pose_visual = nh.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 1);
+    pub_key_odometrys = nh.advertise<visualization_msgs::Marker>("key_odometrys", 1);
+    pub_vio_path = nh.advertise<nav_msgs::Path>("no_loop_path", 1);
+    pub_match_points = nh.advertise<sensor_msgs::PointCloud>("match_points", 1);
+
+    // TODO petrlmat: abstract away threads, kill them on node death
+    std::thread measurement_process = std::thread{&PoseGraphNodelet::process, this};
+    measurement_process.detach();
+
+    std::thread keyboard_command_process = std::thread{&PoseGraphNodelet::command, this};
+    keyboard_command_process.detach();
+
+    is_initialized_ = true;
+
+    ROS_INFO("[%s]: initialized", ros::this_node::getName().c_str());
+}
+/*//}*/
+
+/*//{ newSequence() */
+void PoseGraphNodelet::newSequence()
 {
     printf("new sequence\n");
     sequence++;
@@ -77,8 +258,10 @@ void new_sequence()
         odometry_buf.pop();
     m_buf.unlock();
 }
+/*//}*/
 
-void image_callback(const sensor_msgs::ImageConstPtr &image_msg)
+/*//{ callbackImage() */
+void PoseGraphNodelet::callbackImage(const sensor_msgs::ImageConstPtr &image_msg)
 {
     //ROS_INFO("image_callback!");
     if(!LOOP_CLOSURE)
@@ -94,12 +277,14 @@ void image_callback(const sensor_msgs::ImageConstPtr &image_msg)
     else if (image_msg->header.stamp.toSec() - last_image_time > 1.0 || image_msg->header.stamp.toSec() < last_image_time)
     {
         ROS_WARN("image discontinue! detect a new sequence!");
-        new_sequence();
+        newSequence();
     }
     last_image_time = image_msg->header.stamp.toSec();
 }
+/*//}*/
 
-void point_callback(const sensor_msgs::PointCloudConstPtr &point_msg)
+/*//{ callbackPoint() */
+void PoseGraphNodelet::callbackPoint(const sensor_msgs::PointCloudConstPtr &point_msg)
 {
     //ROS_INFO("point_callback!");
     if(!LOOP_CLOSURE)
@@ -118,8 +303,10 @@ void point_callback(const sensor_msgs::PointCloudConstPtr &point_msg)
     }
     */
 }
+/*//}*/
 
-void pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
+/*//{ callbackPose() */
+void PoseGraphNodelet::callbackPose(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     //ROS_INFO("pose_callback!");
     if(!LOOP_CLOSURE)
@@ -137,8 +324,10 @@ void pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
                                                        pose_msg->pose.pose.orientation.z);
     */
 }
+/*//}*/
 
-void imu_forward_callback(const nav_msgs::Odometry::ConstPtr &forward_msg)
+/*//{ callbackImuForward() */
+void PoseGraphNodelet::callbackImuForward(const nav_msgs::Odometry::ConstPtr &forward_msg)
 {
     if (VISUALIZE_IMU_FORWARD)
     {
@@ -165,7 +354,10 @@ void imu_forward_callback(const nav_msgs::Odometry::ConstPtr &forward_msg)
         cameraposevisual.publish_by(pub_camera_pose_visual, forward_msg->header);
     }
 }
-void relo_relative_pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
+/*//}*/
+
+/*//{ callbackReloRelativePose() */
+void PoseGraphNodelet::callbackReloRelativePose(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     Vector3d relative_t = Vector3d(pose_msg->pose.pose.position.x,
                                    pose_msg->pose.pose.position.y,
@@ -185,8 +377,10 @@ void relo_relative_pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
     posegraph.updateKeyFrameLoop(index, loop_info);
 
 }
+/*//}*/
 
-void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
+/*//{ callbackVio() */
+void PoseGraphNodelet::callbackVio(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     //ROS_INFO("vio_callback!");
     Vector3d vio_t(pose_msg->pose.pose.position.x, pose_msg->pose.pose.position.y, pose_msg->pose.pose.position.z);
@@ -265,8 +459,10 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
         pub_vio_path.publish(no_loop_path);
     }
 }
+/*//}*/
 
-void extrinsic_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
+/*//{ callbackExtrinsic() */
+void PoseGraphNodelet::callbackExtrinsic(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     m_process.lock();
     tic = Vector3d(pose_msg->pose.pose.position.x,
@@ -278,8 +474,10 @@ void extrinsic_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
                       pose_msg->pose.pose.orientation.z).toRotationMatrix();
     m_process.unlock();
 }
+/*//}*/
 
-void process()
+/*//{ process() */
+void PoseGraphNodelet::process()
 {
     if (!LOOP_CLOSURE)
         return;
@@ -414,8 +612,10 @@ void process()
         std::this_thread::sleep_for(dura);
     }
 }
+/*//}*/
 
-void command()
+/*//{ command() */
+void PoseGraphNodelet::command()
 {
     if (!LOOP_CLOSURE)
         return;
@@ -432,123 +632,14 @@ void command()
             // ros::shutdown();
         }
         if (c == 'n')
-            new_sequence();
+            newSequence();
 
         std::chrono::milliseconds dura(5);
         std::this_thread::sleep_for(dura);
     }
 }
+/*//}*/
 
-int main(int argc, char **argv)
-{
-    ros::init(argc, argv, "pose_graph");
-    ros::NodeHandle n("~");
-    n.param<std::string>("uav_name", uav_name, "uav1");
-    posegraph.registerPub(n);
-
-    // read param
-    n.getParam("visualization_shift_x", VISUALIZATION_SHIFT_X);
-    n.getParam("visualization_shift_y", VISUALIZATION_SHIFT_Y);
-    n.getParam("skip_cnt", SKIP_CNT);
-    n.getParam("skip_dis", SKIP_DIS);
-    std::string config_file;
-    n.getParam("config_file", config_file);
-    cv::FileStorage fsSettings(config_file, cv::FileStorage::READ);
-    if(!fsSettings.isOpened())
-    {
-        std::cerr << "ERROR: Wrong path to settings" << std::endl;
-    }
-
-    double camera_visual_size = fsSettings["visualize_camera_size"];
-    cameraposevisual.setScale(camera_visual_size);
-    cameraposevisual.setLineWidth(camera_visual_size / 10.0);
-
-    cv::FileNode projection_parameters = fsSettings["projection_parameters"];
-    double mu = static_cast<double>(projection_parameters["mu"]);
-    double mv = static_cast<double>(projection_parameters["mv"]);
-    double m = (mu + mv) / 2.0;
-
-    double fx = static_cast<double>(projection_parameters["fx"]);
-    double fy = static_cast<double>(projection_parameters["fy"]);
-    double f = (fx + fy) / 2.0;
-
-    FOCAL_LENGTH = m > f ? m : f;
-    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
-
-    posegraph.setFocalLength(FOCAL_LENGTH);
-
-
-    LOOP_CLOSURE = fsSettings["loop_closure"];
-    int LOAD_PREVIOUS_POSE_GRAPH;
-    if (LOOP_CLOSURE)
-    {
-        ROW = fsSettings["image_height"];
-        COL = fsSettings["image_width"];
-        std::string pkg_path = ros::package::getPath("pose_graph");
-        string vocabulary_file = pkg_path + "/../support_files/brief_k10L6.bin";
-        cout << "vocabulary_file" << vocabulary_file << endl;
-        posegraph.loadVocabulary(vocabulary_file);
-
-        BRIEF_PATTERN_FILE = pkg_path + "/../support_files/brief_pattern.yml";
-        cout << "BRIEF_PATTERN_FILE" << BRIEF_PATTERN_FILE << endl;
-        m_camera = camodocal::CameraFactory::instance()->generateCameraFromYamlFile(config_file.c_str());
-
-        fsSettings["pose_graph_save_path"] >> POSE_GRAPH_SAVE_PATH;
-        fsSettings["output_path"] >> VINS_RESULT_PATH;
-        fsSettings["save_image"] >> DEBUG_IMAGE;
-
-        // create folder if not exists
-        FileSystemHelper::createDirectoryIfNotExists(POSE_GRAPH_SAVE_PATH.c_str());
-        FileSystemHelper::createDirectoryIfNotExists(VINS_RESULT_PATH.c_str());
-
-        VISUALIZE_IMU_FORWARD = fsSettings["visualize_imu_forward"];
-        LOAD_PREVIOUS_POSE_GRAPH = fsSettings["load_previous_pose_graph"];
-        FAST_RELOCALIZATION = fsSettings["fast_relocalization"];
-        VINS_RESULT_PATH = VINS_RESULT_PATH + "/vins_result_loop.csv";
-        std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
-        fout.close();
-        fsSettings.release();
-
-        if (LOAD_PREVIOUS_POSE_GRAPH)
-        {
-            printf("load pose graph\n");
-            m_process.lock();
-            posegraph.loadPoseGraph();
-            m_process.unlock();
-            printf("load pose graph finish\n");
-            load_flag = 1;
-        }
-        else
-        {
-            printf("no previous pose graph\n");
-            load_flag = 1;
-        }
-    }
-
-    fsSettings.release();
-
-    ros::Subscriber sub_imu_forward = n.subscribe("vins_estimator/imu_propagate", 1, imu_forward_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_vio = n.subscribe("vins_estimator/odometry", 1, vio_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_image = n.subscribe("image_in", 1, image_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_pose = n.subscribe("vins_estimator/keyframe_pose", 1, pose_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_extrinsic = n.subscribe("vins_estimator/extrinsic", 1, extrinsic_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_point = n.subscribe("vins_estimator/keyframe_point", 1, point_callback, ros::TransportHints().tcpNoDelay());
-    ros::Subscriber sub_relo_relative_pose = n.subscribe("vins_estimator/relo_relative_pose", 1, relo_relative_pose_callback, ros::TransportHints().tcpNoDelay());
-
-    pub_match_img = n.advertise<sensor_msgs::Image>("match_image", 1);
-    pub_camera_pose_visual = n.advertise<visualization_msgs::MarkerArray>("camera_pose_visual", 1);
-    pub_key_odometrys = n.advertise<visualization_msgs::Marker>("key_odometrys", 1);
-    pub_vio_path = n.advertise<nav_msgs::Path>("no_loop_path", 1);
-    pub_match_points = n.advertise<sensor_msgs::PointCloud>("match_points", 1);
-
-    std::thread measurement_process;
-    std::thread keyboard_command_process;
-
-    measurement_process = std::thread(process);
-    keyboard_command_process = std::thread(command);
-
-
-    ros::spin();
-
-    return 0;
 }
+/* every nodelet must export its class as nodelet plugin */
+PLUGINLIB_EXPORT_CLASS(vins_mono::PoseGraphNodelet, nodelet::Nodelet);

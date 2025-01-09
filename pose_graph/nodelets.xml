@@ -1,0 +1,5 @@
+<library path="lib/libVinsMonoPoseGraph">
+  <class name="vins_mono/PoseGraph" type="vins_mono::PoseGraphNodelet" base_class_type="nodelet::Nodelet">
+    <description>PoseGraph nodelet</description>
+  </class>
+</library>
