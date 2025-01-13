@@ -610,15 +610,18 @@ void Estimator::double2vector()
                           para_SpeedBias[i][8]);
     }
 
-    for (int i = 0; i < NUM_OF_CAM; i++)
+    if (ESTIMATE_EXTRINSIC > 0) 
     {
-        tic[i] = Vector3d(para_Ex_Pose[i][0],
-                          para_Ex_Pose[i][1],
-                          para_Ex_Pose[i][2]);
-        ric[i] = Quaterniond(para_Ex_Pose[i][6],
-                             para_Ex_Pose[i][3],
-                             para_Ex_Pose[i][4],
-                             para_Ex_Pose[i][5]).toRotationMatrix();
+      for (int i = 0; i < NUM_OF_CAM; i++)
+      {
+          tic[i] = Vector3d(para_Ex_Pose[i][0],
+                            para_Ex_Pose[i][1],
+                            para_Ex_Pose[i][2]);
+          ric[i] = Quaterniond(para_Ex_Pose[i][6],
+                               para_Ex_Pose[i][3],
+                               para_Ex_Pose[i][4],
+                               para_Ex_Pose[i][5]).toRotationMatrix();
+      }
     }
 
     VectorXd dep = f_manager.getDepthVector();
