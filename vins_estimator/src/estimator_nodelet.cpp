@@ -27,54 +27,54 @@ public:
 
 private:
 
-Estimator estimator;
+  Estimator estimator;
 
-bool is_initialized_ = false;
+  bool is_initialized_ = false;
 
-std::condition_variable con;
-double current_time = -1;
-queue<sensor_msgs::ImuConstPtr> imu_buf;
-queue<sensor_msgs::PointCloudConstPtr> feature_buf;
-queue<sensor_msgs::PointCloudConstPtr> relo_buf;
-int sum_of_wait = 0;
+  std::condition_variable con;
+  double current_time = -1;
+  queue<sensor_msgs::ImuConstPtr> imu_buf;
+  queue<sensor_msgs::PointCloudConstPtr> feature_buf;
+  queue<sensor_msgs::PointCloudConstPtr> relo_buf;
+  int sum_of_wait = 0;
 
-std::mutex m_buf;
-std::mutex m_state;
-std::mutex i_buf;
-std::mutex m_estimator;
+  std::mutex m_buf;
+  std::mutex m_state;
+  std::mutex i_buf;
+  std::mutex m_estimator;
 
-double latest_time;
-Eigen::Vector3d tmp_P;
-Eigen::Quaterniond tmp_Q;
-Eigen::Vector3d tmp_V;
-Eigen::Vector3d tmp_Ba;
-Eigen::Vector3d tmp_Bg;
-Eigen::Vector3d acc_0;
-Eigen::Vector3d gyr_0;
-bool init_feature = 0;
-bool init_imu = 1;
-double last_imu_t = 0;
-string uav_name = "";
+  double latest_time;
+  Eigen::Vector3d tmp_P;
+  Eigen::Quaterniond tmp_Q;
+  Eigen::Vector3d tmp_V;
+  Eigen::Vector3d tmp_Ba;
+  Eigen::Vector3d tmp_Bg;
+  Eigen::Vector3d acc_0;
+  Eigen::Vector3d gyr_0;
+  bool init_feature = 0;
+  bool init_imu = 1;
+  double last_imu_t = 0;
+  string uav_name = "";
 
-void predict(const sensor_msgs::ImuConstPtr &imu_msg);
+  void predict(const sensor_msgs::ImuConstPtr &imu_msg);
 
-void update();
+  void update();
 
-std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>> getMeasurements();
+  std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>> getMeasurements();
 
-ros::Subscriber sub_imu_; 
-void callbackImu(const sensor_msgs::ImuConstPtr &imu_msg);
+  ros::Subscriber sub_imu_; 
+  void callbackImu(const sensor_msgs::ImuConstPtr &imu_msg);
 
-ros::Subscriber sub_features_; 
-void callbackFeatures(const sensor_msgs::PointCloudConstPtr &feature_msg);
+  ros::Subscriber sub_features_; 
+  void callbackFeatures(const sensor_msgs::PointCloudConstPtr &feature_msg);
 
-ros::Subscriber sub_restart_; 
-void callbackRestart(const std_msgs::BoolConstPtr &restart_msg);
+  ros::Subscriber sub_restart_; 
+  void callbackRestart(const std_msgs::BoolConstPtr &restart_msg);
 
-ros::Subscriber sub_relo_points_; 
-void callbackRelocalization(const sensor_msgs::PointCloudConstPtr &points_msg);
+  ros::Subscriber sub_relo_points_; 
+  void callbackRelocalization(const sensor_msgs::PointCloudConstPtr &points_msg);
 
-void process();
+  void process();
 
 };
 /*//}*/
@@ -87,7 +87,7 @@ void VinsEstimator::onInit()
 
     ros::NodeHandle nh = nodelet::Nodelet::getMTPrivateNodeHandle();
 
-    ROS_INFO("[%s]: Initializing", node_name.c_str());
+    ROS_INFO("[%s]: Initializing", ros::this_node::getName().c_str());
 
     /* waits for the ROS to publish clock */
     ros::Time::waitForValid();

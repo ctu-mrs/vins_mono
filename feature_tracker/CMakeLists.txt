@@ -33,6 +33,7 @@ find_package(OpenCV REQUIRED)
 find_package(Eigen3)
 
 catkin_package(
+  LIBRARIES ${LIBRARIES}
   CATKIN_DEPENDS ${CATKIN_DEPENDENCIES}
   )
 
