@@ -70,6 +70,7 @@ void predict(const sensor_msgs::ImuConstPtr &imu_msg)
 
     Eigen::Vector3d un_acc_1 = tmp_Q * (linear_acceleration - tmp_Ba) - estimator.g;
 
+    // TODO petrlmat: parametrize the weighting?
     Eigen::Vector3d un_acc = 0.5 * (un_acc_0 + un_acc_1);
 
     tmp_P = tmp_P + dt * tmp_V + 0.5 * dt * dt * un_acc;
@@ -247,6 +248,10 @@ void process()
                     double dt = t - current_time;
                     ROS_ASSERT(dt >= 0);
                     current_time = t;
+                    if (dt < 0.00001) {
+                      ROS_INFO("[%s]: invalid dt: %f", ros::this_node::getName().c_str(), dt);
+                      continue;
+                    }
                     dx = imu_msg->linear_acceleration.x;
                     dy = imu_msg->linear_acceleration.y;
                     dz = imu_msg->linear_acceleration.z;
@@ -265,6 +270,14 @@ void process()
                     ROS_ASSERT(dt_1 >= 0);
                     ROS_ASSERT(dt_2 >= 0);
                     ROS_ASSERT(dt_1 + dt_2 > 0);
+                    if (dt_1 < 0.00001) {
+                      ROS_INFO("[%s]: invalid dt_1: %f", ros::this_node::getName().c_str(), dt_1);
+                      continue;
+                    }
+                    if (dt_2 < 0.00001) {
+                      ROS_INFO("[%s]: invalid dt_2: %f", ros::this_node::getName().c_str(), dt_2);
+                      continue;
+                    }
                     double w1 = dt_2 / (dt_1 + dt_2);
                     double w2 = dt_1 / (dt_1 + dt_2);
                     dx = w1 * dx + w2 * imu_msg->linear_acceleration.x;

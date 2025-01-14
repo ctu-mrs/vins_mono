@@ -233,7 +233,7 @@ bool MotionEstimator::solveRelativeRT(const vector<pair<Vector3d, Vector3d>> &co
         }
         else
         {
-            ROS_INFO_THROTTLE(1.0, "[VinsEstimator]: not enough inliers to solve RT  %d <= 12", inlier_cnt);
+            ROS_INFO("[VinsEstimator]: not enough inliers to solve RT  %d <= 12", inlier_cnt);
             return false;
         }
     }
