@@ -1,5 +1,7 @@
 #include <vins_estimator/factor/projection_td_factor.h>
 
+using namespace vins_mono::vins_estimator;
+
 Eigen::Matrix2d ProjectionTdFactor::sqrt_info;
 double ProjectionTdFactor::sum_t;
 

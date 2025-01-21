@@ -4,7 +4,10 @@
 #include <vins_estimator/parameters.h>
 
 #include <ceres/ceres.h>
+
 using namespace Eigen;
+
+using namespace vins_mono::vins_estimator;
 
 class IntegrationBase
 {

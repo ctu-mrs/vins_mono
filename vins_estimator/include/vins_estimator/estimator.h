@@ -23,6 +23,8 @@
 #include <vins_estimator/factor/projection_td_factor.h>
 #include <vins_estimator/factor/marginalization_factor.h>
 
+using namespace vins_mono::vins_estimator;
+
 class Estimator
 {
   public:

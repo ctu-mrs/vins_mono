@@ -9,6 +9,8 @@
 
 #include <vins_estimator/utility/utility.h>
 
+namespace vins_mono {
+  namespace vins_estimator {
 const int WINDOW_SIZE = 10;
 const int NUM_OF_CAM = 1;
 const int NUM_OF_F = 1000;
@@ -69,3 +71,6 @@ enum NoiseOrder
     O_AW = 6,
     O_GW = 9
 };
+
+}
+}

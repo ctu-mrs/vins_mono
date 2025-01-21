@@ -1,5 +1,8 @@
 #include <vins_estimator/parameters.h>
 
+namespace vins_mono {
+  namespace vins_estimator {
+
 double INIT_DEPTH;
 double MIN_PARALLAX;
 double ACC_N, ACC_W;
@@ -153,4 +156,7 @@ void readParameters(ros::NodeHandle &n)
     }
     
     fsSettings.release();
+}
+
+}
 }

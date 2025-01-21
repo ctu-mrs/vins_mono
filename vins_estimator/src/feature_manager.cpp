@@ -1,5 +1,7 @@
 #include <vins_estimator/feature_manager.h>
 
+using namespace vins_mono::vins_estimator;
+
 /*//{ endFrame() */
 int FeaturePerId::endFrame()
 {

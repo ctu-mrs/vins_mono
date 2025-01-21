@@ -1,5 +1,7 @@
 #include <vins_estimator/estimator.h>
 
+using namespace vins_mono::vins_estimator;
+
 /*//{ Estimator() */
 Estimator::Estimator(): f_manager{Rs}
 {
