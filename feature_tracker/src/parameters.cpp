@@ -1,4 +1,4 @@
-#include "parameters.h"
+#include <feature_tracker/parameters.h>
 
 std::vector<std::string> CAM_NAMES;
 std::string FISHEYE_MASK;
@@ -17,6 +17,7 @@ double FOCAL_LENGTH;
 int FISHEYE;
 bool PUB_THIS_FRAME;
 
+/*//{ readParam() */
 template <typename T>
 T readParam(ros::NodeHandle &n, std::string name)
 {
@@ -32,7 +33,9 @@ T readParam(ros::NodeHandle &n, std::string name)
     }
     return ans;
 }
+/*//}*/
 
+/*//{ readParameters() */
 void readParameters(ros::NodeHandle &n)
 {
     std::string config_file;
@@ -78,6 +81,5 @@ void readParameters(ros::NodeHandle &n)
         FREQ = 100;
 
     fsSettings.release();
-
-
 }
+/*//}*/

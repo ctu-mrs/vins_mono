@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <chrono>
 
+/*//{ class TicToc */
 class TicToc
 {
   public:
@@ -27,3 +28,5 @@ class TicToc
   private:
     std::chrono::time_point<std::chrono::system_clock> start, end;
 };
+/*//}*/
+

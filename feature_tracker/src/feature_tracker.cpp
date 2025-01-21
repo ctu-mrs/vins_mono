@@ -1,7 +1,8 @@
-#include "feature_tracker.h"
+#include <feature_tracker/feature_tracker.h>
 
 int FeatureTracker::n_id = 0;
 
+/*//{ inBorder() */
 bool inBorder(const cv::Point2f &pt)
 {
     const int BORDER_SIZE = 1;
@@ -9,7 +10,9 @@ bool inBorder(const cv::Point2f &pt)
     int img_y = cvRound(pt.y);
     return BORDER_SIZE <= img_x && img_x < COL - BORDER_SIZE && BORDER_SIZE <= img_y && img_y < ROW - BORDER_SIZE;
 }
+/*//}*/
 
+/*//{reduceVector() */
 void reduceVector(vector<cv::Point2f> &v, vector<uchar> status)
 {
     int j = 0;
@@ -18,7 +21,9 @@ void reduceVector(vector<cv::Point2f> &v, vector<uchar> status)
             v[j++] = v[i];
     v.resize(j);
 }
+/*//}*/
 
+/*//{ reduceVector() */
 void reduceVector(vector<int> &v, vector<uchar> status)
 {
     int j = 0;
@@ -27,12 +32,15 @@ void reduceVector(vector<int> &v, vector<uchar> status)
             v[j++] = v[i];
     v.resize(j);
 }
+/*//}*/
 
-
+/*//{ FeatureTracker() */
 FeatureTracker::FeatureTracker()
 {
 }
+/*//}*/
 
+/*//{ setMask() */
 void FeatureTracker::setMask()
 {
     if(FISHEYE)
@@ -67,7 +75,9 @@ void FeatureTracker::setMask()
         }
     }
 }
+/*//}*/
 
+/*//{ addPoints() */
 void FeatureTracker::addPoints()
 {
     for (auto &p : n_pts)
@@ -77,7 +87,9 @@ void FeatureTracker::addPoints()
         track_cnt.push_back(1);
     }
 }
+/*//}*/
 
+/*//{ readImage() */
 void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
 {
     cv::Mat img;
@@ -165,7 +177,9 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
     undistortedPoints();
     prev_time = cur_time;
 }
+/*//}*/
 
+/*//{ rejectWithF()*/
 void FeatureTracker::rejectWithF()
 {
     if (forw_pts.size() >= 8)
@@ -200,7 +214,9 @@ void FeatureTracker::rejectWithF()
         ROS_DEBUG("FM ransac costs: %fms", t_f.toc());
     }
 }
+/*//}*/
 
+/*//{ updateID() */
 bool FeatureTracker::updateID(unsigned int i)
 {
     if (i < ids.size())
@@ -212,13 +228,17 @@ bool FeatureTracker::updateID(unsigned int i)
     else
         return false;
 }
+/*//}*/
 
+/*//{ readIntrinsicParameter() */
 void FeatureTracker::readIntrinsicParameter(const string &calib_file)
 {
     ROS_INFO("reading paramerter of camera %s", calib_file.c_str());
     m_camera = CameraFactory::instance()->generateCameraFromYamlFile(calib_file);
 }
+/*//}*/
 
+/*//{ showUndistortion() */
 void FeatureTracker::showUndistortion(const string &name)
 {
     cv::Mat undistortedImg(ROW + 600, COL + 600, CV_8UC1, cv::Scalar(0));
@@ -254,7 +274,9 @@ void FeatureTracker::showUndistortion(const string &name)
     cv::imshow(name, undistortedImg);
     cv::waitKey(0);
 }
+/*//}*/
 
+/*//{ undistortedPoints() */
 void FeatureTracker::undistortedPoints()
 {
     cur_un_pts.clear();
@@ -304,3 +326,4 @@ void FeatureTracker::undistortedPoints()
     }
     prev_un_pts_map = cur_un_pts_map;
 }
+/*//}*/
