@@ -1,5 +1,7 @@
 #include <feature_tracker/feature_tracker.h>
 
+using namespace vins_mono::feature_tracker;
+
 int FeatureTracker::n_id = 0;
 
 /*//{ inBorder() */

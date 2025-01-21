@@ -21,6 +21,8 @@ using namespace std;
 using namespace camodocal;
 using namespace Eigen;
 
+using namespace vins_mono::feature_tracker;
+
 bool inBorder(const cv::Point2f &pt);
 
 void reduceVector(vector<cv::Point2f> &v, vector<uchar> status);

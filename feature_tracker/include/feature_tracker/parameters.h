@@ -3,6 +3,8 @@
 #include <ros/ros.h>
 #include <opencv2/highgui/highgui.hpp>
 
+namespace vins_mono {
+  namespace feature_tracker {
 extern int ROW;
 extern int COL;
 extern double FOCAL_LENGTH;
@@ -23,3 +25,6 @@ extern int FISHEYE;
 extern bool PUB_THIS_FRAME;
 
 void readParameters(ros::NodeHandle &n);
+
+}
+}

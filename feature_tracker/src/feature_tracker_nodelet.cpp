@@ -17,6 +17,8 @@
 namespace vins_mono
 {
 
+  using namespace feature_tracker;
+
 /*//{ class FeatureTrackerNodelet */
 class FeatureTrackerNodelet : public nodelet::Nodelet {
 

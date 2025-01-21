@@ -10,6 +10,8 @@
 
 #define SHOW_UNDISTORTION 0
 
+using namespace vins_mono::feature_tracker;
+
 vector<uchar> r_status;
 vector<float> r_err;
 queue<sensor_msgs::ImageConstPtr> img_buf;

@@ -1,5 +1,8 @@
 #include <feature_tracker/parameters.h>
 
+namespace vins_mono {
+  namespace feature_tracker {
+
 std::vector<std::string> CAM_NAMES;
 std::string FISHEYE_MASK;
 std::string FISHEYE_MASK_NAME;
@@ -83,3 +86,6 @@ void readParameters(ros::NodeHandle &n)
     fsSettings.release();
 }
 /*//}*/
+
+}
+}
