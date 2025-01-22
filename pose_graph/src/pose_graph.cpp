@@ -1,5 +1,7 @@
 #include <pose_graph/pose_graph.h>
 
+using namespace vins_mono::pose_graph;
+
 /*//{ PoseGraph() */
 PoseGraph::PoseGraph()
 {

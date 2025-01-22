@@ -32,6 +32,8 @@
 using namespace DVision;
 using namespace DBoW2;
 
+using namespace vins_mono::pose_graph;
+
 /*//{ class PoseGraph */
 class PoseGraph
 {

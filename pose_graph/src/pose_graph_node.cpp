@@ -27,6 +27,8 @@
 
 using namespace std;
 
+using namespace vins_mono::pose_graph;
+
 queue<sensor_msgs::ImageConstPtr> image_buf;
 queue<sensor_msgs::PointCloudConstPtr> point_buf;
 queue<nav_msgs::Odometry::ConstPtr> pose_buf;

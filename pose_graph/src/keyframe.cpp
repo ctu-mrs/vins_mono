@@ -1,5 +1,7 @@
 #include <pose_graph/keyframe.h>
 
+using namespace vins_mono::pose_graph;
+
 /*//{ reduceVector() */
 template <typename Derived>
 static void reduceVector(vector<Derived> &v, vector<uchar> status)

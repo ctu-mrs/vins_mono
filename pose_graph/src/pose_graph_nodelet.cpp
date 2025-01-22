@@ -34,6 +34,8 @@ using namespace std;
 
 namespace vins_mono
 {
+  
+  using namespace pose_graph;
 
 /*//{ class PoseGraphNodelet */
 class PoseGraphNodelet : public nodelet::Nodelet {

@@ -21,6 +21,8 @@ using namespace Eigen;
 using namespace std;
 using namespace DVision;
 
+using namespace vins_mono::pose_graph;
+
 /*//{ class BriefExtractor */
 class BriefExtractor
 {
