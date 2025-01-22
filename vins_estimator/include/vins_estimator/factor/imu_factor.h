@@ -9,6 +9,8 @@
 
 #include <ceres/ceres.h>
 
+using namespace vins_mono::vins_estimator;
+
 class IMUFactor : public ceres::SizedCostFunction<15, 7, 9, 7, 9>
 {
   public:

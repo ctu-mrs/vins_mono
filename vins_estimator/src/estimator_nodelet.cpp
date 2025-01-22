@@ -19,6 +19,8 @@
 namespace vins_mono
 {
 
+using namespace vins_estimator;
+
 /*//{ class VinsEstimator */
 class VinsEstimator : public nodelet::Nodelet {
 

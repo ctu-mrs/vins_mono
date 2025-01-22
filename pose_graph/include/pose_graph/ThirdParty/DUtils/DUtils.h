@@ -38,11 +38,11 @@ namespace DUtils
 }
 
 // Exception
-#include "DException.h"
+#include <pose_graph/ThirdParty/DUtils/DException.h>
 
-#include "Timestamp.h"
+#include <pose_graph/ThirdParty/DUtils/Timestamp.h>
 // Random numbers
-#include "Random.h"
+#include <pose_graph/ThirdParty/DUtils/Random.h>
 
 
 #endif

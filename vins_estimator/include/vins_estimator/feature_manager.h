@@ -16,6 +16,9 @@
 using namespace std;
 using namespace Eigen;
 
+using namespace vins_mono::vins_estimator;
+
+/*//{ class FeaturePerFrame */
 class FeaturePerFrame
 {
   public:
@@ -41,7 +44,9 @@ class FeaturePerFrame
     VectorXd b;
     double dep_gradient;
 };
+/*//}*/
 
+/*//{ class FeaturePerId */
 class FeaturePerId
 {
   public:
@@ -65,7 +70,9 @@ class FeaturePerId
 
     int endFrame();
 };
+/*//}*/
 
+/*//{ class FeatureManager */
 class FeatureManager
 {
   public:
@@ -99,5 +106,6 @@ class FeatureManager
     const Matrix3d *Rs;
     Matrix3d ric[NUM_OF_CAM];
 };
+/*//}*/
 
 #endif

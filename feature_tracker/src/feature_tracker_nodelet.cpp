@@ -10,12 +10,14 @@
 
 #include <cv_bridge/cv_bridge.h>
 
-#include "feature_tracker.h"
+#include <feature_tracker/feature_tracker.h>
 
 #define SHOW_UNDISTORTION 0
 
 namespace vins_mono
 {
+
+  using namespace feature_tracker;
 
 /*//{ class FeatureTrackerNodelet */
 class FeatureTrackerNodelet : public nodelet::Nodelet {

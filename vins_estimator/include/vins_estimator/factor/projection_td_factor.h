@@ -6,7 +6,7 @@
 
 #include <vins_estimator/utility/utility.h>
 #include <vins_estimator/utility/tic_toc.h>
-#include <vins_estimator//parameters.h>
+#include <vins_estimator/parameters.h>
 
 class ProjectionTdFactor : public ceres::SizedCostFunction<2, 7, 7, 7, 1, 1>
 {

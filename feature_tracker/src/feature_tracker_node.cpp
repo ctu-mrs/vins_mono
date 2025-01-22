@@ -6,9 +6,11 @@
 #include <std_msgs/Bool.h>
 #include <cv_bridge/cv_bridge.h>
 
-#include "feature_tracker.h"
+#include <feature_tracker/feature_tracker.h>
 
 #define SHOW_UNDISTORTION 0
+
+using namespace vins_mono::feature_tracker;
 
 vector<uchar> r_status;
 vector<float> r_err;
@@ -25,6 +27,7 @@ double last_image_time = 0;
 bool init_pub = 0;
 string uav_name = "";
 
+/*//{ img_callback() */
 void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
 {
 
@@ -216,7 +219,9 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
     }
     ROS_DEBUG("whole feature tracker processing costs: %f", t_r.toc());
 }
+/*//}*/
 
+/*//{ main() */
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "feature_tracker");
@@ -268,7 +273,7 @@ int main(int argc, char **argv)
     ros::spin();
     return 0;
 }
-
+/*//}*/
 
 // new points velocity is 0, pub or not?
 // track cnt > 1 pub?

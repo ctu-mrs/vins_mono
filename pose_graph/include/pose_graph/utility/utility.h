@@ -1,4 +1,5 @@
 #pragma once
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <libgen.h>
@@ -9,9 +10,12 @@
 #include <cstring>
 #include <eigen3/Eigen/Dense>
 
+/*//{ class Utility */
 class Utility
 {
   public:
+
+/*//{ deltaQ() */
     template <typename Derived>
     static Eigen::Quaternion<typename Derived::Scalar> deltaQ(const Eigen::MatrixBase<Derived> &theta)
     {
@@ -26,7 +30,9 @@ class Utility
         dq.z() = half_theta.z();
         return dq;
     }
+/*//}*/
 
+/*//{ skewSymmetric() */
     template <typename Derived>
     static Eigen::Matrix<typename Derived::Scalar, 3, 3> skewSymmetric(const Eigen::MatrixBase<Derived> &q)
     {
@@ -36,7 +42,9 @@ class Utility
             -q(1), q(0), typename Derived::Scalar(0);
         return ans;
     }
+/*//}*/
 
+/*//{ positify() */
     template <typename Derived>
     static Eigen::Quaternion<typename Derived::Scalar> positify(const Eigen::QuaternionBase<Derived> &q)
     {
@@ -46,7 +54,9 @@ class Utility
         //return q.template w() >= (typename Derived::Scalar)(0.0) ? q : Eigen::Quaternion<typename Derived::Scalar>(-q.w(), -q.x(), -q.y(), -q.z());
         return q;
     }
+/*//}*/
 
+/*//{ Qleft() */
     template <typename Derived>
     static Eigen::Matrix<typename Derived::Scalar, 4, 4> Qleft(const Eigen::QuaternionBase<Derived> &q)
     {
@@ -56,7 +66,9 @@ class Utility
         ans.template block<3, 1>(1, 0) = qq.vec(), ans.template block<3, 3>(1, 1) = qq.w() * Eigen::Matrix<typename Derived::Scalar, 3, 3>::Identity() + skewSymmetric(qq.vec());
         return ans;
     }
+/*//}*/
 
+/*//{ Qright() */
     template <typename Derived>
     static Eigen::Matrix<typename Derived::Scalar, 4, 4> Qright(const Eigen::QuaternionBase<Derived> &p)
     {
@@ -66,7 +78,9 @@ class Utility
         ans.template block<3, 1>(1, 0) = pp.vec(), ans.template block<3, 3>(1, 1) = pp.w() * Eigen::Matrix<typename Derived::Scalar, 3, 3>::Identity() - skewSymmetric(pp.vec());
         return ans;
     }
+/*//}*/
 
+/*//{ R2ypr() */
     static Eigen::Vector3d R2ypr(const Eigen::Matrix3d &R)
     {
         Eigen::Vector3d n = R.col(0);
@@ -83,7 +97,9 @@ class Utility
 
         return ypr / M_PI * 180.0;
     }
+/*//}*/
 
+/*//{ ypr2R() */
     template <typename Derived>
     static Eigen::Matrix<typename Derived::Scalar, 3, 3> ypr2R(const Eigen::MatrixBase<Derived> &ypr)
     {
@@ -110,27 +126,37 @@ class Utility
 
         return Rz * Ry * Rx;
     }
+/*//}*/
 
+/*//{ g2R() */
     static Eigen::Matrix3d g2R(const Eigen::Vector3d &g);
+/*//}*/
 
+/*//{ struct uint_ */
     template <size_t N>
     struct uint_
     {
     };
+/*//}*/
 
+/*//{ unroller() */
     template <size_t N, typename Lambda, typename IterT>
     void unroller(const Lambda &f, const IterT &iter, uint_<N>)
     {
         unroller(f, iter, uint_<N - 1>());
         f(iter + N);
     }
+/*//}*/
 
+/*//{ unroller() */
     template <typename Lambda, typename IterT>
     void unroller(const Lambda &f, const IterT &iter, uint_<0>)
     {
         f(iter);
     }
+/*//}*/
 
+/*//{ normalizeAngle() */
     template <typename T>
     static T normalizeAngle(const T& angle_degrees) {
       T two_pi(2.0 * 180);
@@ -141,8 +167,11 @@ class Utility
         return angle_degrees +
             two_pi * std::floor((-angle_degrees + T(180)) / two_pi);
     };
+/*//}*/
 };
+/*//}*/
 
+/*//{ class FileSystemHelper */
 class FileSystemHelper
 {
   public:
@@ -183,3 +212,4 @@ class FileSystemHelper
         return ( info.st_mode & S_IFDIR ) ? 0 : 1;
     }
 };
+/*//}*/

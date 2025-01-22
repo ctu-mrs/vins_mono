@@ -1,4 +1,4 @@
-#include "CameraPoseVisualization.h"
+#include <pose_graph/utility/CameraPoseVisualization.h>
 
 const Eigen::Vector3d CameraPoseVisualization::imlt = Eigen::Vector3d(-1.0, -0.5, 1.0);
 const Eigen::Vector3d CameraPoseVisualization::imrt = Eigen::Vector3d( 1.0, -0.5, 1.0);
@@ -9,16 +9,21 @@ const Eigen::Vector3d CameraPoseVisualization::lt1 = Eigen::Vector3d(-0.7, -0.2,
 const Eigen::Vector3d CameraPoseVisualization::lt2 = Eigen::Vector3d(-1.0, -0.2, 1.0);
 const Eigen::Vector3d CameraPoseVisualization::oc = Eigen::Vector3d(0.0, 0.0, 0.0);
 
+/*//{ Eigen2Point() */
 void Eigen2Point(const Eigen::Vector3d& v, geometry_msgs::Point& p) {
     p.x = v.x();
     p.y = v.y();
     p.z = v.z();
 }
+/*//}*/
 
+/*//{ CameraPoseVisualization() */
 CameraPoseVisualization::CameraPoseVisualization() {
   CameraPoseVisualization(1, 0, 0, 1);
 }
+/*//}*/
 
+/*//{ CameraPoseVisualization() */
 CameraPoseVisualization::CameraPoseVisualization(float r, float g, float b, float a)
     : m_marker_ns("CameraPoseVisualization"), m_scale(0.2), m_line_width(0.01) {
     m_image_boundary_color.r = r;
@@ -32,27 +37,39 @@ CameraPoseVisualization::CameraPoseVisualization(float r, float g, float b, floa
     LOOP_EDGE_NUM = 20;
     tmp_loop_edge_num = 1;
 }
+/*//}*/
 
+/*//{ setImageBoundaryColor() */
 void CameraPoseVisualization::setImageBoundaryColor(float r, float g, float b, float a) {
     m_image_boundary_color.r = r;
     m_image_boundary_color.g = g;
     m_image_boundary_color.b = b;
     m_image_boundary_color.a = a;
 }
+/*//}*/
 
+/*//{ setOpticalCenterConnectorColor() */
 void CameraPoseVisualization::setOpticalCenterConnectorColor(float r, float g, float b, float a) {
     m_optical_center_connector_color.r = r;
     m_optical_center_connector_color.g = g;
     m_optical_center_connector_color.b = b;
     m_optical_center_connector_color.a = a;
 }
+/*//}*/
 
+/*//{ setScale() */
 void CameraPoseVisualization::setScale(double s) {
     m_scale = s;
 }
+/*//}*/
+
+/*//{ setLineWidth() */
 void CameraPoseVisualization::setLineWidth(double width) {
     m_line_width = width;
 }
+/*//}*/
+
+/*//{ add_edge() */
 void CameraPoseVisualization::add_edge(const Eigen::Vector3d& p0, const Eigen::Vector3d& p1){
     visualization_msgs::Marker marker;
 
@@ -75,7 +92,9 @@ void CameraPoseVisualization::add_edge(const Eigen::Vector3d& p0, const Eigen::V
 
     m_markers.push_back(marker);
 }
+/*//}*/
 
+/*//{ add_loopedge() */
 void CameraPoseVisualization::add_loopedge(const Eigen::Vector3d& p0, const Eigen::Vector3d& p1){
     //m_markers.clear();
     visualization_msgs::Marker marker;
@@ -105,8 +124,9 @@ void CameraPoseVisualization::add_loopedge(const Eigen::Vector3d& p0, const Eige
 
     m_markers.push_back(marker);
 }
+/*//}*/
 
-
+/*//{ add_pose() */
 void CameraPoseVisualization::add_pose(const Eigen::Vector3d& p, const Eigen::Quaterniond& q) {
     visualization_msgs::Marker marker;
 
@@ -192,13 +212,17 @@ void CameraPoseVisualization::add_pose(const Eigen::Vector3d& p, const Eigen::Qu
 
     m_markers.push_back(marker);
 }
+/*//}*/
 
+/*//{ reset() */
 void CameraPoseVisualization::reset() {
 	m_markers.clear();
     //image.points.clear();
     //image.colors.clear();
 }
+/*//}*/
 
+/*//{ publish_by() */
 void CameraPoseVisualization::publish_by( ros::Publisher &pub, const std_msgs::Header &header ) {
 	visualization_msgs::MarkerArray markerArray_msg;
 	//int k = (int)m_markers.size();
@@ -219,12 +243,17 @@ void CameraPoseVisualization::publish_by( ros::Publisher &pub, const std_msgs::H
   
 	pub.publish(markerArray_msg);
 }
+/*//}*/
 
+/*//{ publish_image_by() */
 void CameraPoseVisualization::publish_image_by( ros::Publisher &pub, const std_msgs::Header &header ) {
     image.header = header;
 
     pub.publish(image);
 }
+/*//}*/
+
+/*//{ add_image() */
 /*
 void CameraPoseVisualization::add_image(const Eigen::Vector3d& T, const Eigen::Matrix3d& R, const cv::Mat &src)
 {
@@ -320,3 +349,4 @@ void CameraPoseVisualization::add_image(const Eigen::Vector3d& T, const Eigen::M
     }
 }
 */
+/*//}*/

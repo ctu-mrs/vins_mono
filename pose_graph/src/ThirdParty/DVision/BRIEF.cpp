@@ -10,8 +10,8 @@
  *
  */
 
-#include "BRIEF.h"
-#include "../DUtils/DUtils.h"
+#include <pose_graph/ThirdParty/DVision/BRIEF.h>
+#include <pose_graph/ThirdParty/DUtils/DUtils.h>
 #include <boost/dynamic_bitset.hpp>
 #include <vector>
 

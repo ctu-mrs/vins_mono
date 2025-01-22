@@ -60,12 +60,12 @@ namespace DBoW2
 {
 }
 
-#include "TemplatedVocabulary.h"
-#include "TemplatedDatabase.h"
-#include "BowVector.h"
-#include "FeatureVector.h"
-#include "QueryResults.h"
-#include "FBrief.h"
+#include <pose_graph/ThirdParty/DBoW/TemplatedVocabulary.h>
+#include <pose_graph/ThirdParty/DBoW/TemplatedDatabase.h>
+#include <pose_graph/ThirdParty/DBoW/BowVector.h>
+#include <pose_graph/ThirdParty/DBoW/FeatureVector.h>
+#include <pose_graph/ThirdParty/DBoW/QueryResults.h>
+#include <pose_graph/ThirdParty/DBoW/FBrief.h>
 
 /// BRIEF Vocabulary
 typedef DBoW2::TemplatedVocabulary<DBoW2::FBrief::TDescriptor, DBoW2::FBrief> 

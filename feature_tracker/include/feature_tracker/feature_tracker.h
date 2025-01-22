@@ -1,4 +1,5 @@
-#pragma once
+#ifndef FEATURE_TRACKER_H 
+#define FEATURE_TRACKER_H 
 
 #include <cstdio>
 #include <iostream>
@@ -13,18 +14,22 @@
 #include <vins_mono_camera_model/camodocal/camera_models/CataCamera.h>
 #include <vins_mono_camera_model/camodocal/camera_models/PinholeCamera.h>
 
-#include "parameters.h"
-#include "tic_toc.h"
+#include <feature_tracker/parameters.h>
+#include <feature_tracker/tic_toc.h>
 
 using namespace std;
 using namespace camodocal;
 using namespace Eigen;
 
+using namespace vins_mono::feature_tracker;
+
 bool inBorder(const cv::Point2f &pt);
 
 void reduceVector(vector<cv::Point2f> &v, vector<uchar> status);
+
 void reduceVector(vector<int> &v, vector<uchar> status);
 
+/*//{ class FeatureTracker */
 class FeatureTracker
 {
   public:
@@ -63,3 +68,6 @@ class FeatureTracker
 
     static int n_id;
 };
+/*//}*/
+
+#endif

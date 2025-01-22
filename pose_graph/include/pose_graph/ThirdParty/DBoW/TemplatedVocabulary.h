@@ -19,14 +19,14 @@
 #include <algorithm>
 #include <opencv2/opencv.hpp>
 
-#include "FeatureVector.h"
-#include "BowVector.h"
-#include "ScoringObject.h"
+#include <pose_graph/ThirdParty/DBoW/FeatureVector.h>
+#include <pose_graph/ThirdParty/DBoW/BowVector.h>
+#include <pose_graph/ThirdParty/DBoW/ScoringObject.h>
 
-#include "../DUtils/DUtils.h"
+#include <pose_graph/ThirdParty/DUtils/DUtils.h>
 
 // Added by VINS [[[
-#include "../VocabularyBinary.hpp"
+#include <pose_graph/ThirdParty/VocabularyBinary.hpp>
 #include <boost/dynamic_bitset.hpp>
 // Added by VINS ]]]
 

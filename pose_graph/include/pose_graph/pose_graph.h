@@ -14,15 +14,15 @@
 #include <nav_msgs/Odometry.h>
 #include <stdio.h>
 #include <ros/ros.h>
-#include "keyframe.h"
-#include "utility/tic_toc.h"
-#include "utility/utility.h"
-#include "utility/CameraPoseVisualization.h"
-#include "utility/tic_toc.h"
-#include "ThirdParty/DBoW/DBoW2.h"
-#include "ThirdParty/DVision/DVision.h"
-#include "ThirdParty/DBoW/TemplatedDatabase.h"
-#include "ThirdParty/DBoW/TemplatedVocabulary.h"
+#include <pose_graph/keyframe.h>
+#include <pose_graph/utility/tic_toc.h>
+#include <pose_graph/utility/utility.h>
+#include <pose_graph/utility/CameraPoseVisualization.h>
+#include <pose_graph/utility/tic_toc.h>
+#include <pose_graph/ThirdParty/DBoW/DBoW2.h>
+#include <pose_graph/ThirdParty/DVision/DVision.h>
+#include <pose_graph/ThirdParty/DBoW/TemplatedDatabase.h>
+#include <pose_graph/ThirdParty/DBoW/TemplatedVocabulary.h>
 
 
 #define SHOW_S_EDGE false
@@ -32,6 +32,9 @@
 using namespace DVision;
 using namespace DBoW2;
 
+using namespace vins_mono::pose_graph;
+
+/*//{ class PoseGraph */
 class PoseGraph
 {
 public:
@@ -89,7 +92,9 @@ private:
 	ros::Publisher pub_path[10];
   string uav_name = "";
 };
+/*//}*/
 
+/*//{ NormalizeAngle() */
 template <typename T>
 T NormalizeAngle(const T& angle_degrees) {
   if (angle_degrees > T(180.0))
@@ -99,10 +104,13 @@ T NormalizeAngle(const T& angle_degrees) {
   else
   	return angle_degrees;
 };
+/*//}*/
 
+/*//{ class AngleLocalParameterization */
 class AngleLocalParameterization {
  public:
 
+/*//{ operator() */
   template <typename T>
   bool operator()(const T* theta_radians, const T* delta_theta_radians,
                   T* theta_radians_plus_delta) const {
@@ -111,13 +119,19 @@ class AngleLocalParameterization {
 
     return true;
   }
+/*//}*/
 
+/*//{ Create() */
   static ceres::LocalParameterization* Create() {
     return (new ceres::AutoDiffLocalParameterization<AngleLocalParameterization,
                                                      1, 1>);
   }
-};
+/*//}*/
 
+};
+/*//}*/
+
+/*//{ YawPitchRollToRotationMatrix() */
 template <typename T> 
 void YawPitchRollToRotationMatrix(const T yaw, const T pitch, const T roll, T R[9])
 {
@@ -137,7 +151,9 @@ void YawPitchRollToRotationMatrix(const T yaw, const T pitch, const T roll, T R[
 	R[7] = cos(p) * sin(r);
 	R[8] = cos(p) * cos(r);
 };
+/*//}*/
 
+/*//{ RotationMatrixTranspose() */
 template <typename T> 
 void RotationMatrixTranspose(const T R[9], T inv_R[9])
 {
@@ -151,7 +167,9 @@ void RotationMatrixTranspose(const T R[9], T inv_R[9])
 	inv_R[7] = R[5];
 	inv_R[8] = R[8];
 };
+/*//}*/
 
+/*//{ RotationMatrixRotatePoint() */
 template <typename T> 
 void RotationMatrixRotatePoint(const T R[9], const T t[3], T r_t[3])
 {
@@ -159,12 +177,18 @@ void RotationMatrixRotatePoint(const T R[9], const T t[3], T r_t[3])
 	r_t[1] = R[3] * t[0] + R[4] * t[1] + R[5] * t[2];
 	r_t[2] = R[6] * t[0] + R[7] * t[1] + R[8] * t[2];
 };
+/*//}*/
 
+/*//{ struct FourDOFError */
 struct FourDOFError
 {
+
+/*//{ constructor */
 	FourDOFError(double t_x, double t_y, double t_z, double relative_yaw, double pitch_i, double roll_i)
 				  :t_x(t_x), t_y(t_y), t_z(t_z), relative_yaw(relative_yaw), pitch_i(pitch_i), roll_i(roll_i){}
+/*//}*/
 
+/*//{ operator() */
 	template <typename T>
 	bool operator()(const T* const yaw_i, const T* ti, const T* yaw_j, const T* tj, T* residuals) const
 	{
@@ -190,7 +214,9 @@ struct FourDOFError
 
 		return true;
 	}
+/*//}*/
 
+/*//{ Create() */
 	static ceres::CostFunction* Create(const double t_x, const double t_y, const double t_z,
 									   const double relative_yaw, const double pitch_i, const double roll_i) 
 	{
@@ -198,19 +224,26 @@ struct FourDOFError
 	          FourDOFError, 4, 1, 3, 1, 3>(
 	          	new FourDOFError(t_x, t_y, t_z, relative_yaw, pitch_i, roll_i)));
 	}
+/*//}*/
 
 	double t_x, t_y, t_z;
 	double relative_yaw, pitch_i, roll_i;
 
 };
+/*//}*/
 
+/*//{ struct FourDOFWeightError */
 struct FourDOFWeightError
 {
+
+/*//{ constructor */
 	FourDOFWeightError(double t_x, double t_y, double t_z, double relative_yaw, double pitch_i, double roll_i)
 				  :t_x(t_x), t_y(t_y), t_z(t_z), relative_yaw(relative_yaw), pitch_i(pitch_i), roll_i(roll_i){
 				  	weight = 1;
 				  }
+/*//}*/
 
+/*//{ operator() */
 	template <typename T>
 	bool operator()(const T* const yaw_i, const T* ti, const T* yaw_j, const T* tj, T* residuals) const
 	{
@@ -236,7 +269,9 @@ struct FourDOFWeightError
 
 		return true;
 	}
+/*//}*/
 
+/*//{ Create() */
 	static ceres::CostFunction* Create(const double t_x, const double t_y, const double t_z,
 									   const double relative_yaw, const double pitch_i, const double roll_i) 
 	{
@@ -244,9 +279,12 @@ struct FourDOFWeightError
 	          FourDOFWeightError, 4, 1, 3, 1, 3>(
 	          	new FourDOFWeightError(t_x, t_y, t_z, relative_yaw, pitch_i, roll_i)));
 	}
+/*//}*/
 
 	double t_x, t_y, t_z;
 	double relative_yaw, pitch_i, roll_i;
 	double weight;
 
 };
+/*//}*/
+

@@ -1,5 +1,7 @@
 #include <vins_estimator/initial/initial_ex_rotation.h>
 
+using namespace vins_mono::vins_estimator;
+
 InitialEXRotation::InitialEXRotation(){
     frame_count = 0;
     Rc.push_back(Matrix3d::Identity());

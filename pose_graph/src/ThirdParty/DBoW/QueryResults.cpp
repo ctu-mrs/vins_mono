@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "QueryResults.h"
+#include <pose_graph/ThirdParty/DBoW/QueryResults.h>
 
 using namespace std;
 
