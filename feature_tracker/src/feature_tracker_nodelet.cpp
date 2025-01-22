@@ -317,7 +317,7 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
             pub_match.publish(ptr->toImageMsg());
         }
     }
-    ROS_DEBUG("whole feature tracker processing costs: %f", t_r.toc());
+    ROS_INFO_THROTTLE(1.0, "[%s]: whole feature tracker processing costs: %.2f ms", ros::this_node::getName().c_str(), t_r.toc());
 }
 /*//}*/
 
