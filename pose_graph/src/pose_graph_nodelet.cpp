@@ -22,13 +22,14 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
 
-#include "keyframe.h"
-#include "utility/tic_toc.h"
-#include "pose_graph.h"
-#include "utility/CameraPoseVisualization.h"
-#include "parameters.h"
+#include <pose_graph/keyframe.h>
+#include <pose_graph/utility/tic_toc.h>
+#include <pose_graph/pose_graph.h>
+#include <pose_graph/utility/CameraPoseVisualization.h>
+#include <pose_graph/parameters.h>
 
 #define SKIP_FIRST_CNT 10
+
 using namespace std;
 
 namespace vins_mono

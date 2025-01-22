@@ -11,7 +11,7 @@
 #include <string>
 #include <sstream>
 
-#include "FBrief.h"
+#include <pose_graph/ThirdParty/DBoW/FBrief.h>
 
 using namespace std;
 

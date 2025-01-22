@@ -4,14 +4,16 @@
 #include <eigen3/Eigen/Dense>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
+
 #include <vins_mono_camera_model/camodocal/camera_models/CameraFactory.h>
 #include <vins_mono_camera_model/camodocal/camera_models/CataCamera.h>
 #include <vins_mono_camera_model/camodocal/camera_models/PinholeCamera.h>
-#include "utility/tic_toc.h"
-#include "utility/utility.h"
-#include "parameters.h"
-#include "ThirdParty/DBoW/DBoW2.h"
-#include "ThirdParty/DVision/DVision.h"
+
+#include <pose_graph/utility/tic_toc.h>
+#include <pose_graph/utility/utility.h>
+#include <pose_graph/parameters.h>
+#include <pose_graph/ThirdParty/DBoW/DBoW2.h>
+#include <pose_graph/ThirdParty/DVision/DVision.h>
 
 #define MIN_LOOP_NUM 25
 
@@ -19,7 +21,7 @@ using namespace Eigen;
 using namespace std;
 using namespace DVision;
 
-
+/*//{ class BriefExtractor */
 class BriefExtractor
 {
 public:
@@ -28,7 +30,9 @@ public:
 
   DVision::BRIEF m_brief;
 };
+/*//}*/
 
+/*//{ class KeyFrame */
 class KeyFrame
 {
 public:
@@ -43,7 +47,7 @@ public:
 	void computeBRIEFPoint();
 	//void extractBrief();
 	int HammingDis(const BRIEF::bitset &a, const BRIEF::bitset &b);
-	bool searchInAera(const BRIEF::bitset window_descriptor,
+	bool searchInArea(const BRIEF::bitset window_descriptor,
 	                  const std::vector<BRIEF::bitset> &descriptors_old,
 	                  const std::vector<cv::KeyPoint> &keypoints_old,
 	                  const std::vector<cv::KeyPoint> &keypoints_old_norm,
@@ -103,4 +107,5 @@ public:
 
   double FOCAL_LENGTH;
 };
+/*//}*/
 

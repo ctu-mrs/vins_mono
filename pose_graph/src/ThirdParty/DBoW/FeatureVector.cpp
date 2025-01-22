@@ -7,10 +7,11 @@
  *
  */
 
-#include "FeatureVector.h"
 #include <map>
 #include <vector>
 #include <iostream>
+
+#include <pose_graph/ThirdParty/DBoW/FeatureVector.h>
 
 namespace DBoW2 {
 

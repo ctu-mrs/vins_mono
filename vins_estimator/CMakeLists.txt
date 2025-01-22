@@ -57,6 +57,7 @@ include_directories(
   )
 
 catkin_package(
+  LIBRARIES ${LIBRARIES}
   INCLUDE_DIRS include
   CATKIN_DEPENDS ${CATKIN_DEPENDENCIES}
   )

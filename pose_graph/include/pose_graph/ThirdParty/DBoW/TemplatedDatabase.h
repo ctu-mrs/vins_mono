@@ -17,13 +17,13 @@
 #include <list>
 #include <set>
 
-#include "TemplatedVocabulary.h"
-#include "QueryResults.h"
-#include "ScoringObject.h"
-#include "BowVector.h"
-#include "FeatureVector.h"
+#include <pose_graph/ThirdParty/DBoW/TemplatedVocabulary.h>
+#include <pose_graph/ThirdParty/DBoW/QueryResults.h>
+#include <pose_graph/ThirdParty/DBoW/ScoringObject.h>
+#include <pose_graph/ThirdParty/DBoW/BowVector.h>
+#include <pose_graph/ThirdParty/DBoW/FeatureVector.h>
 
-#include "../DUtils/DUtils.h"
+#include <pose_graph/ThirdParty/DUtils/DUtils.h>
 
 namespace DBoW2 {
 

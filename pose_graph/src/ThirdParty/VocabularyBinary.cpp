@@ -1,4 +1,4 @@
-#include "VocabularyBinary.hpp"
+#include <pose_graph/ThirdParty/VocabularyBinary.hpp>
 #include <opencv2/core/core.hpp>
 using namespace std;
 

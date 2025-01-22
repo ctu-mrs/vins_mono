@@ -1,4 +1,4 @@
-#include "parameters.h"
+#include <pose_graph/parameters.h>
 
 camodocal::CameraPtr m_camera;
 Eigen::Vector3d tic;

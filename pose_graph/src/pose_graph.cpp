@@ -1,5 +1,6 @@
-#include "pose_graph.h"
+#include <pose_graph/pose_graph.h>
 
+/*//{ PoseGraph() */
 PoseGraph::PoseGraph()
 {
     posegraph_visualization = new CameraPoseVisualization(1.0, 0.0, 1.0, 1.0);
@@ -18,12 +19,16 @@ PoseGraph::PoseGraph()
     base_sequence = 1;
 
 }
+/*//}*/
 
+/*//{ ~PoseGraph() */
 PoseGraph::~PoseGraph()
 {
 	t_optimization.join();
 }
+/*//}*/
 
+/*//{ registerPub() */
 void PoseGraph::registerPub(ros::NodeHandle &n)
 {
     n.param<std::string>("uav_name", uav_name, "uav1");
@@ -33,19 +38,25 @@ void PoseGraph::registerPub(ros::NodeHandle &n)
     for (int i = 1; i < 10; i++)
         pub_path[i] = n.advertise<nav_msgs::Path>("path_" + to_string(i), 1);
 }
+/*//}*/
 
+/*//{ setFocalLength() */
 void PoseGraph::setFocalLength(double focal_length)
 {
   FOCAL_LENGTH = focal_length;
   ROS_INFO("[%s]: focal length set to: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
 }
+/*//}*/
 
+/*//{ loadVocabulary() */
 void PoseGraph::loadVocabulary(std::string voc_path)
 {
     voc = new BriefVocabulary(voc_path);
     db.setVocabulary(*voc, false, 0);
 }
+/*//}*/
 
+/*//{ addKeyFrame() */
 void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
 {
     //shift to base frame
@@ -215,8 +226,9 @@ void PoseGraph::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     publish();
 	m_keyframelist.unlock();
 }
+/*//}*/
 
-
+/*//{ loadKeyFrame() */
 void PoseGraph::loadKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
 {
     cur_kf->index = global_index;
@@ -292,7 +304,9 @@ void PoseGraph::loadKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
     //publish();
     m_keyframelist.unlock();
 }
+/*//}*/
 
+/*//{ getKeyFrame() */
 KeyFrame* PoseGraph::getKeyFrame(int index)
 {
 //    unique_lock<mutex> lock(m_keyframelist);
@@ -307,7 +321,9 @@ KeyFrame* PoseGraph::getKeyFrame(int index)
     else
         return NULL;
 }
+/*//}*/
 
+/*//{ detectLoop() */
 int PoseGraph::detectLoop(KeyFrame* keyframe, int frame_index)
 {
     // put image into image_pool; for visualization
@@ -391,7 +407,9 @@ int PoseGraph::detectLoop(KeyFrame* keyframe, int frame_index)
         return -1;
 
 }
+/*//}*/
 
+/*//{ addKeyFrameIntoVoc() */
 void PoseGraph::addKeyFrameIntoVoc(KeyFrame* keyframe)
 {
     // put image into image_pool; for visualization
@@ -406,7 +424,9 @@ void PoseGraph::addKeyFrameIntoVoc(KeyFrame* keyframe)
 
     db.add(keyframe->brief_descriptors);
 }
+/*//}*/
 
+/*//{ optimize4DoF() */
 void PoseGraph::optimize4DoF()
 {
     while(true)
@@ -584,7 +604,9 @@ void PoseGraph::optimize4DoF()
         std::this_thread::sleep_for(dura);
     }
 }
+/*//}*/
 
+/*//{ updatePath() */
 void PoseGraph::updatePath()
 {
     m_keyframelist.lock();
@@ -699,8 +721,9 @@ void PoseGraph::updatePath()
     publish();
     m_keyframelist.unlock();
 }
+/*//}*/
 
-
+/*//{ savePoseGraph() */
 void PoseGraph::savePoseGraph()
 {
     m_keyframelist.lock();
@@ -756,6 +779,9 @@ void PoseGraph::savePoseGraph()
     printf("save pose graph time: %f s\n", tmp_t.toc() / 1000);
     m_keyframelist.unlock();
 }
+/*//}*/
+
+/*//{ loadPoseGraph() */
 void PoseGraph::loadPoseGraph()
 {
     TicToc tmp_t;
@@ -875,7 +901,9 @@ void PoseGraph::loadPoseGraph()
     printf("load pose graph time: %f s\n", tmp_t.toc()/1000);
     base_sequence = 0;
 }
+/*//}*/
 
+/*//{ publish() */
 void PoseGraph::publish()
 {
     for (int i = 1; i <= sequence_cnt; i++)
@@ -892,7 +920,9 @@ void PoseGraph::publish()
     pub_base_path.publish(base_path);
     //posegraph_visualization->publish_by(pub_pose_graph, path[sequence_cnt].header);
 }
+/*//}*/
 
+/*//{ updateKeyFrameLoop() */
 void PoseGraph::updateKeyFrameLoop(int index, Eigen::Matrix<double, 8, 1 > &_loop_info)
 {
     KeyFrame* kf = getKeyFrame(index);
@@ -928,3 +958,4 @@ void PoseGraph::updateKeyFrameLoop(int index, Eigen::Matrix<double, 8, 1 > &_loo
         }
     }
 }
+/*//}*/

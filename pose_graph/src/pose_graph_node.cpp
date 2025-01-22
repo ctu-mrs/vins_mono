@@ -16,12 +16,15 @@
 #include <eigen3/Eigen/Dense>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/eigen.hpp>
-#include "keyframe.h"
-#include "utility/tic_toc.h"
-#include "pose_graph.h"
-#include "utility/CameraPoseVisualization.h"
-#include "parameters.h"
+
+#include <pose_graph/keyframe.h>
+#include <pose_graph/utility/tic_toc.h>
+#include <pose_graph/pose_graph.h>
+#include <pose_graph/utility/CameraPoseVisualization.h>
+#include <pose_graph/parameters.h>
+
 #define SKIP_FIRST_CNT 10
+
 using namespace std;
 
 queue<sensor_msgs::ImageConstPtr> image_buf;
@@ -54,6 +57,7 @@ CameraPoseVisualization cameraposevisual(1, 0, 0, 1);
 Eigen::Vector3d last_t(-100, -100, -100);
 double last_image_time = -1;
 
+/*//{ new_sequence() */
 void new_sequence()
 {
     printf("new sequence\n");
@@ -77,7 +81,9 @@ void new_sequence()
         odometry_buf.pop();
     m_buf.unlock();
 }
+/*//}*/
 
+/*//{ image_callback() */
 void image_callback(const sensor_msgs::ImageConstPtr &image_msg)
 {
     //ROS_INFO("image_callback!");
@@ -98,7 +104,9 @@ void image_callback(const sensor_msgs::ImageConstPtr &image_msg)
     }
     last_image_time = image_msg->header.stamp.toSec();
 }
+/*//}*/
 
+/*//{ point_callback() */
 void point_callback(const sensor_msgs::PointCloudConstPtr &point_msg)
 {
     //ROS_INFO("point_callback!");
@@ -118,7 +126,9 @@ void point_callback(const sensor_msgs::PointCloudConstPtr &point_msg)
     }
     */
 }
+/*//}*/
 
+/*//{ pose_callback() */
 void pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     //ROS_INFO("pose_callback!");
@@ -137,7 +147,9 @@ void pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
                                                        pose_msg->pose.pose.orientation.z);
     */
 }
+/*//}*/
 
+/*//{ imu_forward_callback() */
 void imu_forward_callback(const nav_msgs::Odometry::ConstPtr &forward_msg)
 {
     if (VISUALIZE_IMU_FORWARD)
@@ -165,6 +177,9 @@ void imu_forward_callback(const nav_msgs::Odometry::ConstPtr &forward_msg)
         cameraposevisual.publish_by(pub_camera_pose_visual, forward_msg->header);
     }
 }
+/*//}*/
+
+/*//{ relo_relative_pose_callback() */
 void relo_relative_pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     Vector3d relative_t = Vector3d(pose_msg->pose.pose.position.x,
@@ -185,7 +200,9 @@ void relo_relative_pose_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
     posegraph.updateKeyFrameLoop(index, loop_info);
 
 }
+/*//}*/
 
+/*//{ vio_callback() */
 void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     //ROS_INFO("vio_callback!");
@@ -265,7 +282,9 @@ void vio_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
         pub_vio_path.publish(no_loop_path);
     }
 }
+/*//}*/
 
+/*//{ extrinsic_callback() */
 void extrinsic_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
     m_process.lock();
@@ -278,7 +297,9 @@ void extrinsic_callback(const nav_msgs::Odometry::ConstPtr &pose_msg)
                       pose_msg->pose.pose.orientation.z).toRotationMatrix();
     m_process.unlock();
 }
+/*//}*/
 
+/*//{ process() */
 void process()
 {
     if (!LOOP_CLOSURE)
@@ -414,7 +435,9 @@ void process()
         std::this_thread::sleep_for(dura);
     }
 }
+/*//}*/
 
+/*//{ command() */
 void command()
 {
     if (!LOOP_CLOSURE)
@@ -438,7 +461,9 @@ void command()
         std::this_thread::sleep_for(dura);
     }
 }
+/*//}*/
 
+/*//{ main() */
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "pose_graph");
@@ -552,3 +577,4 @@ int main(int argc, char **argv)
 
     return 0;
 }
+/*//}*/

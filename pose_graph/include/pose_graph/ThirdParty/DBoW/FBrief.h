@@ -14,8 +14,8 @@
 #include <vector>
 #include <string>
 
-#include "FClass.h"
-#include "../DVision/DVision.h"
+#include <pose_graph/ThirdParty/DBoW/FClass.h>
+#include <pose_graph/ThirdParty/DVision/DVision.h>
 
 namespace DBoW2 {
 

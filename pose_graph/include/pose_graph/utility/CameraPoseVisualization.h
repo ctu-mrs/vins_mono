@@ -7,8 +7,10 @@
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
 #include <opencv2/opencv.hpp>
-#include "../parameters.h"
 
+#include <pose_graph/parameters.h>
+
+/*//{ CameraPoseVisualization */
 class CameraPoseVisualization {
 public:
 	std::string m_marker_ns;
@@ -48,3 +50,4 @@ private:
 	static const Eigen::Vector3d lt1 ;
 	static const Eigen::Vector3d lt2 ;
 };
+/*//}*/

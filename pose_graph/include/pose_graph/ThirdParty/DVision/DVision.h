@@ -38,6 +38,6 @@ namespace DVision
 {
 }
 
-#include "BRIEF.h"
+#include <pose_graph/ThirdParty/DVision/BRIEF.h>
 
 #endif
