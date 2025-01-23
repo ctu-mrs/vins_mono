@@ -24,6 +24,17 @@ set(SRC_FILES
   src/feature_tracker.cpp
   )
 
+option(USE_MRS_LIB "Enable or disable usage of mrs_lib" ON)
+if (USE_MRS_LIB)
+  set(CATKIN_DEPENDENCIES 
+    ${CATKIN_DEPENDENCIES} 
+    mrs_lib
+    )
+  add_definitions(-DUSE_MRS_LIB=1)
+else ()
+  add_definitions(-DUSE_MRS_LIB=0)
+endif ()
+
 find_package(catkin REQUIRED COMPONENTS
   ${CATKIN_DEPENDENCIES}
   )

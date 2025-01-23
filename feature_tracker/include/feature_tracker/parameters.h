@@ -3,8 +3,15 @@
 #include <ros/ros.h>
 #include <opencv2/highgui/highgui.hpp>
 
+#if USE_MRS_LIB
+#include <mrs_lib/param_loader.h>
+#endif
+
 namespace vins_mono {
   namespace feature_tracker {
+
+const std::string NODE_NAME("FeatureTracker");
+
 extern int ROW;
 extern int COL;
 extern double FOCAL_LENGTH;

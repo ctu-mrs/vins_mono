@@ -20,6 +20,70 @@ double FOCAL_LENGTH;
 int FISHEYE;
 bool PUB_THIS_FRAME;
 
+#if USE_MRS_LIB
+
+/*//{ mrs_lib readParameters() */
+void readParameters(ros::NodeHandle &n)
+{
+    ROS_INFO("[%s]: loading parameters using ParamLoader", NODE_NAME.c_str());
+    mrs_lib::ParamLoader pl(n, NODE_NAME);
+
+    std::string config_file;
+    pl.loadParam("config_file", config_file);
+    pl.addYamlFile(config_file);
+
+    std::string CONFIG_PATH;
+    pl.loadParam("config_path", CONFIG_PATH);
+
+    pl.loadParam("max_cnt", MAX_CNT);
+    pl.loadParam("min_dist", MIN_DIST);
+    pl.loadParam("image_height", ROW);
+    pl.loadParam("image_width", COL);
+    pl.loadParam("freq", FREQ);
+    pl.loadParam("F_threshold", F_THRESHOLD);
+    pl.loadParam("show_track", SHOW_TRACK);
+    pl.loadParam("equalize", EQUALIZE);
+    pl.loadParam("fisheye", FISHEYE);
+    pl.loadParam("fisheye_mask_name", FISHEYE_MASK_NAME);
+    if (FISHEYE == 1) 
+    {
+      FISHEYE_MASK = CONFIG_PATH + "/" + FISHEYE_MASK_NAME;
+    }
+
+    CAM_NAMES.push_back(config_file);
+
+    WINDOW_SIZE = 20;
+    STEREO_TRACK = false;
+    PUB_THIS_FRAME = false;
+
+    std::string model_type;
+    pl.loadParam("model_type", model_type);
+    if (model_type == "KANNALA_BRANDT" || model_type == "SCARAMUZZA") 
+    {
+      double mu, mv;
+      pl.loadParam("projection_parameters/mu", mu);
+      pl.loadParam("projection_parameters/mv", mv);
+      FOCAL_LENGTH = (mu + mv) / 2.0;
+    }
+    else 
+    {
+      double fx, fy;
+      pl.loadParam("projection_parameters/fx", fx);
+      pl.loadParam("projection_parameters/fy", fy);
+      FOCAL_LENGTH = (fx + fy) / 2.0;
+    }
+
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);
+
+    if (FREQ == 0)
+    {
+      FREQ = 100;
+    }
+}
+/*//}*/
+
+#else
+
 /*//{ readParam() */
 template <typename T>
 T readParam(ros::NodeHandle &n, std::string name)
@@ -38,7 +102,7 @@ T readParam(ros::NodeHandle &n, std::string name)
 }
 /*//}*/
 
-/*//{ readParameters() */
+/*//{ OG readParameters() */
 void readParameters(ros::NodeHandle &n)
 {
     std::string config_file;
@@ -87,5 +151,6 @@ void readParameters(ros::NodeHandle &n)
 }
 /*//}*/
 
+#endif
 }
 }

@@ -21,6 +21,8 @@
 
   <depend>vins_mono_camera_model</depend>
 
+  <depend>mrs_lib</depend>
+
   <export>
 
     <!-- The nodelets.xml file defines nodelet as a plugin -->
