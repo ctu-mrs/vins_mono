@@ -50,7 +50,6 @@ void readParameters(ros::NodeHandle &n)
 
     pl.addYamlFile(config_file);
 
-    
     std::string model_type;
     pl.loadParam("model_type", model_type);
     if (model_type == "KANNALA_BRANDT" || model_type == "SCARAMUZZA") 

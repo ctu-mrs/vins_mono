@@ -43,12 +43,10 @@ if (USE_MRS_LIB)
     ${CATKIN_DEPENDENCIES} 
     mrs_lib
     )
-  # find_package(mrs_lib REQUIRED)
   add_definitions(-DUSE_MRS_LIB=1)
 else ()
   add_definitions(-DUSE_MRS_LIB=0)
 endif ()
-
 
 find_package(catkin REQUIRED COMPONENTS
   ${CATKIN_DEPENDENCIES}

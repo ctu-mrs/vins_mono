@@ -2,6 +2,7 @@
 
 using namespace ros;
 using namespace Eigen;
+
 ros::Publisher pub_odometry, pub_latest_odometry;
 ros::Publisher pub_path, pub_relo_path;
 ros::Publisher pub_point_cloud, pub_margin_cloud;
@@ -21,6 +22,9 @@ static double sum_of_path = 0;
 static Vector3d last_path(0.0, 0.0, 0.0);
 string uav_name_ = "";
 
+bool publishers_initialized = false;
+
+/*//{ registerPub() */
 void registerPub(ros::NodeHandle &n)
 {
     n.param<std::string>("uav_name", uav_name_, "uav1");
@@ -43,10 +47,18 @@ void registerPub(ros::NodeHandle &n)
     cameraposevisual.setLineWidth(0.05);
     keyframebasevisual.setScale(0.1);
     keyframebasevisual.setLineWidth(0.01);
+    publishers_initialized = true;
 }
+/*//}*/
 
+/*//{ pubLatestOdometry() */
 void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, const Eigen::Vector3d &V, const std_msgs::Header &header)
 {
+
+    if (!publishers_initialized) {
+      return;
+    }
+
     Eigen::Quaterniond quadrotor_Q = Q ;
 
     nav_msgs::Odometry odometry;
@@ -64,7 +76,9 @@ void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, co
     odometry.twist.twist.linear.z = V.z();
     pub_latest_odometry.publish(odometry);
 }
+/*//}*/
 
+/*//{ printStatistics() */
 void printStatistics(const Estimator &estimator, double t)
 {
     if (estimator.solver_flag != Estimator::SolverFlag::NON_LINEAR)
@@ -109,9 +123,15 @@ void printStatistics(const Estimator &estimator, double t)
         ROS_INFO_THROTTLE(1.0, "[%s]: td %f", ros::this_node::getName().c_str(), estimator.td);
     ROS_INFO_THROTTLE(1.0, "[%s]: ---", ros::this_node::getName().c_str());
 }
+/*//}*/
 
+/*//{ pubOdometry() */
 void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
     {
         nav_msgs::Odometry odometry;
@@ -179,9 +199,15 @@ void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
         foutC.close();
     }
 }
+/*//}*/
 
+/*//{ pubKeyPoses() */
 void pubKeyPoses(const Estimator &estimator, const std_msgs::Header &header)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     if (estimator.key_poses.size() == 0)
         return;
     visualization_msgs::Marker key_poses;
@@ -213,9 +239,15 @@ void pubKeyPoses(const Estimator &estimator, const std_msgs::Header &header)
     }
     pub_key_poses.publish(key_poses);
 }
+/*//}*/
 
+/*//{ pubCameraPose() */
 void pubCameraPose(const Estimator &estimator, const std_msgs::Header &header)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     int idx2 = WINDOW_SIZE - 1;
 
     if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
@@ -242,10 +274,15 @@ void pubCameraPose(const Estimator &estimator, const std_msgs::Header &header)
         cameraposevisual.publish_by(pub_camera_pose_visual, odometry.header);
     }
 }
+/*//}*/
 
-
+/*//{ pubPointCloud() */
 void pubPointCloud(const Estimator &estimator, const std_msgs::Header &header)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     sensor_msgs::PointCloud point_cloud, loop_point_cloud;
     point_cloud.header = header;
     loop_point_cloud.header = header;
@@ -303,10 +340,15 @@ void pubPointCloud(const Estimator &estimator, const std_msgs::Header &header)
     }
     pub_margin_cloud.publish(margin_cloud);
 }
+/*//}*/
 
-
+/*//{ pubTF() */
 void pubTF(const Estimator &estimator, const std_msgs::Header &header)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     if( estimator.solver_flag != Estimator::SolverFlag::NON_LINEAR)
         return;
     static tf::TransformBroadcaster br;
@@ -354,9 +396,15 @@ void pubTF(const Estimator &estimator, const std_msgs::Header &header)
     pub_extrinsic.publish(odometry);
 
 }
+/*//}*/
 
+/*//{ pubKeyframe() */
 void pubKeyframe(const Estimator &estimator)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     // pub camera pose, 2D-3D points of keyframe
     if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR && estimator.marginalization_flag == 0)
     {
@@ -412,9 +460,15 @@ void pubKeyframe(const Estimator &estimator)
         pub_keyframe_point.publish(point_cloud);
     }
 }
+/*//}*/
 
+/*//{ pubRelocalization() */
 void pubRelocalization(const Estimator &estimator)
 {
+    if (!publishers_initialized) {
+      return;
+    }
+
     nav_msgs::Odometry odometry;
     odometry.header.stamp = ros::Time(estimator.relo_frame_stamp);
     odometry.header.frame_id = uav_name_ + "/vins_world";
@@ -430,3 +484,4 @@ void pubRelocalization(const Estimator &estimator)
 
     pub_relo_relative_pose.publish(odometry);
 }
+/*//}*/
