@@ -2,6 +2,8 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
+#include <image_transport/image_transport.h>
+
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/PointCloud.h>
@@ -36,8 +38,9 @@ private:
   ros::Subscriber sub_img;
 
   ros::Publisher pub_img; 
-  ros::Publisher pub_match;
   ros::Publisher pub_restart;
+
+  image_transport::Publisher pub_match;
 
   std::vector<FeatureTracker> trackerData;
 
@@ -110,8 +113,11 @@ void FeatureTrackerNodelet::onInit()
     sub_img = nh.subscribe("image_in", 1, &FeatureTrackerNodelet::callbackImage, this, ros::TransportHints().tcpNoDelay());
 
     pub_img = nh.advertise<sensor_msgs::PointCloud>("feature", 1);
-    pub_match = nh.advertise<sensor_msgs::Image>("feature_img",1);
     pub_restart = nh.advertise<std_msgs::Bool>("restart",1);
+
+    // Create image transport
+    image_transport::ImageTransport it(nh);
+    pub_match = it.advertise("feature_img",1);
 
     /*
     if (SHOW_TRACK)
