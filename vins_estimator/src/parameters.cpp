@@ -31,6 +31,140 @@ std::string VINS_RESULT_PATH;
 double ROW, COL;
 double TD, TR;
 
+#if USE_MRS_LIB
+
+/*//{ mrs_lib readParameters() */
+void readParameters(ros::NodeHandle &n)
+{
+
+    ROS_INFO("[%s]: loading parameters using ParamLoader", NODE_NAME.c_str());
+    mrs_lib::ParamLoader pl(n, NODE_NAME);
+
+    // Output path is loaded from parameters to be able to change the path from launch file and avoid absolute path in configs
+    std::string OUTPUT_PATH;
+    pl.loadParam("output_path", OUTPUT_PATH);
+    VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
+
+    std::string config_file;
+    pl.loadParam("config_file", config_file);
+
+    pl.addYamlFile(config_file);
+
+    
+    std::string model_type;
+    pl.loadParam("model_type", model_type);
+    if (model_type == "KANNALA_BRANDT" || model_type == "SCARAMUZZA") 
+    {
+      double mu, mv;
+      pl.loadParam("projection_parameters/mu", mu);
+      pl.loadParam("projection_parameters/mv", mv);
+      FOCAL_LENGTH = (mu + mv) / 2.0;
+    }
+    else 
+    {
+      double fx, fy;
+      pl.loadParam("projection_parameters/fx", fx);
+      pl.loadParam("projection_parameters/fy", fy);
+      FOCAL_LENGTH = (fx + fy) / 2.0;
+    }
+
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);
+
+    pl.loadParam("max_solver_time", SOLVER_TIME);
+    pl.loadParam("max_num_iterations", NUM_ITERATIONS);
+    pl.loadParam("keyframe_parallax", MIN_PARALLAX);
+    MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
+
+    pl.loadParam("init_min_parallax", INIT_MIN_PARALLAX);
+    pl.loadParam("init_min_features", INIT_MIN_FEATURES);
+    pl.loadParam("init_min_imu_variance", INIT_MIN_IMU_VARIANCE);
+
+    // create folder if not exists
+    FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
+
+    std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
+    fout.close();
+
+    pl.loadParam("acc_n", ACC_N);
+    pl.loadParam("acc_w", ACC_W);
+    pl.loadParam("gyr_n", GYR_N);
+    pl.loadParam("gyr_w", GYR_W);
+
+    double gz;
+    pl.loadParam("g_norm", gz);
+    G.z() = gz;
+
+    pl.loadParam("image_height", ROW);
+    pl.loadParam("image_width", COL);
+
+    pl.loadParam("estimate_extrinsic", ESTIMATE_EXTRINSIC);
+    if (ESTIMATE_EXTRINSIC == 2)
+    {
+        ROS_INFO("[%s]: Have no prior about extrinsic param, calibrate extrinsic param", NODE_NAME.c_str());
+        RIC.push_back(Eigen::Matrix3d::Identity());
+        TIC.push_back(Eigen::Vector3d::Zero());
+        EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
+
+    }
+    else 
+    {
+        if ( ESTIMATE_EXTRINSIC == 1)
+        {
+            ROS_INFO("[%s]: Optimize extrinsic param around initial guess!", NODE_NAME.c_str());
+            EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
+        }
+        if (ESTIMATE_EXTRINSIC == 0)
+            ROS_INFO("[%s]: Fixed extrinsic param. No online optimization of extrinsic params.", NODE_NAME.c_str());
+
+        /* cv::Mat cv_R, cv_T; */
+        /* fsSettings["extrinsicRotation"] >> cv_R; */
+        /* fsSettings["extrinsicTranslation"] >> cv_T; */
+        Eigen::Matrix3d eigen_R;
+        Eigen::Vector3d eigen_T;
+        /* cv::cv2eigen(cv_R, eigen_R); */
+        /* cv::cv2eigen(cv_T, eigen_T); */
+        pl.loadMatrixStatic("extrinsicRotation/data", eigen_R);
+        pl.loadMatrixStatic("extrinsicTranslation/data", eigen_T);
+        // note petrlmat: why convert to quaternion and back?
+        Eigen::Quaterniond Q(eigen_R);
+        eigen_R = Q.normalized();
+        RIC.push_back(eigen_R);
+        TIC.push_back(eigen_T);
+        ROS_INFO("[%s]: Extrinsic_R :", NODE_NAME.c_str());
+        ROS_INFO_STREAM(std::endl << RIC[0]);
+        ROS_INFO("[%s]: Extrinsic_T :", NODE_NAME.c_str());
+        ROS_INFO_STREAM(TIC[0].transpose());
+        
+    } 
+
+    INIT_DEPTH = 5.0;
+    BIAS_ACC_THRESHOLD = 0.1;
+    BIAS_GYR_THRESHOLD = 0.1;
+
+    pl.loadParam("td", TD);
+    pl.loadParam("estimate_td", ESTIMATE_TD);
+    if (ESTIMATE_TD)
+        ROS_INFO("[%s]: Unsynchronized sensors, online estimate time offset, initial td: %.4f s", NODE_NAME.c_str(), TD);
+    else
+        ROS_INFO("[%s]: Synchronized sensors, fixed time offset: %.4f s", NODE_NAME.c_str(), TD);
+
+    pl.loadParam("rolling_shutter", ROLLING_SHUTTER);
+    if (ROLLING_SHUTTER)
+    {
+        pl.loadParam("rolling_shutter_tr", TR);
+        ROS_INFO("[%s]: Rolling shutter camera, read out time per frame: %.4f s", NODE_NAME.c_str(), TR);
+    }
+    else
+    {
+        ROS_INFO("[%s]: Global shutter camera", NODE_NAME.c_str());
+        TR = 0;
+    }
+}
+/*//}*/
+
+#else
+
+/*//{ readParam() */
 template <typename T>
 T readParam(ros::NodeHandle &n, std::string name)
 {
@@ -46,7 +180,9 @@ T readParam(ros::NodeHandle &n, std::string name)
     }
     return ans;
 }
+/*//}*/
 
+/*//{ OG readParameters() */
 void readParameters(ros::NodeHandle &n)
 {
 
@@ -83,9 +219,11 @@ void readParameters(ros::NodeHandle &n)
     INIT_MIN_PARALLAX = fsSettings["init_min_parallax"];
     INIT_MIN_FEATURES = fsSettings["init_min_features"];
     INIT_MIN_IMU_VARIANCE = fsSettings["init_min_imu_variance"];
+
     // create folder if not exists
     FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
 
+    // create file
     std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
     fout.close();
 
@@ -157,6 +295,10 @@ void readParameters(ros::NodeHandle &n)
     
     fsSettings.release();
 }
+/*//}*/
+
+#endif
+
 
 }
 }

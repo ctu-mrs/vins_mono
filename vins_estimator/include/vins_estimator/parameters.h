@@ -9,8 +9,15 @@
 
 #include <vins_estimator/utility/utility.h>
 
+#if USE_MRS_LIB
+#include <mrs_lib/param_loader.h>
+#endif
+
 namespace vins_mono {
   namespace vins_estimator {
+
+const std::string NODE_NAME("VinsEstimator");
+
 const int WINDOW_SIZE = 10;
 const int NUM_OF_CAM = 1;
 const int NUM_OF_F = 1000;
