@@ -19,7 +19,7 @@ void Eigen2Point(const Eigen::Vector3d& v, geometry_msgs::Point& p) {
 
 /*//{ CameraPoseVisualization() */
 CameraPoseVisualization::CameraPoseVisualization() {
-  CameraPoseVisualization(1, 0, 0, 1);
+  /* CameraPoseVisualization(1, 0, 0, 1); */
 }
 /*//}*/
 

@@ -114,7 +114,7 @@ void PoseGraphNodelet::onInit()
 
     ros::NodeHandle nh = nodelet::Nodelet::getMTPrivateNodeHandle();
 
-    ROS_INFO("[%s]: Initializing", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: Initializing", node_name.c_str());
 
     /* waits for the ROS to publish clock */
     ros::Time::waitForValid();
@@ -233,7 +233,7 @@ void PoseGraphNodelet::onInit()
 
     is_initialized_ = true;
 
-    ROS_INFO("[%s]: initialized", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: initialized", node_name.c_str());
 }
 /*//}*/
 
