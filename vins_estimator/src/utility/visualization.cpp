@@ -59,6 +59,12 @@ void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, co
       return;
     }
 
+    if (Q.x() == 0 && Q.y() == 0 && Q.z() == 0 && Q.w() == 0) 
+    {
+      ROS_WARN_THROTTLE(1.0, "[VinsEstimators]: Not publishing odometry with zero quaternion. Should only happen during init.");
+      return;
+    }
+
     Eigen::Quaterniond quadrotor_Q = Q ;
 
     nav_msgs::Odometry odometry;
@@ -75,6 +81,7 @@ void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, co
     odometry.twist.twist.linear.y = V.y();
     odometry.twist.twist.linear.z = V.z();
     pub_latest_odometry.publish(odometry);
+
 }
 /*//}*/
 

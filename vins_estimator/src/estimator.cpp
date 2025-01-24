@@ -518,13 +518,16 @@ bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
                 return true;
               } 
             }
+            else 
+            {
+              ROS_INFO("[%s]: Init: not enough parallax %.2f <= %.2f in frame %d in window of size %d", ros::this_node::getName().c_str(), highest_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX, i, WINDOW_SIZE);
+            }
         } 
         else 
         {
           ROS_INFO("[%s]: Init: not enough correspondences %lu < %d in frame %d in window of size %d" , ros::this_node::getName().c_str(), corres.size(), INIT_MIN_FEATURES, i, WINDOW_SIZE);
         }
     }
-    ROS_INFO("[%s]: Init: not enough parallax %.2f <= %.2f", ros::this_node::getName().c_str(), highest_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX);
     return false;
 }
 /*//}*/
