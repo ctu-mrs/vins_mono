@@ -111,6 +111,7 @@ void VinsEstimator::onInit()
     }
 
     readParameters(nh);
+
     estimator.setParameter();
 
 #ifdef EIGEN_DONT_PARALLELIZE

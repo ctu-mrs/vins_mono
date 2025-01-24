@@ -5,8 +5,7 @@ using namespace vins_mono::vins_estimator;
 /*//{ Estimator() */
 Estimator::Estimator(): f_manager{Rs}
 {
-    ROS_INFO("init begins");
-    clearState();
+    initializeState();
 }
 /*//}*/
 
@@ -25,6 +24,51 @@ void Estimator::setParameter()
 }
 /*//}*/
 
+/*//{ initializeState() */
+void Estimator::initializeState()
+{
+    ROS_INFO("[VinsEstimator]: Estimator state init begins");
+    for (int i = 0; i < WINDOW_SIZE + 1; i++)
+    {
+        Rs[i].setIdentity();
+        Ps[i].setZero();
+        Vs[i].setZero();
+        Bas[i].setZero();
+        Bgs[i].setZero();
+        dt_buf[i].clear();
+        linear_acceleration_buf[i].clear();
+        angular_velocity_buf[i].clear();
+    }
+
+    for (int i = 0; i < NUM_OF_CAM; i++)
+    {
+        tic[i] = Vector3d::Zero();
+        ric[i] = Matrix3d::Identity();
+    }
+
+    solver_flag = INITIAL;
+    first_imu = false,
+    sum_of_back = 0;
+    sum_of_front = 0;
+    frame_count = 0;
+    solver_flag = INITIAL;
+    initial_timestamp = 0;
+    all_image_frame.clear();
+    td = TD;
+
+    last_marginalization_parameter_blocks.clear();
+
+    f_manager.clearState();
+
+    failure_occur = 0;
+    relocalization_info = 0;
+
+    drift_correct_r = Matrix3d::Identity();
+    drift_correct_t = Vector3d::Zero();
+    ROS_INFO("[VinsEstimator]: Estimator state init finished");
+}
+/*//}*/
+
 /*//{ clearState() */
 void Estimator::clearState()
 {
@@ -39,8 +83,7 @@ void Estimator::clearState()
         linear_acceleration_buf[i].clear();
         angular_velocity_buf[i].clear();
 
-        if (pre_integrations[i] != nullptr)
-            delete pre_integrations[i];
+        delete pre_integrations[i];
         pre_integrations[i] = nullptr;
     }
 
@@ -52,11 +95,8 @@ void Estimator::clearState()
 
     for (auto &it : all_image_frame)
     {
-        if (it.second.pre_integration != nullptr)
-        {
-            delete it.second.pre_integration;
-            it.second.pre_integration = nullptr;
-        }
+        delete it.second.pre_integration;
+        it.second.pre_integration = nullptr;
     }
 
     solver_flag = INITIAL;
@@ -69,11 +109,8 @@ void Estimator::clearState()
     all_image_frame.clear();
     td = TD;
 
-
-    if (tmp_pre_integration != nullptr)
-        delete tmp_pre_integration;
-    if (last_marginalization_info != nullptr)
-        delete last_marginalization_info;
+    delete tmp_pre_integration;
+    delete last_marginalization_info;
 
     tmp_pre_integration = nullptr;
     last_marginalization_info = nullptr;

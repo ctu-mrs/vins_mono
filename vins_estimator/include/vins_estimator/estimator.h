@@ -38,6 +38,7 @@ class Estimator
     void setReloFrame(double _frame_stamp, int _frame_index, vector<Vector3d> &_match_points, Vector3d _relo_t, Matrix3d _relo_r);
 
     // internal
+    void initializeState();
     void clearState();
     bool initialStructure();
     bool visualInitialAlign();
