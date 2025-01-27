@@ -332,6 +332,12 @@ void PoseGraphNodelet::callbackPose(const nav_msgs::Odometry::ConstPtr &pose_msg
 /*//{ callbackImuForward() */
 void PoseGraphNodelet::callbackImuForward(const nav_msgs::Odometry::ConstPtr &forward_msg)
 {
+
+    if (!is_initialized_) 
+    {
+      return;
+    }
+
     if (VISUALIZE_IMU_FORWARD)
     {
         Vector3d vio_t(forward_msg->pose.pose.position.x, forward_msg->pose.pose.position.y, forward_msg->pose.pose.position.z);
@@ -362,6 +368,12 @@ void PoseGraphNodelet::callbackImuForward(const nav_msgs::Odometry::ConstPtr &fo
 /*//{ callbackReloRelativePose() */
 void PoseGraphNodelet::callbackReloRelativePose(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
+
+    if (!is_initialized_) 
+    {
+      return;
+    }
+
     Vector3d relative_t = Vector3d(pose_msg->pose.pose.position.x,
                                    pose_msg->pose.pose.position.y,
                                    pose_msg->pose.pose.position.z);
@@ -385,6 +397,12 @@ void PoseGraphNodelet::callbackReloRelativePose(const nav_msgs::Odometry::ConstP
 /*//{ callbackVio() */
 void PoseGraphNodelet::callbackVio(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
+
+    if (!is_initialized_) 
+    {
+      return;
+    }
+
     //ROS_INFO("vio_callback!");
     Vector3d vio_t(pose_msg->pose.pose.position.x, pose_msg->pose.pose.position.y, pose_msg->pose.pose.position.z);
     Quaterniond vio_q;
@@ -467,6 +485,12 @@ void PoseGraphNodelet::callbackVio(const nav_msgs::Odometry::ConstPtr &pose_msg)
 /*//{ callbackExtrinsic() */
 void PoseGraphNodelet::callbackExtrinsic(const nav_msgs::Odometry::ConstPtr &pose_msg)
 {
+
+    if (!is_initialized_) 
+    {
+      return;
+    }
+
     m_process.lock();
     tic = Vector3d(pose_msg->pose.pose.position.x,
                    pose_msg->pose.pose.position.y,
@@ -482,6 +506,12 @@ void PoseGraphNodelet::callbackExtrinsic(const nav_msgs::Odometry::ConstPtr &pos
 /*//{ process() */
 void PoseGraphNodelet::process()
 {
+
+    if (!is_initialized_) 
+    {
+      return;
+    }
+
     if (!LOOP_CLOSURE)
         return;
     while (true)
