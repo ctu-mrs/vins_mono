@@ -25,6 +25,11 @@ using namespace vins_estimator;
 class VinsEstimator : public nodelet::Nodelet {
 
 public:
+
+  ~VinsEstimator() {
+    con.notify_one();
+  };
+
   virtual void onInit();
 
 private:
@@ -348,13 +353,13 @@ void VinsEstimator::process()
       return;
     }
 
-    while (true)
+    while (ros::ok())
     {
         std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>> measurements;
         std::unique_lock<std::mutex> lk(m_buf);
         con.wait(lk, [&]
                  {
-            return (measurements = getMeasurements()).size() != 0;
+            return ((measurements = getMeasurements()).size() != 0 || ros::isShuttingDown());
                  });
         lk.unlock();
         m_estimator.lock();
