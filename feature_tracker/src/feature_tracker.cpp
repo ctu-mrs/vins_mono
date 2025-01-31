@@ -45,6 +45,7 @@ FeatureTracker::FeatureTracker()
 /*//{ setMask() */
 void FeatureTracker::setMask()
 {
+    // the original mask is loaded
     if(FISHEYE)
         mask = fisheye_mask.clone();
     else
@@ -66,6 +67,7 @@ void FeatureTracker::setMask()
     ids.clear();
     track_cnt.clear();
 
+    // the MIN_DIST neighborhood around tracked points is masked so that new features are not detected around them
     for (auto &it : cnt_pts_id)
     {
         if (mask.at<uchar>(it.second.first) == 255)
