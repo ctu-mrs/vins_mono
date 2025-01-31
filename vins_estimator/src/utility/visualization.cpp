@@ -3,6 +3,9 @@
 using namespace ros;
 using namespace Eigen;
 
+namespace vins_mono {
+  namespace vins_estimator {
+
 ros::Publisher pub_odometry, pub_latest_odometry;
 ros::Publisher pub_path, pub_relo_path;
 ros::Publisher pub_point_cloud, pub_margin_cloud;
@@ -492,3 +495,6 @@ void pubRelocalization(const Estimator &estimator)
     pub_relo_relative_pose.publish(odometry);
 }
 /*//}*/
+
+}
+}
