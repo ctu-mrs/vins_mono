@@ -66,6 +66,19 @@ class FeatureTracker
     double cur_time;
     double prev_time;
 
+    size_t n_pts_tracked = 0;
+    size_t n_pts_after_ransac = 0;
+    size_t n_pts_added = 0;
+    size_t n_pts_final = 0;
+
+    double t_clahe = 0.0;
+    double t_optical_flow = 0.0;
+    double t_mask = 0.0;
+    double t_ransac = 0.0;
+    double t_detect_features = 0.0;
+    double t_add_features = 0.0;
+    double t_undistort = 0.0;
+
     static int n_id;
 };
 /*//}*/

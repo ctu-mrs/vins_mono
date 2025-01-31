@@ -103,7 +103,8 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
         cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
         TicToc t_c;
         clahe->apply(_img, img);
-        ROS_DEBUG("CLAHE costs: %fms", t_c.toc());
+        t_clahe = t_c.toc();
+        ROS_DEBUG("CLAHE costs: %fms", t_clahe);
     }
     else
         img = _img;
@@ -123,9 +124,12 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
     {
         TicToc t_o;
         vector<uchar> status;
+        // err should store the L1 distance between patches around the original and a moved point, divided by number of pixels in a window, is used as a error measure (currently not used)
         vector<float> err;
+        // find position of cur_pts from cur_img in the new forw_img and store them in forw_pts, status = 0 for points for which optical flow could not be calculated
         cv::calcOpticalFlowPyrLK(cur_img, forw_img, cur_pts, forw_pts, status, err, cv::Size(21, 21), 3);
 
+        // remove points outside of the image and points that could not be tracked by the optical flow
         for (int i = 0; i < int(forw_pts.size()); i++)
             if (status[i] && !inBorder(forw_pts[i]))
                 status[i] = 0;
@@ -134,7 +138,9 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
         reduceVector(ids, status);
         reduceVector(cur_un_pts, status);
         reduceVector(track_cnt, status);
-        ROS_DEBUG("temporal optical flow costs: %fms", t_o.toc());
+        n_pts_tracked = track_cnt.size();
+        t_optical_flow = t_o.toc();
+        ROS_DEBUG("temporal optical flow costs: %fms", t_optical_flow);
     }
 
     for (auto &n : track_cnt)
@@ -146,35 +152,47 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
         ROS_DEBUG("set mask begins");
         TicToc t_m;
         setMask();
-        ROS_DEBUG("set mask costs %fms", t_m.toc());
+        t_mask = t_m.toc();
+        ROS_DEBUG("set mask costs %fms", t_mask);
 
         ROS_DEBUG("detect feature begins");
         TicToc t_t;
+        // detect new features up to the desired count
         int n_max_cnt = MAX_CNT - static_cast<int>(forw_pts.size());
         if (n_max_cnt > 0)
         {
-            if(mask.empty())
-                cout << "mask is empty " << endl;
-            if (mask.type() != CV_8UC1)
-                cout << "mask type wrong " << endl;
-            if (mask.size() != forw_img.size())
-                cout << "wrong size " << endl;
+            /* if(mask.empty()) */
+            /*     cout << "mask is empty " << endl; */
+            /* if (mask.type() != CV_8UC1) */
+            /*     cout << "mask type wrong " << endl; */
+            /* if (mask.size() != forw_img.size()) */
+            /*     cout << "wrong size " << endl; */
             cv::goodFeaturesToTrack(forw_img, n_pts, MAX_CNT - forw_pts.size(), 0.01, MIN_DIST, mask);
+            n_pts_added = n_pts.size();
         }
         else
+        {
+            n_pts_added = 0;
             n_pts.clear();
-        ROS_DEBUG("detect feature costs: %fms", t_t.toc());
+        }
+        t_detect_features = t_t.toc();
+        ROS_DEBUG("detect feature costs: %fms", t_detect_features);
 
         ROS_DEBUG("add feature begins");
         TicToc t_a;
         addPoints();
-        ROS_DEBUG("selectFeature costs: %fms", t_a.toc());
+        n_pts_final = track_cnt.size();
+        t_add_features = t_a.toc();
+        ROS_DEBUG("selectFeature costs: %fms", t_add_features);
     }
     prev_img = cur_img;
     prev_un_pts = cur_un_pts;
     cur_img = forw_img;
     cur_pts = forw_pts;
+    TicToc t_u;
     undistortedPoints();
+    t_undistort = t_u.toc();
+    ROS_DEBUG("undistorPoints costs: %fms", t_undistort);
     prev_time = cur_time;
 }
 /*//}*/
@@ -203,14 +221,20 @@ void FeatureTracker::rejectWithF()
 
         vector<uchar> status;
         cv::findFundamentalMat(un_cur_pts, un_forw_pts, cv::FM_RANSAC, F_THRESHOLD, 0.99, status);
-        int size_a = cur_pts.size();
+        size_t n_pts_before_ransac = forw_pts.size();
         reduceVector(cur_pts, status);
         reduceVector(forw_pts, status);
         reduceVector(cur_un_pts, status);
         reduceVector(ids, status);
         reduceVector(track_cnt, status);
-        ROS_INFO_THROTTLE(1.0, "[%s]: FM ransac: %d -> %lu: %f", ros::this_node::getName().c_str(), size_a, forw_pts.size(), 1.0 * forw_pts.size() / size_a);
-        ROS_DEBUG("FM ransac costs: %fms", t_f.toc());
+        n_pts_after_ransac = forw_pts.size();
+        ROS_INFO_THROTTLE(1.0, "[%s]: FM ransac: %lu -> %lu: %f", ros::this_node::getName().c_str(), n_pts_before_ransac, n_pts_after_ransac, 1.0 * (double)n_pts_after_ransac / (double) n_pts_before_ransac);
+        t_ransac = t_f.toc();
+        ROS_DEBUG("FM ransac costs: %fms", t_ransac);
+    }
+    else
+    {
+      ROS_WARN("[%s]: not enough points to perform ransac %lu < 8", ros::this_node::getName().c_str(), forw_pts.size());
     }
 }
 /*//}*/

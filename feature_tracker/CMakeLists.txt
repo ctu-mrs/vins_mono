@@ -15,6 +15,8 @@ set(CATKIN_DEPENDENCIES
   std_msgs
   sensor_msgs
   cv_bridge
+  message_generation
+  message_runtime
   vins_mono_camera_model
   )
 
@@ -45,6 +47,14 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenCV REQUIRED)
 
 find_package(Eigen3)
+
+add_message_files(FILES
+  Diagnostics.msg
+  )
+
+generate_messages(DEPENDENCIES
+  std_msgs
+  )
 
 catkin_package(
   LIBRARIES ${LIBRARIES}
@@ -79,6 +89,9 @@ add_library(VinsMonoFeatureTracker
   ${SRC_FILES}
   )
 
+add_dependencies(VinsMonoFeatureTracker ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(VinsMonoFeatureTracker ${catkin_EXPORTED_TARGETS})
+
 target_link_libraries(VinsMonoFeatureTracker
   ${catkin_LIBRARIES} 
   ${OpenCV_LIBS}
@@ -94,7 +107,7 @@ install(TARGETS ${PROJECT_NAME} ${LIBRARIES}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
   )
 
-install(DIRECTORY include
+install(DIRECTORY include msg
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   )
 

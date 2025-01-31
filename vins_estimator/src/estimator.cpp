@@ -524,8 +524,6 @@ bool Estimator::visualInitialAlign()
 bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 {
 
-    double highest_parallax = 0;
-
     // find previous frame which contians enough correspondence and parallax with newest frame
     for (int i = 0; i < WINDOW_SIZE; i++)
     {
@@ -545,7 +543,6 @@ bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 
             }
             average_parallax = 1.0 * sum_parallax / int(corres.size());
-            highest_parallax = average_parallax > highest_parallax ? average_parallax : highest_parallax;
             if(average_parallax * FOCAL_LENGTH > INIT_MIN_PARALLAX) 
             {
               if (m_estimator.solveRelativeRT(corres, relative_R, relative_T, INIT_MIN_FEATURES, FOCAL_LENGTH))
@@ -557,7 +554,7 @@ bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
             }
             else 
             {
-              ROS_INFO("[%s]: Init: not enough parallax %.2f <= %.2f in frame %d in window of size %d", ros::this_node::getName().c_str(), highest_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX, i, WINDOW_SIZE);
+              ROS_INFO("[%s]: Init: not enough parallax %.2f <= %.2f in frame %d in window of size %d", ros::this_node::getName().c_str(), average_parallax * FOCAL_LENGTH, INIT_MIN_PARALLAX, i, WINDOW_SIZE);
             }
         } 
         else 

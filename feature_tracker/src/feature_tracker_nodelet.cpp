@@ -14,6 +14,8 @@
 
 #include <feature_tracker/feature_tracker.h>
 
+#include <vins_mono_feature_tracker/Diagnostics.h>
+
 #define SHOW_UNDISTORTION 0
 
 namespace vins_mono
@@ -39,6 +41,7 @@ private:
 
   ros::Publisher pub_img; 
   ros::Publisher pub_restart;
+  ros::Publisher pub_diagnostics; 
 
   image_transport::Publisher pub_match;
 
@@ -52,7 +55,12 @@ private:
 
   string uav_name = "";
 
+  double t_publish = 0.0;
+  double t_total_feature_tracker = 0.0;
+
   void callbackImage(const sensor_msgs::ImageConstPtr &img_msg);
+
+  void pubDiagnostics();
 };
 /*//}*/
 
@@ -114,6 +122,7 @@ void FeatureTrackerNodelet::onInit()
 
     pub_img = nh.advertise<sensor_msgs::PointCloud>("feature", 1);
     pub_restart = nh.advertise<std_msgs::Bool>("restart",1);
+    pub_diagnostics = nh.advertise<vins_mono_feature_tracker::Diagnostics>("diagnostics", 1);
 
     // Create image transport
     image_transport::ImageTransport it(nh);
@@ -232,6 +241,7 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
 
    if (PUB_THIS_FRAME)
    {
+        TicToc t_p;
         pub_count++;
         sensor_msgs::PointCloudPtr feature_points(new sensor_msgs::PointCloud);
         sensor_msgs::ChannelFloat32 id_of_point;
@@ -322,8 +332,43 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
             //cv::waitKey(5);
             pub_match.publish(ptr->toImageMsg());
         }
+        t_publish = t_p.toc();
     }
-    ROS_INFO_THROTTLE(1.0, "[%s]: whole feature tracker processing costs: %.2f ms", ros::this_node::getName().c_str(), t_r.toc());
+    t_total_feature_tracker = t_r.toc();
+    ROS_INFO_THROTTLE(1.0, "[%s]: whole feature tracker processing costs: %.2f ms", ros::this_node::getName().c_str(), t_total_feature_tracker);
+    pubDiagnostics();
+}
+/*//}*/
+
+/*//{ pubDiagnostics() */
+void FeatureTrackerNodelet::pubDiagnostics() 
+{
+  vins_mono_feature_tracker::Diagnostics diag_msg;
+
+  diag_msg.header.stamp = ros::Time::now();
+  diag_msg.header.frame_id = "feature_tracker";
+
+  for (int i = 0; i < NUM_OF_CAM; i++) 
+  {
+
+    diag_msg.n_pts_tracked.push_back(trackerData[i].n_pts_tracked);
+    diag_msg.n_pts_after_ransac.push_back(trackerData[i].n_pts_after_ransac);
+    diag_msg.n_pts_added.push_back(trackerData[i].n_pts_added);
+    diag_msg.n_pts_final.push_back(trackerData[i].n_pts_final);
+
+    diag_msg.t_clahe.push_back(trackerData[i].t_clahe);
+    diag_msg.t_optical_flow.push_back(trackerData[i].t_optical_flow);
+    diag_msg.t_mask.push_back(trackerData[i].t_mask);
+    diag_msg.t_ransac.push_back(trackerData[i].t_ransac);
+    diag_msg.t_detect_features.push_back(trackerData[i].t_detect_features);
+    diag_msg.t_add_features.push_back(trackerData[i].t_add_features);
+    diag_msg.t_undistort.push_back(trackerData[i].t_undistort);
+  }
+
+  diag_msg.t_publish = t_publish;
+  diag_msg.t_total_feature_tracker = t_total_feature_tracker;
+
+  pub_diagnostics.publish(diag_msg);
 }
 /*//}*/
 
