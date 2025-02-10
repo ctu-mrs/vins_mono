@@ -20,6 +20,9 @@
 #include <vins_estimator/estimator.h>
 #include <vins_estimator/parameters.h>
 
+namespace vins_mono {
+  namespace vins_estimator {
+
 extern ros::Publisher pub_odometry;
 extern ros::Publisher pub_path, pub_pose;
 extern ros::Publisher pub_cloud, pub_map;
@@ -51,3 +54,6 @@ void pubTF(const Estimator &estimator, const std_msgs::Header &header);
 void pubKeyframe(const Estimator &estimator);
 
 void pubRelocalization(const Estimator &estimator);
+
+  }
+}
