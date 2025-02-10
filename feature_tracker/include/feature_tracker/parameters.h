@@ -10,6 +10,12 @@
 namespace vins_mono {
   namespace feature_tracker {
 
+typedef enum
+{
+  GFTT,
+  FAST
+} FeatureDetector_t;
+
 const std::string NODE_NAME("FeatureTracker");
 
 extern int ROW;
@@ -20,6 +26,8 @@ const int NUM_OF_CAM = 1;
 
 extern std::string FISHEYE_MASK;
 extern std::vector<std::string> CAM_NAMES;
+extern int FEATURE_DETECTOR;
+extern int FAST_THRESHOLD;
 extern int MAX_CNT;
 extern int MIN_DIST;
 extern int WINDOW_SIZE;

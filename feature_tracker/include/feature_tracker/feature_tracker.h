@@ -29,6 +29,8 @@ void reduceVector(vector<cv::Point2f> &v, vector<uchar> status);
 
 void reduceVector(vector<int> &v, vector<uchar> status);
 
+bool compareFASTResponse(cv::KeyPoint first, cv::KeyPoint second);
+
 /*//{ class FeatureTracker */
 class FeatureTracker
 {

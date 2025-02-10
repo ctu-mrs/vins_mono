@@ -11,6 +11,8 @@ int MIN_DIST;
 int WINDOW_SIZE;
 int FREQ;
 double F_THRESHOLD;
+int FEATURE_DETECTOR;
+int FAST_THRESHOLD;
 int SHOW_TRACK;
 int STEREO_TRACK;
 int EQUALIZE;
@@ -35,6 +37,8 @@ void readParameters(ros::NodeHandle &n)
     std::string CONFIG_PATH;
     pl.loadParam("config_path", CONFIG_PATH);
 
+    pl.loadParam("feature_detector", FEATURE_DETECTOR, (int) FeatureDetector_t::GFTT);
+    pl.loadParam("fast_threshold", FAST_THRESHOLD, 30);
     pl.loadParam("max_cnt", MAX_CNT);
     pl.loadParam("min_dist", MIN_DIST);
     pl.loadParam("image_height", ROW);
@@ -114,6 +118,10 @@ void readParameters(ros::NodeHandle &n)
     }
     std::string CONFIG_PATH = readParam<std::string>(n, "config_path");
 
+    FEATURE_DETECTOR = FeatureDetector_t::GFTT;
+    FEATURE_DETECTOR = fsSettings["feature_detector"];
+    FAST_THRESHOLD = 30;
+    FAST_THRESHOLD = fsSettings["fast_threshold"];
     MAX_CNT = fsSettings["max_cnt"];
     MIN_DIST = fsSettings["min_dist"];
     ROW = fsSettings["image_height"];

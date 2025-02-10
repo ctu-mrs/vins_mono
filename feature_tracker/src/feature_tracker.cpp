@@ -167,7 +167,40 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
             /*     cout << "mask type wrong " << endl; */
             /* if (mask.size() != forw_img.size()) */
             /*     cout << "wrong size " << endl; */
-            cv::goodFeaturesToTrack(forw_img, n_pts, MAX_CNT - forw_pts.size(), 0.01, MIN_DIST, mask);
+            
+
+            if (FEATURE_DETECTOR == FeatureDetector_t::GFTT) 
+            {
+              cv::goodFeaturesToTrack(forw_img, n_pts, MAX_CNT - forw_pts.size(), 0.01, MIN_DIST, mask);
+            }
+            else if (FEATURE_DETECTOR == FeatureDetector_t::FAST) 
+            {
+                std::vector<cv::KeyPoint> ext_pts;
+                n_pts.clear();
+                cv::FAST(forw_img, ext_pts, FAST_THRESHOLD, true, cv::FastFeatureDetector::TYPE_9_16);
+
+                // Now lets get the top number from this
+                std::sort(ext_pts.begin(), ext_pts.end(), compareFASTResponse);
+
+                for (auto &it : ext_pts)
+                {
+                    if (mask.at<uchar>(it.pt) == 255)
+                    {
+                        n_pts.push_back(it.pt);
+                        cv::circle(mask, it.pt, MIN_DIST, 0, -1);
+                        if (static_cast<int>(n_pts.size()) >= n_max_cnt)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+              ROS_ERROR_THROTTLE(10, "[%s]: Unknown detector: %d. Using default GFTT.", ros::this_node::getName().c_str(), FAST_THRESHOLD);
+              cv::goodFeaturesToTrack(forw_img, n_pts, MAX_CNT - forw_pts.size(), 0.01, MIN_DIST, mask);
+            }
+
             n_pts_added = n_pts.size();
         }
         else
@@ -348,5 +381,12 @@ void FeatureTracker::undistortedPoints()
         }
     }
     prev_un_pts_map = cur_un_pts_map;
+}
+/*//}*/
+
+/*//{ compareFASTResponse() */
+bool compareFASTResponse(cv::KeyPoint first, cv::KeyPoint second) 
+{ 
+    return first.response > second.response; 
 }
 /*//}*/
