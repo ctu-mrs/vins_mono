@@ -37,8 +37,8 @@ void readParameters(ros::NodeHandle &n)
     std::string CONFIG_PATH;
     pl.loadParam("config_path", CONFIG_PATH);
 
-    pl.loadParam("feature_detector", FEATURE_DETECTOR, (int) FeatureDetector_t::GFTT);
-    pl.loadParam("fast_threshold", FAST_THRESHOLD, 30);
+    pl.loadParam("feature_detector", FEATURE_DETECTOR);
+    pl.loadParam("fast_threshold", FAST_THRESHOLD);
     pl.loadParam("max_cnt", MAX_CNT);
     pl.loadParam("min_dist", MIN_DIST);
     pl.loadParam("image_height", ROW);
@@ -82,6 +82,12 @@ void readParameters(ros::NodeHandle &n)
     if (FREQ == 0)
     {
       FREQ = 100;
+    }
+
+    if (!pl.loadedSuccessfully()) 
+    {
+      ROS_ERROR("[VinsEstimator]: Could not load all non-optional parameters. Shutting down.");
+      ros::shutdown();
     }
 }
 /*//}*/

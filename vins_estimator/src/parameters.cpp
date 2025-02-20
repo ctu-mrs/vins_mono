@@ -176,6 +176,11 @@ void readParameters(ros::NodeHandle &n)
         fout.close();
     }
 
+    if (!pl.loadedSuccessfully()) 
+    {
+      ROS_ERROR("[VinsEstimator]: Could not load all non-optional parameters. Shutting down.");
+      ros::shutdown();
+    }
 }
 /*//}*/
 
