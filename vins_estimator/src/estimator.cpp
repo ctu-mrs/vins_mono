@@ -131,7 +131,7 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
 {
 
     if (dt < 0.00001) {
-      ROS_INFO("[%s]: IMU skipping too small dt: %f", ros::this_node::getName().c_str(), dt);
+      ROS_INFO("[VinsEstimator]: IMU skipping too small dt: %f", dt);
       return;
     }
 

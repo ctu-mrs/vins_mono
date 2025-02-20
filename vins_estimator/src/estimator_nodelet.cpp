@@ -282,7 +282,11 @@ void VinsEstimator::callbackImu(const sensor_msgs::ImuConstPtr &imu_msg)
         // Publish only after initialization
         if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
         {
-            pubLatestOdometry(tmp_P, tmp_Q, tmp_V, header);
+            const double rx = imu_msg->angular_velocity.x;
+            const double ry = imu_msg->angular_velocity.y;
+            const double rz = imu_msg->angular_velocity.z;
+            Eigen::Vector3d ang_vel{rx, ry, rz};
+            pubLatestOdometry(tmp_P, tmp_Q, tmp_V, ang_vel - tmp_Bg, header);
         }
     }
 }
@@ -398,9 +402,12 @@ void VinsEstimator::process()
                     /* printf("imu: dt:%f a: %f %f %f w: %f %f %f\n",dt, dx, dy, dz, rx, ry, rz); */
 
                 }
+                // IMU msg is newer than img msg
                 else
                 {
+                    // dt_1: time from last processed msg to last image
                     double dt_1 = img_t - current_time;
+                    // dt_2: time from last img to last imu
                     double dt_2 = t - img_t;
                     current_time = img_t;
                     ROS_ASSERT(dt_1 >= 0);
@@ -473,14 +480,17 @@ void VinsEstimator::process()
             std_msgs::Header header = img_msg->header;
             header.frame_id = uav_name + "/vins_world";
 
-            pubOdometry(estimator, header);
+            Eigen::Vector3d ang_vel{rx, ry, rz};
+            pubOdometry(estimator, ang_vel, header);
             pubKeyPoses(estimator, header);
             pubCameraPose(estimator, header);
             pubPointCloud(estimator, header);
             pubTF(estimator, header);
             pubKeyframe(estimator);
             if (relo_msg != NULL)
+            {
                 pubRelocalization(estimator);
+            }
             //ROS_ERROR("end: %f, at %f", img_msg->header.stamp.toSec(), ros::Time::now().toSec());
         }
         m_estimator.unlock();

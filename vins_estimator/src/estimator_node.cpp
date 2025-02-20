@@ -165,7 +165,9 @@ void imu_callback(const sensor_msgs::ImuConstPtr &imu_msg)
         predict(imu_msg);
         std_msgs::Header header = imu_msg->header;
         if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
-            pubLatestOdometry(tmp_P, tmp_Q, tmp_V, header);
+        {
+            pubLatestOdometry(tmp_P, tmp_Q, tmp_V, gyr_0 - tmp_Bg, header);
+        }
     }
 }
 /*//}*/
@@ -345,14 +347,17 @@ void process()
             std_msgs::Header header = img_msg->header;
             header.frame_id = uav_name + "/vins_world";
 
-            pubOdometry(estimator, header);
+            Eigen::Vector3d ang_vel{rx, ry, rz};
+            pubOdometry(estimator, ang_vel, header);
             pubKeyPoses(estimator, header);
             pubCameraPose(estimator, header);
             pubPointCloud(estimator, header);
             pubTF(estimator, header);
             pubKeyframe(estimator);
             if (relo_msg != NULL)
+            {
                 pubRelocalization(estimator);
+            }
             //ROS_ERROR("end: %f, at %f", img_msg->header.stamp.toSec(), ros::Time::now().toSec());
         }
         m_estimator.unlock();

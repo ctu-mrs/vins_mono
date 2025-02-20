@@ -55,7 +55,7 @@ void registerPub(ros::NodeHandle &n)
 /*//}*/
 
 /*//{ pubLatestOdometry() */
-void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, const Eigen::Vector3d &V, const std_msgs::Header &header)
+void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, const Eigen::Vector3d &V, const Eigen::Vector3d &ang_vel, const std_msgs::Header &header)
 {
 
     if (!publishers_initialized) {
@@ -83,6 +83,10 @@ void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, co
     odometry.twist.twist.linear.x = V.x();
     odometry.twist.twist.linear.y = V.y();
     odometry.twist.twist.linear.z = V.z();
+    // bias is already subtracted before calling pubLatestOdometry()
+    odometry.twist.twist.angular.x = ang_vel.x();
+    odometry.twist.twist.angular.y = ang_vel.y();
+    odometry.twist.twist.angular.z = ang_vel.z();
     pub_latest_odometry.publish(odometry);
 
 }
@@ -136,7 +140,7 @@ void printStatistics(const Estimator &estimator, double t)
 /*//}*/
 
 /*//{ pubOdometry() */
-void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
+void pubOdometry(const Estimator &estimator, const Eigen::Vector3d &ang_vel, const std_msgs::Header &header)
 {
     if (!publishers_initialized) {
       return;
@@ -160,6 +164,9 @@ void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
         odometry.twist.twist.linear.x = estimator.Vs[WINDOW_SIZE].x();
         odometry.twist.twist.linear.y = estimator.Vs[WINDOW_SIZE].y();
         odometry.twist.twist.linear.z = estimator.Vs[WINDOW_SIZE].z();
+        odometry.twist.twist.angular.x = ang_vel.x() - estimator.Bgs[WINDOW_SIZE].x();
+        odometry.twist.twist.angular.y = ang_vel.y() - estimator.Bgs[WINDOW_SIZE].y();
+        odometry.twist.twist.angular.z = ang_vel.z() - estimator.Bgs[WINDOW_SIZE].z();
         pub_odometry.publish(odometry);
 
         geometry_msgs::PoseStamped pose_stamped;
