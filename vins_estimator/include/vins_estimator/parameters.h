@@ -52,6 +52,8 @@ extern int ESTIMATE_TD;
 extern int ROLLING_SHUTTER;
 extern double ROW, COL;
 
+extern bool WRITE_EXTRINSICS_TO_FILE;
+extern bool WRITE_RESULTS_TO_FILE;
 
 void readParameters(ros::NodeHandle &n);
 

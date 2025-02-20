@@ -156,6 +156,7 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
         linear_acceleration_buf[frame_count].push_back(linear_acceleration);
         angular_velocity_buf[frame_count].push_back(angular_velocity);
 
+        // The mean value of last 2 IMU measurements is integrated
         int j = frame_count;         
         Vector3d un_acc_0 = Rs[j] * (acc_0 - Bas[j]) - g;
         Vector3d un_gyr = 0.5 * (gyr_0 + angular_velocity) - Bgs[j];
@@ -176,9 +177,13 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
     ROS_DEBUG("new image coming ------------------------------------------");
     ROS_DEBUG("Adding feature points %lu", image.size());
     if (f_manager.addFeatureCheckParallax(frame_count, image, td))
+    {
         marginalization_flag = MARGIN_OLD;
+    }
     else
+    {
         marginalization_flag = MARGIN_SECOND_NEW;
+    }
 
     ROS_DEBUG("this frame is--------------------%s", marginalization_flag ? "reject" : "accept");
     ROS_DEBUG("%s", marginalization_flag ? "Non-keyframe" : "Keyframe");
@@ -235,11 +240,17 @@ void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<doubl
                 
             }
             else
+            {
                 slideWindow();
+            }
         }
         else
+        {
+            // Waiting to fill the sliding window
             frame_count++;
+        }
     }
+    // Regular solver iteration after initialization is done
     else
     {
         TicToc t_solve;
@@ -570,7 +581,9 @@ bool Estimator::relativePose(Matrix3d &relative_R, Vector3d &relative_T, int &l)
 void Estimator::solveOdometry()
 {
     if (frame_count < WINDOW_SIZE)
+    {
         return;
+    }
     if (solver_flag == NON_LINEAR)
     {
         TicToc t_tri;
@@ -693,10 +706,14 @@ void Estimator::double2vector()
 
     VectorXd dep = f_manager.getDepthVector();
     for (int i = 0; i < f_manager.getFeatureCount(); i++)
+    {
         dep(i) = para_Feature[i][0];
+    }
     f_manager.setDepth(dep);
     if (ESTIMATE_TD)
+    {
         td = para_Td[0][0];
+    }
 
     // relative info between two loop frame
     if(relocalization_info)
@@ -795,11 +812,13 @@ void Estimator::optimization()
         problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
         if (!ESTIMATE_EXTRINSIC)
         {
-            ROS_DEBUG("fix extinsic param");
+            ROS_DEBUG("fix extrinsic param");
             problem.SetParameterBlockConstant(para_Ex_Pose[i]);
         }
         else
-            ROS_DEBUG("estimate extinsic param");
+        {
+            ROS_DEBUG("estimate extrinsic param");
+        }
     }
     if (ESTIMATE_TD)
     {
@@ -822,7 +841,9 @@ void Estimator::optimization()
     {
         int j = i + 1;
         if (pre_integrations[j]->sum_dt > 10.0)
+        {
             continue;
+        }
         IMUFactor* imu_factor = new IMUFactor(pre_integrations[j]);
         problem.AddResidualBlock(imu_factor, NULL, para_Pose[i], para_SpeedBias[i], para_Pose[j], para_SpeedBias[j]);
     }
@@ -832,7 +853,9 @@ void Estimator::optimization()
     {
         it_per_id.used_num = it_per_id.feature_per_frame.size();
         if (!(it_per_id.used_num >= 2 && it_per_id.start_frame < WINDOW_SIZE - 2))
+        {
             continue;
+        }
  
         ++feature_index;
 
@@ -920,9 +943,13 @@ void Estimator::optimization()
     //options.minimizer_progress_to_stdout = true;
     //options.use_nonmonotonic_steps = true;
     if (marginalization_flag == MARGIN_OLD)
+    {
         options.max_solver_time_in_seconds = SOLVER_TIME * 4.0 / 5.0;
+    }
     else
+    {
         options.max_solver_time_in_seconds = SOLVER_TIME;
+    }
     TicToc t_solver;
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
@@ -945,7 +972,9 @@ void Estimator::optimization()
             {
                 if (last_marginalization_parameter_blocks[i] == para_Pose[0] ||
                     last_marginalization_parameter_blocks[i] == para_SpeedBias[0])
+                {
                     drop_set.push_back(i);
+                }
             }
             // construct new marginlization_factor
             MarginalizationFactor *marginalization_factor = new MarginalizationFactor(last_marginalization_info);
@@ -973,13 +1002,17 @@ void Estimator::optimization()
             {
                 it_per_id.used_num = it_per_id.feature_per_frame.size();
                 if (!(it_per_id.used_num >= 2 && it_per_id.start_frame < WINDOW_SIZE - 2))
+                {
                     continue;
+                }
 
                 ++feature_index;
 
                 int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;
                 if (imu_i != 0)
+                {
                     continue;
+                }
 
                 Vector3d pts_i = it_per_id.feature_per_frame[0].point;
 
@@ -987,7 +1020,9 @@ void Estimator::optimization()
                 {
                     imu_j++;
                     if (imu_i == imu_j)
+                    {
                         continue;
+                    }
 
                     Vector3d pts_j = it_per_frame.point;
                     if (ESTIMATE_TD)
@@ -1093,7 +1128,9 @@ void Estimator::optimization()
                 }
             }
             for (int i = 0; i < NUM_OF_CAM; i++)
+            {
                 addr_shift[reinterpret_cast<long>(para_Ex_Pose[i])] = para_Ex_Pose[i];
+            }
             if (ESTIMATE_TD)
             {
                 addr_shift[reinterpret_cast<long>(para_Td[0])] = para_Td[0];

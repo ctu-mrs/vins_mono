@@ -104,7 +104,7 @@ void printStatistics(const Estimator &estimator, double t)
         ROS_INFO_THROTTLE(1.0, "[%s]: extrinsic tic: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), estimator.tic[i].x(), estimator.tic[i].y(), estimator.tic[i].z());
         const Eigen::Vector3d extr_ypr = Utility::R2ypr(estimator.ric[i]).transpose();
         ROS_INFO_THROTTLE(1.0, "[%s]: extrinsic ric: %.2f, %.2f, %.2f", ros::this_node::getName().c_str(), extr_ypr.x(), extr_ypr.y(), extr_ypr.z());
-        if (ESTIMATE_EXTRINSIC)
+        if (ESTIMATE_EXTRINSIC && WRITE_EXTRINSICS_TO_FILE)
         {
             cv::FileStorage fs(EX_CALIB_RESULT_PATH, cv::FileStorage::WRITE);
             Eigen::Matrix3d eigen_R;
@@ -191,22 +191,25 @@ void pubOdometry(const Estimator &estimator, const std_msgs::Header &header)
         pub_relo_path.publish(relo_path);
 
         // write result to file
-        ofstream foutC(VINS_RESULT_PATH, ios::app);
-        foutC.setf(ios::fixed, ios::floatfield);
-        foutC.precision(0);
-        foutC << header.stamp.toSec() * 1e9 << ",";
-        foutC.precision(5);
-        foutC << estimator.Ps[WINDOW_SIZE].x() << ","
-              << estimator.Ps[WINDOW_SIZE].y() << ","
-              << estimator.Ps[WINDOW_SIZE].z() << ","
-              << tmp_Q.w() << ","
-              << tmp_Q.x() << ","
-              << tmp_Q.y() << ","
-              << tmp_Q.z() << ","
-              << estimator.Vs[WINDOW_SIZE].x() << ","
-              << estimator.Vs[WINDOW_SIZE].y() << ","
-              << estimator.Vs[WINDOW_SIZE].z() << "," << endl;
-        foutC.close();
+        if (WRITE_RESULTS_TO_FILE) 
+        {
+            ofstream foutC(VINS_RESULT_PATH, ios::app);
+            foutC.setf(ios::fixed, ios::floatfield);
+            foutC.precision(0);
+            foutC << header.stamp.toSec() * 1e9 << ",";
+            foutC.precision(5);
+            foutC << estimator.Ps[WINDOW_SIZE].x() << ","
+                  << estimator.Ps[WINDOW_SIZE].y() << ","
+                  << estimator.Ps[WINDOW_SIZE].z() << ","
+                  << tmp_Q.w() << ","
+                  << tmp_Q.x() << ","
+                  << tmp_Q.y() << ","
+                  << tmp_Q.z() << ","
+                  << estimator.Vs[WINDOW_SIZE].x() << ","
+                  << estimator.Vs[WINDOW_SIZE].y() << ","
+                  << estimator.Vs[WINDOW_SIZE].z() << "," << endl;
+            foutC.close();
+        }
     }
 }
 /*//}*/

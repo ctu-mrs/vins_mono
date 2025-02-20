@@ -31,6 +31,9 @@ std::string VINS_RESULT_PATH;
 double ROW, COL;
 double TD, TR;
 
+bool WRITE_EXTRINSICS_TO_FILE;
+bool WRITE_RESULTS_TO_FILE;
+
 #if USE_MRS_LIB
 
 /*//{ mrs_lib readParameters() */
@@ -39,11 +42,6 @@ void readParameters(ros::NodeHandle &n)
 
     ROS_INFO("[%s]: loading parameters using ParamLoader", NODE_NAME.c_str());
     mrs_lib::ParamLoader pl(n, NODE_NAME);
-
-    // Output path is loaded from parameters to be able to change the path from launch file and avoid absolute path in configs
-    std::string OUTPUT_PATH;
-    pl.loadParam("output_path", OUTPUT_PATH);
-    VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
 
     std::string config_file;
     pl.loadParam("config_file", config_file);
@@ -78,11 +76,6 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("init_min_features", INIT_MIN_FEATURES);
     pl.loadParam("init_min_imu_variance", INIT_MIN_IMU_VARIANCE);
 
-    // create folder if not exists
-    FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
-
-    std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
-    fout.close();
 
     pl.loadParam("acc_n", ACC_N);
     pl.loadParam("acc_w", ACC_W);
@@ -102,7 +95,6 @@ void readParameters(ros::NodeHandle &n)
         ROS_INFO("[%s]: Have no prior about extrinsic param, calibrate extrinsic param", NODE_NAME.c_str());
         RIC.push_back(Eigen::Matrix3d::Identity());
         TIC.push_back(Eigen::Vector3d::Zero());
-        EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
 
     }
     else 
@@ -110,7 +102,6 @@ void readParameters(ros::NodeHandle &n)
         if ( ESTIMATE_EXTRINSIC == 1)
         {
             ROS_INFO("[%s]: Optimize extrinsic param around initial guess!", NODE_NAME.c_str());
-            EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
         }
         if (ESTIMATE_EXTRINSIC == 0)
             ROS_INFO("[%s]: Fixed extrinsic param. No online optimization of extrinsic params.", NODE_NAME.c_str());
@@ -158,6 +149,33 @@ void readParameters(ros::NodeHandle &n)
         ROS_INFO("[%s]: Global shutter camera", NODE_NAME.c_str());
         TR = 0;
     }
+
+    // Output path is loaded from parameters to be able to change the path from launch file and avoid absolute path in configs
+    pl.loadParam("write_results_to_file", WRITE_RESULTS_TO_FILE);
+    pl.loadParam("write_extrinsics_to_file", WRITE_EXTRINSICS_TO_FILE);
+    std::string OUTPUT_PATH;
+    if (WRITE_RESULTS_TO_FILE || WRITE_EXTRINSICS_TO_FILE)
+    {
+        pl.loadParam("output_path", OUTPUT_PATH);
+    }
+    if (WRITE_RESULTS_TO_FILE)
+    {
+        VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
+
+        // create folder if not exists
+        FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
+
+        std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
+        fout.close();
+    }
+
+    if (WRITE_EXTRINSICS_TO_FILE && (ESTIMATE_EXTRINSIC == 1 || ESTIMATE_EXTRINSIC == 2))
+    {
+        EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
+        std::ofstream fout(EX_CALIB_RESULT_PATH, std::ios::out);
+        fout.close();
+    }
+
 }
 /*//}*/
 
@@ -184,11 +202,6 @@ T readParam(ros::NodeHandle &n, std::string name)
 /*//{ OG readParameters() */
 void readParameters(ros::NodeHandle &n)
 {
-
-    // Output path is loaded from parameters to be able to change the path from launch file and avoid absolute path in configs
-    std::string OUTPUT_PATH = readParam<std::string>(n, "output_path");
-    VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
-    std::cout << "result path " << VINS_RESULT_PATH << std::endl;
 
     std::string config_file;
     config_file = readParam<std::string>(n, "config_file");
@@ -219,12 +232,6 @@ void readParameters(ros::NodeHandle &n)
     INIT_MIN_FEATURES = fsSettings["init_min_features"];
     INIT_MIN_IMU_VARIANCE = fsSettings["init_min_imu_variance"];
 
-    // create folder if not exists
-    FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
-
-    // create file
-    std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
-    fout.close();
 
     ACC_N = fsSettings["acc_n"];
     ACC_W = fsSettings["acc_w"];
@@ -241,7 +248,6 @@ void readParameters(ros::NodeHandle &n)
         ROS_WARN("have no prior about extrinsic param, calibrate extrinsic param");
         RIC.push_back(Eigen::Matrix3d::Identity());
         TIC.push_back(Eigen::Vector3d::Zero());
-        EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
 
     }
     else 
@@ -249,7 +255,6 @@ void readParameters(ros::NodeHandle &n)
         if ( ESTIMATE_EXTRINSIC == 1)
         {
             ROS_WARN(" Optimize extrinsic param around initial guess!");
-            EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
         }
         if (ESTIMATE_EXTRINSIC == 0)
             ROS_WARN(" Fixed extrinsic param. No online optimization of extrinsic params. ");
@@ -290,6 +295,34 @@ void readParameters(ros::NodeHandle &n)
     else
     {
         TR = 0;
+    }
+
+    // Output path is loaded from parameters to be able to change the path from launch file and avoid absolute path in configs
+    WRITE_RESULTS_TO_FILE = fsSettings["write_results_to_file"];
+    WRITE_EXTRINSICS_TO_FILE = fsSettings["write_extrinsics_to_file"];
+    std::string OUTPUT_PATH;
+    if (WRITE_RESULTS_TO_FILE || WRITE_EXTRINSICS_TO_FILE) 
+    {
+        OUTPUT_PATH = readParam<std::string>(n, "output_path");
+        // create folder if not exists
+        FileSystemHelper::createDirectoryIfNotExists(OUTPUT_PATH.c_str());
+    }
+
+    if (WRITE_RESULTS_TO_FILE) 
+    {
+        VINS_RESULT_PATH = OUTPUT_PATH + "/vins_result_no_loop.csv";
+        std::cout << "result path " << VINS_RESULT_PATH << std::endl;
+        // create file
+        std::ofstream fout(VINS_RESULT_PATH, std::ios::out);
+        fout.close();
+    }
+
+    if (WRITE_EXTRINSICS_TO_FILE && (ESTIMATE_EXTRINSIC == 1 || ESTIMATE_EXTRINSIC == 2))
+    {
+        EX_CALIB_RESULT_PATH = OUTPUT_PATH + "/extrinsic_parameter.csv";
+        // create file
+        std::ofstream fout(EX_CALIB_RESULT_PATH, std::ios::out);
+        fout.close();
     }
     
     fsSettings.release();

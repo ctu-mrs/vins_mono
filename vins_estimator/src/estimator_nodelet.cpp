@@ -196,7 +196,9 @@ void VinsEstimator::update()
 
     queue<sensor_msgs::ImuConstPtr> tmp_imu_buf = imu_buf;
     for (sensor_msgs::ImuConstPtr tmp_imu_msg; !tmp_imu_buf.empty(); tmp_imu_buf.pop())
+    {
         predict(tmp_imu_buf.front());
+    }
 
 }
 /*//}*/
@@ -215,14 +217,14 @@ std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointC
 
         if (!(imu_buf.back()->header.stamp.toSec() > feature_buf.back()->header.stamp.toSec() + estimator.td))
         {
-            ROS_WARN("wait for imu, only should happen at the beginning");
+            ROS_WARN("[VinsEstimator]: Waiting for imu, only should happen at the beginning. IMU frequency is too low.");
             sum_of_wait++;
             return measurements;
         }
 
         if (!(imu_buf.front()->header.stamp.toSec() < feature_buf.back()->header.stamp.toSec() + estimator.td))
         {
-            ROS_WARN("throw img, only should happen at the beginning");
+            ROS_WARN("[VinsEstimator]: Throw img, only should happen at the beginning");
             feature_buf.pop();
             continue;
         }
@@ -241,9 +243,12 @@ std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointC
         }
         IMUs.emplace_back(imu_buf.front());
         if (IMUs.empty())
-            ROS_WARN("no imu between two image");
+        {
+            ROS_WARN("[VinsEstimator]: No imu msgs between two images");
+        }
         measurements.emplace_back(IMUs, img_msg);
     }
+    // This part of code can be never reached
     return measurements;
 }
 /*//}*/
@@ -274,8 +279,11 @@ void VinsEstimator::callbackImu(const sensor_msgs::ImuConstPtr &imu_msg)
         std::lock_guard<std::mutex> lg(m_state);
         predict(imu_msg);
         std_msgs::Header header = imu_msg->header;
+        // Publish only after initialization
         if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
+        {
             pubLatestOdometry(tmp_P, tmp_Q, tmp_V, header);
+        }
     }
 }
 /*//}*/
@@ -371,6 +379,8 @@ void VinsEstimator::process()
             {
                 double t = imu_msg->header.stamp.toSec();
                 double img_t = img_msg->header.stamp.toSec() + estimator.td;
+                // IMU msg is older than img msg
+                // current_time is the time of the latest processed msg, be it IMU or img
                 if (t <= img_t)
                 { 
                     if (current_time < 0)
