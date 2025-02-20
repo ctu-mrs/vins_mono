@@ -347,7 +347,7 @@ MarginalizationFactor::MarginalizationFactor(MarginalizationInfo* _marginalizati
     }
     //printf("residual size: %d, %d\n", cnt, n);
     set_num_residuals(marginalization_info->n);
-};
+}
 /*//}*/
 
 /*//{ Evaluate() */
