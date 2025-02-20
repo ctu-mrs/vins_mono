@@ -76,22 +76,6 @@ catkin_package(
   CATKIN_DEPENDS ${CATKIN_DEPENDENCIES}
   )
 
-add_executable(${PROJECT_NAME}
-  src/estimator_node.cpp
-  ${SRC_FILES}
-  )
-
-add_dependencies(${PROJECT_NAME}
-  ${${PROJECT_NAME}_EXPORTED_TARGETS}
-  ${catkin_EXPORTED_TARGETS}
-  )
-
-target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBS}
-  ${CERES_LIBRARIES}
-  )
-
 add_library(VinsMonoVinsEstimator
   src/estimator_nodelet.cpp
   ${SRC_FILES}
@@ -107,7 +91,7 @@ target_link_libraries(VinsMonoVinsEstimator
 ## |                           Install                          |
 ## --------------------------------------------------------------
 
-install(TARGETS ${PROJECT_NAME} ${LIBRARIES}
+install(TARGETS ${LIBRARIES}
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
