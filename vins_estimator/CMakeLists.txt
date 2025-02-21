@@ -18,6 +18,8 @@ set(CATKIN_DEPENDENCIES
   nav_msgs
   tf
   cv_bridge
+  message_generation
+  message_runtime
   )
 
 set(LIBRARIES
@@ -71,6 +73,14 @@ include_directories(
   ${CERES_INCLUDE_DIRS}
   )
 
+add_message_files(FILES
+  Diagnostics.msg
+  )
+
+generate_messages(DEPENDENCIES
+  std_msgs
+  )
+
 catkin_package(
   LIBRARIES ${LIBRARIES}
   INCLUDE_DIRS include
@@ -81,6 +91,9 @@ add_library(VinsMonoVinsEstimator
   src/estimator_nodelet.cpp
   ${SRC_FILES}
   )
+
+add_dependencies(VinsMonoVinsEstimator ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(VinsMonoVinsEstimator ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(VinsMonoVinsEstimator
   ${catkin_LIBRARIES}
@@ -98,7 +111,7 @@ install(TARGETS ${LIBRARIES}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
   )
 
-install(DIRECTORY include
+install(DIRECTORY include msg
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   )
 

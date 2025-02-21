@@ -18,6 +18,7 @@ nav_msgs::Path path, relo_path;
 ros::Publisher pub_keyframe_pose;
 ros::Publisher pub_keyframe_point;
 ros::Publisher pub_extrinsic;
+ros::Publisher pub_diagnostics;
 
 CameraPoseVisualization cameraposevisual(0, 1, 0, 1);
 CameraPoseVisualization keyframebasevisual(0.0, 0.0, 1.0, 1.0);
@@ -45,6 +46,7 @@ void registerPub(ros::NodeHandle &n)
     pub_keyframe_point = n.advertise<sensor_msgs::PointCloud>("keyframe_point", 1);
     pub_extrinsic = n.advertise<nav_msgs::Odometry>("extrinsic", 1);
     pub_relo_relative_pose=  n.advertise<nav_msgs::Odometry>("relo_relative_pose", 1);
+    pub_diagnostics=  n.advertise<vins_mono_vins_estimator::Diagnostics>("diagnostics", 1);
 
     cameraposevisual.setScale(1);
     cameraposevisual.setLineWidth(0.05);
@@ -503,6 +505,31 @@ void pubRelocalization(const Estimator &estimator)
     odometry.twist.twist.linear.y = estimator.relo_frame_index;
 
     pub_relo_relative_pose.publish(odometry);
+}
+/*//}*/
+
+/*//{ pubDiagnostics() */
+void pubDiagnostics(const Estimator &estimator, const std_msgs::Header &header, const double t_total)
+{
+    if (!publishers_initialized) {
+      return;
+    }
+
+    if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
+    {
+        vins_mono_vins_estimator::Diagnostics diag_msg;
+
+        diag_msg.header.stamp = ros::Time::now();
+        diag_msg.header.frame_id = "vins_estimator";
+
+        diag_msg.t_solver = estimator.t_ceres;
+        diag_msg.t_marginalization = estimator.t_marginalization;
+        diag_msg.t_total = estimator.t_total;
+
+        diag_msg.solver_iterations = static_cast<int>(estimator.summary.iterations.size());
+
+        pub_diagnostics.publish(diag_msg);
+    }
 }
 /*//}*/
 

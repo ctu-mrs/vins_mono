@@ -22,6 +22,7 @@ Eigen::Vector3d G{0.0, 0.0, 9.8};
 double BIAS_ACC_THRESHOLD;
 double BIAS_GYR_THRESHOLD;
 double SOLVER_TIME;
+int SOLVER_THREADS;
 int NUM_ITERATIONS;
 int ESTIMATE_EXTRINSIC;
 int ESTIMATE_TD;
@@ -68,6 +69,7 @@ void readParameters(ros::NodeHandle &n)
     ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);
 
     pl.loadParam("max_solver_time", SOLVER_TIME);
+    pl.loadParam("solver_threads", SOLVER_THREADS);
     pl.loadParam("max_num_iterations", NUM_ITERATIONS);
     pl.loadParam("keyframe_parallax", MIN_PARALLAX);
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
@@ -229,6 +231,7 @@ void readParameters(ros::NodeHandle &n)
     ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
 
     SOLVER_TIME = fsSettings["max_solver_time"];
+    SOLVER_THREADS = fsSettings["solver_threads"];
     NUM_ITERATIONS = fsSettings["max_num_iterations"];
     MIN_PARALLAX = fsSettings["keyframe_parallax"];
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;

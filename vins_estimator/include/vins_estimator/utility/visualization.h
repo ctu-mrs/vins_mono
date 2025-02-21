@@ -20,6 +20,8 @@
 #include <vins_estimator/estimator.h>
 #include <vins_estimator/parameters.h>
 
+#include <vins_mono_vins_estimator/Diagnostics.h>
+
 namespace vins_mono {
   namespace vins_estimator {
 
@@ -31,6 +33,8 @@ extern ros::Publisher pub_ref_pose, pub_cur_pose;
 extern ros::Publisher pub_key;
 extern nav_msgs::Path path;
 extern ros::Publisher pub_pose_graph;
+extern ros::Publisher pub_diagnostics;
+
 extern int IMAGE_ROW, IMAGE_COL;
 
 void registerPub(ros::NodeHandle &n);
@@ -54,6 +58,8 @@ void pubTF(const Estimator &estimator, const std_msgs::Header &header);
 void pubKeyframe(const Estimator &estimator);
 
 void pubRelocalization(const Estimator &estimator);
+
+void pubDiagnostics(const Estimator &estimator, const std_msgs::Header &header, const double t_total);
 
   }
 }

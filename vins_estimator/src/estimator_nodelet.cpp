@@ -487,6 +487,7 @@ void VinsEstimator::process()
             pubPointCloud(estimator, header);
             pubTF(estimator, header);
             pubKeyframe(estimator);
+            pubDiagnostics(estimator, header, whole_t);
             if (relo_msg != NULL)
             {
                 pubRelocalization(estimator);
@@ -497,7 +498,9 @@ void VinsEstimator::process()
         m_buf.lock();
         m_state.lock();
         if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
+        {
             update();
+        }
         m_state.unlock();
         m_buf.unlock();
     }

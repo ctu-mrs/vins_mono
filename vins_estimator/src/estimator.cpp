@@ -936,7 +936,7 @@ void Estimator::optimization()
     ceres::Solver::Options options;
 
     options.linear_solver_type = ceres::DENSE_SCHUR;
-    //options.num_threads = 2;
+    options.num_threads = SOLVER_THREADS;
     options.trust_region_strategy_type = ceres::DOGLEG;
     options.max_num_iterations = NUM_ITERATIONS;
     //options.use_explicit_schur_complement = true;
@@ -951,11 +951,11 @@ void Estimator::optimization()
         options.max_solver_time_in_seconds = SOLVER_TIME;
     }
     TicToc t_solver;
-    ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     //cout << summary.BriefReport() << endl;
     ROS_DEBUG("Iterations : %d", static_cast<int>(summary.iterations.size()));
-    ROS_DEBUG("solver costs: %f", t_solver.toc());
+    t_ceres = t_solver.toc();
+    ROS_DEBUG("solver costs: %f", t_ceres);
 
     double2vector();
 
@@ -1144,9 +1144,11 @@ void Estimator::optimization()
             
         }
     }
-    ROS_DEBUG("whole marginalization costs: %f", t_whole_marginalization.toc());
+    t_marginalization = t_whole_marginalization.toc();
+    ROS_DEBUG("whole marginalization costs: %f", t_marginalization);
     
-    ROS_DEBUG("whole time for ceres: %f", t_whole.toc());
+    t_total = t_whole.toc();
+    ROS_DEBUG("whole time for ceres: %f", t_total);
 }
 /*//}*/
 
