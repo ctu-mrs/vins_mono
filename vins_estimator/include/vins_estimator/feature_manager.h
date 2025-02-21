@@ -37,12 +37,9 @@ class FeaturePerFrame
     Vector3d point;
     Vector2d uv;
     Vector2d velocity;
-    double z;
-    bool is_used;
-    double parallax;
+    bool is_used = false;
     MatrixXd A;
     VectorXd b;
-    double dep_gradient;
 };
 /*//}*/
 
@@ -55,8 +52,7 @@ class FeaturePerId
     vector<FeaturePerFrame> feature_per_frame;
 
     int used_num;
-    bool is_outlier;
-    bool is_margin;
+    bool is_outlier = false; // always false in the current implementation
     double estimated_depth;
     int solve_flag; // 0 haven't solve yet; 1 solve succ; 2 solve fail;
 
