@@ -809,7 +809,7 @@ void Estimator::optimization()
     }
     else 
     {
-        ROS_WARN_THROTTLE(1.0, "[VinsEstimator]: Wrong loss function: %d. Using default Cauchy loss.");
+        ROS_WARN_THROTTLE(1.0, "[VinsEstimator]: Wrong loss function: %d. Using default Cauchy loss.", LOSS_FUNCTION);
         loss_function = new ceres::CauchyLoss(1.0);
     }
     for (int i = 0; i < WINDOW_SIZE + 1; i++)
