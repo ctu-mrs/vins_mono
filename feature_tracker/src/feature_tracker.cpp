@@ -199,7 +199,7 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
             }
             else
             {
-              ROS_ERROR_THROTTLE(10, "[%s]: Unknown detector: %d. Using default GFTT.", ros::this_node::getName().c_str(), FAST_THRESHOLD);
+              ROS_ERROR_THROTTLE(10, "[%s]: Unknown detector: %d. Using default GFTT.", NODE_NAME.c_str(), FAST_THRESHOLD);
               cv::goodFeaturesToTrack(forw_img, n_pts, MAX_CNT - forw_pts.size(), 0.01, MIN_DIST, mask);
             }
 
@@ -263,13 +263,13 @@ void FeatureTracker::rejectWithF()
         reduceVector(ids, status);
         reduceVector(track_cnt, status);
         n_pts_after_ransac = forw_pts.size();
-        ROS_INFO_THROTTLE(1.0, "[%s]: FM ransac: %lu -> %lu: %f", ros::this_node::getName().c_str(), n_pts_before_ransac, n_pts_after_ransac, 1.0 * (double)n_pts_after_ransac / (double) n_pts_before_ransac);
+        ROS_INFO_THROTTLE(1.0, "[%s]: FM ransac: %lu -> %lu: %f", NODE_NAME.c_str(), n_pts_before_ransac, n_pts_after_ransac, 1.0 * (double)n_pts_after_ransac / (double) n_pts_before_ransac);
         t_ransac = t_f.toc();
         ROS_DEBUG("FM ransac costs: %fms", t_ransac);
     }
     else
     {
-      ROS_WARN("[%s]: not enough points to perform ransac %lu < 8", ros::this_node::getName().c_str(), forw_pts.size());
+      ROS_WARN("[%s]: not enough points to perform ransac %lu < 8", NODE_NAME.c_str(), forw_pts.size());
     }
 }
 /*//}*/

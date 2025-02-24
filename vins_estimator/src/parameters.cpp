@@ -244,7 +244,7 @@ void readParameters(ros::NodeHandle &n)
     double f = (fx + fy) / 2.0;
 
     FOCAL_LENGTH = m > f ? m : f;
-    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", ros::this_node::getName().c_str(), FOCAL_LENGTH);
+    ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);
 
     SOLVER_TIME = fsSettings["max_solver_time"];
     SOLVER_THREADS = fsSettings["solver_threads"];

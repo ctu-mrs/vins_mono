@@ -94,7 +94,7 @@ void VinsEstimator::onInit()
 
     ros::NodeHandle nh = nodelet::Nodelet::getMTPrivateNodeHandle();
 
-    ROS_INFO("[%s]: Initializing", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: Initializing", NODE_NAME.c_str());
 
     /* waits for the ROS to publish clock */
     ros::Time::waitForValid();
@@ -106,12 +106,12 @@ void VinsEstimator::onInit()
 
     if (debug)
     {
-    ROS_INFO("[%s]: debug: true", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: debug: true", NODE_NAME.c_str());
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
     }
     else
     {
-    ROS_INFO("[%s]: debug: false", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: debug: false", NODE_NAME.c_str());
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
     }
 
@@ -120,10 +120,10 @@ void VinsEstimator::onInit()
     estimator.setParameter();
 
 #ifdef EIGEN_DONT_PARALLELIZE
-    ROS_WARN("[%s]: EIGEN_DONT_PARALLELIZE", ros::this_node::getName().c_str());
+    ROS_WARN("[%s]: EIGEN_DONT_PARALLELIZE", NODE_NAME.c_str());
 #endif
 
-    ROS_INFO("[%s]: waiting for image and imu...", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: waiting for image and imu...", NODE_NAME.c_str());
 
     registerPub(nh);
 
@@ -137,7 +137,7 @@ void VinsEstimator::onInit()
 
     is_initialized_ = true;
 
-    ROS_INFO("[%s]: initialized", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: initialized", NODE_NAME.c_str());
 }
 /*//}*/
 

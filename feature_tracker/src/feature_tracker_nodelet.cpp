@@ -84,12 +84,12 @@ void FeatureTrackerNodelet::onInit()
 
     if (debug)
     {
-    ROS_INFO("[%s]: debug: true", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: debug: true", NODE_NAME.c_str());
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
     }
     else
     {
-    ROS_INFO("[%s]: debug: false", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: debug: false", NODE_NAME.c_str());
     ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
     }
 
@@ -104,11 +104,11 @@ void FeatureTrackerNodelet::onInit()
     {
         for (int i = 0; i < NUM_OF_CAM; i++)
         {
-            ROS_INFO("[%s]: Loading fisheye mask: %s", ros::this_node::getName().c_str(), FISHEYE_MASK.c_str());
+            ROS_INFO("[%s]: Loading fisheye mask: %s", NODE_NAME.c_str(), FISHEYE_MASK.c_str());
             trackerData[i].fisheye_mask = cv::imread(FISHEYE_MASK, 0);
             if(!trackerData[i].fisheye_mask.data)
             {
-                ROS_ERROR("[%s]: load mask fail", ros::this_node::getName().c_str());
+                ROS_ERROR("[%s]: load mask fail", NODE_NAME.c_str());
                 return;
             }
             else
@@ -134,7 +134,7 @@ void FeatureTrackerNodelet::onInit()
     */
     is_initialized_ = true;
 
-    ROS_INFO("[%s]: initialized", ros::this_node::getName().c_str());
+    ROS_INFO("[%s]: initialized", NODE_NAME.c_str());
 }
 /*//}*/
 
@@ -151,21 +151,21 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         first_image_flag = false;
         first_image_time = img_msg->header.stamp.toSec();
         last_image_time = img_msg->header.stamp.toSec();
-        ROS_INFO("[%s]: Got first camera image.", ros::this_node::getName().c_str());
+        ROS_INFO("[%s]: Got first camera image.", NODE_NAME.c_str());
         return;
     }
 
     // detect unstable camera stream
     if (img_msg->header.stamp.toSec() <= last_image_time) 
     {
-        ROS_WARN("[%s]: Image dt: %.2f, skipping image.", ros::this_node::getName().c_str(), img_msg->header.stamp.toSec() - last_image_time);
+        ROS_WARN("[%s]: Image dt: %.2f, skipping image.", NODE_NAME.c_str(), img_msg->header.stamp.toSec() - last_image_time);
         return;
     }
 
     if (img_msg->header.stamp.toSec() - last_image_time > 1.0)
     /* if (img_msg->header.stamp.toSec() - last_image_time > 1.0 || img_msg->header.stamp.toSec() < last_image_time) */
     {
-        ROS_WARN("[%s]: Image dt: %.2f", ros::this_node::getName().c_str(), img_msg->header.stamp.toSec() - last_image_time);
+        ROS_WARN("[%s]: Image dt: %.2f", NODE_NAME.c_str(), img_msg->header.stamp.toSec() - last_image_time);
         ROS_WARN("image discontinue! reset the feature tracker!");
         first_image_flag = true; 
         last_image_time = 0;
@@ -335,7 +335,7 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         t_publish = t_p.toc();
     }
     t_total_feature_tracker = t_r.toc();
-    ROS_INFO_THROTTLE(1.0, "[%s]: whole feature tracker processing costs: %.2f ms", ros::this_node::getName().c_str(), t_total_feature_tracker);
+    ROS_INFO_THROTTLE(1.0, "[%s]: whole feature tracker processing costs: %.2f ms", NODE_NAME.c_str(), t_total_feature_tracker);
     pubDiagnostics();
 }
 /*//}*/
