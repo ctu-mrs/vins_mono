@@ -588,7 +588,8 @@ void Estimator::solveOdometry()
     {
         TicToc t_tri;
         f_manager.triangulate(Ps, tic, ric);
-        ROS_DEBUG("triangulation costs %f", t_tri.toc());
+        t_triangulate = t_tri.toc();
+        ROS_DEBUG("triangulation costs %f", t_triangulate);
         optimization();
     }
 }
@@ -798,8 +799,19 @@ void Estimator::optimization()
 {
     ceres::Problem problem;
     ceres::LossFunction *loss_function;
-    //loss_function = new ceres::HuberLoss(1.0);
-    loss_function = new ceres::CauchyLoss(1.0);
+    if (LOSS_FUNCTION == LossFunction_t::HUBER)
+    {
+        loss_function = new ceres::HuberLoss(1.0);
+    }
+    else if (LOSS_FUNCTION == LossFunction_t::CAUCHY)
+    {
+        loss_function = new ceres::CauchyLoss(1.0);
+    }
+    else 
+    {
+        ROS_WARN_THROTTLE(1.0, "[VinsEstimator]: Wrong loss function: %d. Using default Cauchy loss.");
+        loss_function = new ceres::CauchyLoss(1.0);
+    }
     for (int i = 0; i < WINDOW_SIZE + 1; i++)
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
@@ -897,7 +909,8 @@ void Estimator::optimization()
     }
 
     ROS_DEBUG("visual measurement count: %d", f_m_cnt);
-    ROS_DEBUG("prepare for ceres: %f", t_prepare.toc());
+    t_ceres_prepare = t_prepare.toc();
+    ROS_DEBUG("prepare for ceres: %f", t_ceres_prepare);
 
     if(relocalization_info)
     {
@@ -1144,11 +1157,11 @@ void Estimator::optimization()
             
         }
     }
-    t_marginalization = t_whole_marginalization.toc();
-    ROS_DEBUG("whole marginalization costs: %f", t_marginalization);
+    t_marginalize = t_whole_marginalization.toc();
+    ROS_DEBUG("whole marginalization costs: %f", t_marginalize);
     
-    t_total = t_whole.toc();
-    ROS_DEBUG("whole time for ceres: %f", t_total);
+    t_optimize_total = t_whole.toc();
+    ROS_DEBUG("whole time for ceres: %f", t_optimize_total);
 }
 /*//}*/
 

@@ -24,6 +24,7 @@ double BIAS_GYR_THRESHOLD;
 double SOLVER_TIME;
 int SOLVER_THREADS;
 int NUM_ITERATIONS;
+int LOSS_FUNCTION;
 int ESTIMATE_EXTRINSIC;
 int ESTIMATE_TD;
 int ROLLING_SHUTTER;
@@ -73,6 +74,21 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("max_num_iterations", NUM_ITERATIONS);
     pl.loadParam("keyframe_parallax", MIN_PARALLAX);
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
+
+    pl.loadParam("loss_function", LOSS_FUNCTION);
+    if (LOSS_FUNCTION == LossFunction_t::HUBER)
+    {
+        ROS_INFO("[%s]: Using Huber loss function.", NODE_NAME.c_str());
+    }
+    else if (LOSS_FUNCTION == LossFunction_t::CAUCHY)
+    {
+        ROS_INFO("[%s]: Using Cauchy loss function.", NODE_NAME.c_str());
+    }
+    else 
+    {
+        ROS_ERROR("[%s]: Unkown loss function: %d. Shutting down.", NODE_NAME.c_str(), LOSS_FUNCTION);
+        ros::shutdown();
+    }
 
     pl.loadParam("init_min_parallax", INIT_MIN_PARALLAX);
     pl.loadParam("init_min_features", INIT_MIN_FEATURES);
@@ -235,6 +251,21 @@ void readParameters(ros::NodeHandle &n)
     NUM_ITERATIONS = fsSettings["max_num_iterations"];
     MIN_PARALLAX = fsSettings["keyframe_parallax"];
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
+
+    LOSS_FUNCTION = fsSettings["loss_function"];
+    if (LOSS_FUNCTION == LossFunction_t::HUBER)
+    {
+        ROS_INFO("[%s]: Using Huber loss function.", NODE_NAME.c_str());
+    }
+    else if (LOSS_FUNCTION == LossFunction_t::CAUCHY)
+    {
+        ROS_INFO("[%s]: Using Cauchy loss function.", NODE_NAME.c_str());
+    }
+    else 
+    {
+        ROS_ERROR("[%s]: Unkown loss function: %d. Shutting down.", NODE_NAME.c_str(), LOSS_FUNCTION);
+        ros::shutdown();
+    }
 
     INIT_MIN_PARALLAX = fsSettings["init_min_parallax"];
     INIT_MIN_FEATURES = fsSettings["init_min_features"];

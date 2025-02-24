@@ -68,9 +68,11 @@ class Estimator
     SolverFlag solver_flag;
     MarginalizationFlag  marginalization_flag;
     ceres::Solver::Summary summary;
+    double t_triangulate;
+    double t_ceres_prepare;
     double t_ceres;
-    double t_marginalization;
-    double t_total;
+    double t_marginalize;
+    double t_optimize_total;
 
     Vector3d g;
     MatrixXd Ap[2], backup_A;

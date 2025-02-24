@@ -522,9 +522,11 @@ void pubDiagnostics(const Estimator &estimator, const std_msgs::Header &header, 
         diag_msg.header.stamp = ros::Time::now();
         diag_msg.header.frame_id = "vins_estimator";
 
+        diag_msg.t_triangulate = estimator.t_triangulate;
+        diag_msg.t_solver_prepare = estimator.t_ceres_prepare;
         diag_msg.t_solver = estimator.t_ceres;
-        diag_msg.t_marginalization = estimator.t_marginalization;
-        diag_msg.t_total = estimator.t_total;
+        diag_msg.t_marginalize = estimator.t_marginalize;
+        diag_msg.t_optimize_total = estimator.t_optimize_total;
 
         diag_msg.solver_iterations = static_cast<int>(estimator.summary.iterations.size());
 

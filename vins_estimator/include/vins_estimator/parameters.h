@@ -16,6 +16,12 @@
 namespace vins_mono {
   namespace vins_estimator {
 
+typedef enum
+{
+  CAUCHY,
+  HUBER
+} LossFunction_t;
+
 const std::string NODE_NAME("VinsEstimator");
 
 const int WINDOW_SIZE = 10;
@@ -45,6 +51,7 @@ extern double BIAS_GYR_THRESHOLD;
 extern double SOLVER_TIME;
 extern int SOLVER_THREADS;
 extern int NUM_ITERATIONS;
+extern int LOSS_FUNCTION;
 extern std::string EX_CALIB_RESULT_PATH;
 extern std::string VINS_RESULT_PATH;
 extern double TD;
