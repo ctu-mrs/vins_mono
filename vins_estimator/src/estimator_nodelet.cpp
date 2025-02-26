@@ -135,9 +135,8 @@ void VinsEstimator::onInit()
     std::thread measurement_process{&VinsEstimator::process, this};
     measurement_process.detach();
 
-    is_initialized_ = true;
-
     ROS_INFO("[%s]: initialized", NODE_NAME.c_str());
+    is_initialized_ = true;
 }
 /*//}*/
 
@@ -261,6 +260,8 @@ void VinsEstimator::callbackImu(const sensor_msgs::ImuConstPtr &imu_msg)
       return;
     }
 
+    ROS_INFO_ONCE("[%s]: got imu message", NODE_NAME.c_str());
+
     if (imu_msg->header.stamp.toSec() <= last_imu_t)
     {
         ROS_WARN("imu message in disorder!");
@@ -300,12 +301,15 @@ void VinsEstimator::callbackFeatures(const sensor_msgs::PointCloudConstPtr &feat
       return;
     }
 
+    ROS_INFO_ONCE("[%s]: got feature message", NODE_NAME.c_str());
+
     if (!init_feature)
     {
         //skip the first detected feature, which doesn't contain optical flow speed
         init_feature = 1;
         return;
     }
+
     m_buf.lock();
     feature_buf.push(feature_msg);
     m_buf.unlock();
@@ -360,11 +364,7 @@ void VinsEstimator::callbackRelocalization(const sensor_msgs::PointCloudConstPtr
 // thread: visual-inertial odometry
 void VinsEstimator::process()
 {
-
-    if (!is_initialized_) {
-      return;
-    }
-
+    // run this thread while ros is alive
     while (ros::ok())
     {
         std::string imu_frame_id;
@@ -480,7 +480,7 @@ void VinsEstimator::process()
             double whole_t = t_s.toc();
             printStatistics(estimator, whole_t);
             std_msgs::Header header = img_msg->header;
-            header.frame_id = uav_name + "/vins_world";
+            header.frame_id = VINS_WORLD_FRAME_ID;
 
             Eigen::Vector3d ang_vel{rx, ry, rz};
             pubOdometry(estimator, ang_vel, header, imu_frame_id);
@@ -507,6 +507,7 @@ void VinsEstimator::process()
         m_state.unlock();
         m_buf.unlock();
     }
+    ROS_WARN("[%s]: exiting process thread", NODE_NAME.c_str());
 }
 /*//}*/
 
