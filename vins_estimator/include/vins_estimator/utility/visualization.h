@@ -11,6 +11,7 @@
 #include <nav_msgs/Path.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PointStamped.h>
+#include <geometry_msgs/Vector3Stamped.h>
 #include <visualization_msgs/Marker.h>
 #include <tf/transform_broadcaster.h>
 #include <eigen3/Eigen/Dense>
@@ -34,16 +35,18 @@ extern ros::Publisher pub_key;
 extern nav_msgs::Path path;
 extern ros::Publisher pub_pose_graph;
 extern ros::Publisher pub_diagnostics;
+extern ros::Publisher pub_bias_acc;
+extern ros::Publisher pub_bias_gyro;
 
 extern int IMAGE_ROW, IMAGE_COL;
 
 void registerPub(ros::NodeHandle &n);
 
-void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, const Eigen::Vector3d &V, const Eigen::Vector3d &ang_vel, const std_msgs::Header &header);
+void pubLatestOdometry(const Eigen::Vector3d &P, const Eigen::Quaterniond &Q, const Eigen::Vector3d &V, const Eigen::Vector3d &ang_vel, const std_msgs::Header &imu_header);
 
 void printStatistics(const Estimator &estimator, double t);
 
-void pubOdometry(const Estimator &estimator, const Eigen::Vector3d &ang_vel, const std_msgs::Header &header);
+void pubOdometry(const Estimator &estimator, const Eigen::Vector3d &ang_vel, const std_msgs::Header &header, const std::string &child_frame_id);
 
 void pubInitialGuess(const Estimator &estimator, const std_msgs::Header &header);
 
@@ -60,6 +63,8 @@ void pubKeyframe(const Estimator &estimator);
 void pubRelocalization(const Estimator &estimator);
 
 void pubDiagnostics(const Estimator &estimator, const std_msgs::Header &header, const double t_total);
+
+void pubBias(const Estimator &estimator, const std_msgs::Header &header, const std::string &imu_frame_id);
 
   }
 }

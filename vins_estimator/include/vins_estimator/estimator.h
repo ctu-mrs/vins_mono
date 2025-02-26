@@ -146,4 +146,7 @@ class Estimator
     Vector3d relo_relative_t;
     Quaterniond relo_relative_q;
     double relo_relative_yaw;
+
+    bool is_initialized = false;
+
 };

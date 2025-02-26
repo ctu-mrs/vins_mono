@@ -12,6 +12,13 @@ Estimator::Estimator(): f_manager{Rs}
 /*//{ setParameter() */
 void Estimator::setParameter()
 {
+    if (!is_initialized)
+    {
+        ROS_ERROR("[%s]: called setParameter() before estimator was initialized", NODE_NAME.c_str());
+        ros::shutdown();
+        return;
+    }
+
     for (int i = 0; i < NUM_OF_CAM; i++)
     {
         tic[i] = TIC[i];
@@ -65,6 +72,8 @@ void Estimator::initializeState()
 
     drift_correct_r = Matrix3d::Identity();
     drift_correct_t = Vector3d::Zero();
+
+    is_initialized = true;
     ROS_INFO("[VinsEstimator]: Estimator state init finished");
 }
 /*//}*/
@@ -72,6 +81,13 @@ void Estimator::initializeState()
 /*//{ clearState() */
 void Estimator::clearState()
 {
+    if (!is_initialized)
+    {
+        ROS_ERROR("[%s]: called clearState() before estimator was initialized", NODE_NAME.c_str());
+        ros::shutdown();
+        return;
+    }
+
     for (int i = 0; i < WINDOW_SIZE + 1; i++)
     {
         Rs[i].setIdentity();
@@ -130,6 +146,13 @@ void Estimator::clearState()
 void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const Vector3d &angular_velocity)
 {
 
+    if (!is_initialized)
+    {
+        ROS_ERROR("[%s]: called processIMU() before estimator was initialized", NODE_NAME.c_str());
+        ros::shutdown();
+        return;
+    }
+
     if (dt < 0.00001) {
       ROS_INFO("[VinsEstimator]: IMU skipping too small dt: %f", dt);
       return;
@@ -174,6 +197,13 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
 /*//{ processImage() */
 void Estimator::processImage(const map<int, vector<pair<int, Eigen::Matrix<double, 7, 1>>>> &image, const std_msgs::Header &header)
 {
+    if (!is_initialized)
+    {
+        ROS_ERROR("[%s]: called processImage() before estimator was initialized", NODE_NAME.c_str());
+        ros::shutdown();
+        return;
+    }
+
     ROS_DEBUG("new image coming ------------------------------------------");
     ROS_DEBUG("Adding feature points %lu", image.size());
     if (f_manager.addFeatureCheckParallax(frame_count, image, td))
@@ -794,7 +824,7 @@ bool Estimator::failureDetection()
 }
 /*//}*/
 
-/*//{ optimalization() */
+/*//{ optimization() */
 void Estimator::optimization()
 {
     ceres::Problem problem;
@@ -1298,6 +1328,12 @@ void Estimator::slideWindowOld()
 /*//{ setReloFrame() */
 void Estimator::setReloFrame(double _frame_stamp, int _frame_index, vector<Vector3d> &_match_points, Vector3d _relo_t, Matrix3d _relo_r)
 {
+    if (!is_initialized)
+    {
+        ROS_ERROR("[%s]: called setReloFrame() before estimator was initialized", NODE_NAME.c_str());
+        ros::shutdown();
+        return;
+    }
     relo_frame_stamp = _frame_stamp;
     relo_frame_index = _frame_index;
     match_points.clear();

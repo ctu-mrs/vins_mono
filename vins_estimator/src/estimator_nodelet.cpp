@@ -367,6 +367,7 @@ void VinsEstimator::process()
 
     while (ros::ok())
     {
+        std::string imu_frame_id;
         std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>> measurements;
         std::unique_lock<std::mutex> lk(m_buf);
         con.wait(lk, [&]
@@ -381,6 +382,7 @@ void VinsEstimator::process()
             double dx = 0, dy = 0, dz = 0, rx = 0, ry = 0, rz = 0;
             for (auto &imu_msg : measurement.first)
             {
+                imu_frame_id = imu_msg->header.frame_id;
                 double t = imu_msg->header.stamp.toSec();
                 double img_t = img_msg->header.stamp.toSec() + estimator.td;
                 // IMU msg is older than img msg
@@ -481,13 +483,14 @@ void VinsEstimator::process()
             header.frame_id = uav_name + "/vins_world";
 
             Eigen::Vector3d ang_vel{rx, ry, rz};
-            pubOdometry(estimator, ang_vel, header);
+            pubOdometry(estimator, ang_vel, header, imu_frame_id);
             pubKeyPoses(estimator, header);
             pubCameraPose(estimator, header);
             pubPointCloud(estimator, header);
             pubTF(estimator, header);
             pubKeyframe(estimator);
             pubDiagnostics(estimator, header, whole_t);
+            pubBias(estimator, header, imu_frame_id);
             if (relo_msg != NULL)
             {
                 pubRelocalization(estimator);

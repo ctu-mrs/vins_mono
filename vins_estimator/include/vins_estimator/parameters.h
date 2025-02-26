@@ -24,6 +24,9 @@ typedef enum
 
 const std::string NODE_NAME("VinsEstimator");
 
+extern std::string UAV_NAME;
+extern std::string VINS_WORLD_FRAME_ID;
+
 const int WINDOW_SIZE = 10;
 const int NUM_OF_CAM = 1;
 const int NUM_OF_F = 1000;

@@ -3,6 +3,9 @@
 namespace vins_mono {
   namespace vins_estimator {
 
+std::string UAV_NAME;
+std::string VINS_WORLD_FRAME_ID;
+
 double INIT_DEPTH;
 double MIN_PARALLAX;
 double ACC_N, ACC_W;
@@ -44,6 +47,9 @@ void readParameters(ros::NodeHandle &n)
 
     ROS_INFO("[%s]: loading parameters using ParamLoader", NODE_NAME.c_str());
     mrs_lib::ParamLoader pl(n, NODE_NAME);
+
+    pl.loadParam("uav_name", UAV_NAME);
+    pl.loadParam("vins_world_frame_id", VINS_WORLD_FRAME_ID);
 
     std::string config_file;
     pl.loadParam("config_file", config_file);
@@ -225,6 +231,9 @@ T readParam(ros::NodeHandle &n, std::string name)
 /*//{ OG readParameters() */
 void readParameters(ros::NodeHandle &n)
 {
+
+    n.param<std::string>("uav_name", UAV_NAME); // loaded from launch file, not config file
+    n.param<std::string>("vins_world_frame_id", VINS_WORLD_FRAME_ID); // loaded from launch file, not config file
 
     std::string config_file;
     config_file = readParam<std::string>(n, "config_file");
