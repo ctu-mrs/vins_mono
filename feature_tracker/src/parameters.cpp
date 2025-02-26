@@ -3,6 +3,10 @@
 namespace vins_mono {
   namespace feature_tracker {
 
+std::string UAV_NAME;
+std::string VINS_CAMERA_FRAME_ID;
+std::string VINS_WORLD_FRAME_ID;
+
 std::vector<std::string> CAM_NAMES;
 std::string FISHEYE_MASK;
 std::string FISHEYE_MASK_NAME;
@@ -29,6 +33,23 @@ void readParameters(ros::NodeHandle &n)
 {
     ROS_INFO("[%s]: loading parameters using ParamLoader", NODE_NAME.c_str());
     mrs_lib::ParamLoader pl(n, NODE_NAME);
+
+    pl.loadParam("uav_name", UAV_NAME);
+    pl.loadParam("vins_camera_frame_id", VINS_CAMERA_FRAME_ID);
+    pl.loadParam("vins_world_frame_id", VINS_WORLD_FRAME_ID);
+
+    bool debug;
+    pl.loadParam("debug", debug);
+    if (debug)
+    {
+    ROS_INFO("[%s]: debug: true", NODE_NAME.c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
+    }
+    else
+    {
+    ROS_INFO("[%s]: debug: false", NODE_NAME.c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
+    }
 
     std::string config_file;
     pl.loadParam("config_file", config_file);
@@ -115,6 +136,25 @@ T readParam(ros::NodeHandle &n, std::string name)
 /*//{ OG readParameters() */
 void readParameters(ros::NodeHandle &n)
 {
+
+    n.param<std::string>("uav_name", UAV_NAME);                         // loaded from launch file, not config file
+    n.param<std::string>("vins_camera_frame_id", VINS_CAMERA_FRAME_ID); // loaded from launch file, not config file
+    n.param<std::string>("vins_world_frame_id", VINS_WORLD_FRAME_ID); // loaded from launch file, not config file
+
+    bool debug;
+    n.param<bool>("debug", debug, false);
+
+    if (debug)
+    {
+    ROS_INFO("[%s]: debug: true", NODE_NAME.c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
+    }
+    else
+    {
+    ROS_INFO("[%s]: debug: false", NODE_NAME.c_str());
+    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
+    }
+
     std::string config_file;
     config_file = readParam<std::string>(n, "config_file");
     cv::FileStorage fsSettings(config_file, cv::FileStorage::READ);

@@ -18,11 +18,14 @@ typedef enum
 
 const std::string NODE_NAME("FeatureTracker");
 
+extern std::string UAV_NAME;
+extern std::string VINS_CAMERA_FRAME_ID;
+extern std::string VINS_WORLD_FRAME_ID;
+
 extern int ROW;
 extern int COL;
 extern double FOCAL_LENGTH;
 const int NUM_OF_CAM = 1;
-
 
 extern std::string FISHEYE_MASK;
 extern std::vector<std::string> CAM_NAMES;

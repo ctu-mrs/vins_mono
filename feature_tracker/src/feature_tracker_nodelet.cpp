@@ -77,22 +77,6 @@ void FeatureTrackerNodelet::onInit()
     /* waits for the ROS to publish clock */
     ros::Time::waitForValid();
 
-    nh.param<std::string>("uav_name", uav_name, "uav1");
-
-    bool debug;
-    nh.param<bool>("debug", debug, false);
-
-    if (debug)
-    {
-    ROS_INFO("[%s]: debug: true", NODE_NAME.c_str());
-    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug);
-    }
-    else
-    {
-    ROS_INFO("[%s]: debug: false", NODE_NAME.c_str());
-    ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Info);
-    }
-
     readParameters(nh);
 
     for (int i = 0; i < NUM_OF_CAM; i++) {
@@ -188,7 +172,9 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         }
     }
     else
+    {
         PUB_THIS_FRAME = false;
+    }
 
     cv_bridge::CvImageConstPtr ptr;
     if (img_msg->encoding == "8UC1")
@@ -252,7 +238,7 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         sensor_msgs::ChannelFloat32 track_count;
 
         feature_points->header = img_msg->header;
-        feature_points->header.frame_id = uav_name + "/vins_world";
+        feature_points->header.frame_id = VINS_WORLD_FRAME_ID;
 
         vector<set<int>> hash_ids(NUM_OF_CAM);
         for (int i = 0; i < NUM_OF_CAM; i++)
@@ -295,13 +281,16 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
             init_pub = 1;
         }
         else
+        {
             pub_img.publish(feature_points);
+        }
 
         if (SHOW_TRACK)
         {
             ptr = cv_bridge::cvtColor(ptr, sensor_msgs::image_encodings::BGR8);
             //cv::Mat stereo_img(ROW * NUM_OF_CAM, COL, CV_8UC3);
             cv::Mat stereo_img = ptr->image;
+          
 
             for (int i = 0; i < NUM_OF_CAM; i++)
             {
@@ -330,7 +319,9 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
             }
             //cv::imshow("vis", stereo_img);
             //cv::waitKey(5);
-            pub_match.publish(ptr->toImageMsg());
+            sensor_msgs::ImagePtr ros_img_msg_out = ptr->toImageMsg();
+            ros_img_msg_out->header.frame_id = VINS_CAMERA_FRAME_ID;
+            pub_match.publish(ros_img_msg_out);
         }
         t_publish = t_p.toc();
     }
