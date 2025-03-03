@@ -401,8 +401,7 @@ double FeatureManager::compensatedParallax2(const FeaturePerId &it_per_id, int f
     const FeaturePerFrame &frame_i = it_per_id.feature_per_frame[frame_count - 2 - it_per_id.start_frame];
     const FeaturePerFrame &frame_j = it_per_id.feature_per_frame[frame_count - 1 - it_per_id.start_frame];
 
-    double ans = 0;
-    Vector3d p_j = frame_j.point;
+    const Vector3d p_j = frame_j.point;
 
     const double u_j = p_j(0);
     const double v_j = p_j(1);
@@ -413,24 +412,30 @@ double FeatureManager::compensatedParallax2(const FeaturePerId &it_per_id, int f
     // Compensate rotation motion in parallax calculation
     // Compensation prevents creating keyframes during rotation only motion, which improves feature depth estimation but the position drift becomes worse
     // TODO petrlmat: more investigation needed on why the drift becomes worse with the compensation
-    /* const int r_i = frame_count - 2; */
-    /* const int r_j = frame_count - 1; */
-    /* p_i_comp = ric[0].transpose() * Rs[r_j].transpose() * Rs[r_i] * ric[0] * p_i; */
-    p_i_comp = p_i;
+    if (ROTATION_COMPENSATED_PARALLAX) 
+    {
+        const int r_i = frame_count - 2;
+        const int r_j = frame_count - 1;
+        p_i_comp = ric[0].transpose() * Rs[r_j].transpose() * Rs[r_i] * ric[0] * p_i;
+    }
+    else
+    {
+        p_i_comp = p_i;
+    }
 
-    double dep_i = p_i(2);
-    double u_i = p_i(0) / dep_i;
-    double v_i = p_i(1) / dep_i;
-    double du = u_i - u_j;
-    double dv = v_i - v_j;
+    const double dep_i = p_i(2);
+    const double u_i = p_i(0) / dep_i;
+    const double v_i = p_i(1) / dep_i;
+    const double du = u_i - u_j;
+    const double dv = v_i - v_j;
 
-    double dep_i_comp = p_i_comp(2);
-    double u_i_comp = p_i_comp(0) / dep_i_comp;
-    double v_i_comp = p_i_comp(1) / dep_i_comp;
-    double du_comp = u_i_comp - u_j, dv_comp = v_i_comp - v_j;
+    const double dep_i_comp = p_i_comp(2);
+    const double u_i_comp = p_i_comp(0) / dep_i_comp;
+    const double v_i_comp = p_i_comp(1) / dep_i_comp;
+    const double du_comp = u_i_comp - u_j, dv_comp = v_i_comp - v_j;
 
+    double ans = 0;
     ans = max(ans, sqrt(min(du * du + dv * dv, du_comp * du_comp + dv_comp * dv_comp)));
-
     return ans;
 }
 /*//}*/

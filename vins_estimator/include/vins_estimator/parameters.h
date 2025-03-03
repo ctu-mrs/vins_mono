@@ -36,6 +36,7 @@ extern double FOCAL_LENGTH;
 
 extern double INIT_DEPTH;
 extern double MIN_PARALLAX;
+extern bool ROTATION_COMPENSATED_PARALLAX;
 extern int ESTIMATE_EXTRINSIC;
 
 extern double INIT_MIN_PARALLAX;

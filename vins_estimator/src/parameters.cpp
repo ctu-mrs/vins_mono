@@ -8,6 +8,7 @@ std::string VINS_WORLD_FRAME_ID;
 
 double INIT_DEPTH;
 double MIN_PARALLAX;
+bool ROTATION_COMPENSATED_PARALLAX;
 double ACC_N, ACC_W;
 double GYR_N, GYR_W;
 
@@ -78,6 +79,7 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("max_solver_time", SOLVER_TIME);
     pl.loadParam("solver_threads", SOLVER_THREADS);
     pl.loadParam("max_num_iterations", NUM_ITERATIONS);
+    pl.loadParam("rotation_compensated_parallax", ROTATION_COMPENSATED_PARALLAX);
     pl.loadParam("keyframe_parallax", MIN_PARALLAX);
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
 
@@ -258,6 +260,7 @@ void readParameters(ros::NodeHandle &n)
     SOLVER_TIME = fsSettings["max_solver_time"];
     SOLVER_THREADS = fsSettings["solver_threads"];
     NUM_ITERATIONS = fsSettings["max_num_iterations"];
+    ROTATION_COMPENSATED_PARALLAX = fsSettings["rotation_compensated_parallax"];
     MIN_PARALLAX = fsSettings["keyframe_parallax"];
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
 
