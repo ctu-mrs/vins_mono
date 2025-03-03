@@ -68,7 +68,7 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("F_threshold", F_THRESHOLD);
     pl.loadParam("show_track", SHOW_TRACK);
     pl.loadParam("equalize", EQUALIZE);
-    pl.loadParam("fisheye", FISHEYE);
+    pl.loadParam("use_fisheye_mask", FISHEYE);
     pl.loadParam("fisheye_mask_name", FISHEYE_MASK_NAME);
     if (FISHEYE == 1) 
     {
