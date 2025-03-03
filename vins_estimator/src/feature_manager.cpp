@@ -404,20 +404,25 @@ double FeatureManager::compensatedParallax2(const FeaturePerId &it_per_id, int f
     double ans = 0;
     Vector3d p_j = frame_j.point;
 
-    double u_j = p_j(0);
-    double v_j = p_j(1);
+    const double u_j = p_j(0);
+    const double v_j = p_j(1);
 
     Vector3d p_i = frame_i.point;
     Vector3d p_i_comp;
 
-    //int r_i = frame_count - 2;
-    //int r_j = frame_count - 1;
-    //p_i_comp = ric[camera_id_j].transpose() * Rs[r_j].transpose() * Rs[r_i] * ric[camera_id_i] * p_i;
+    // Compensate rotation motion in parallax calculation
+    // Compensation prevents creating keyframes during rotation only motion, which improves feature depth estimation but the position drift becomes worse
+    // TODO petrlmat: more investigation needed on why the drift becomes worse with the compensation
+    /* const int r_i = frame_count - 2; */
+    /* const int r_j = frame_count - 1; */
+    /* p_i_comp = ric[0].transpose() * Rs[r_j].transpose() * Rs[r_i] * ric[0] * p_i; */
     p_i_comp = p_i;
+
     double dep_i = p_i(2);
     double u_i = p_i(0) / dep_i;
     double v_i = p_i(1) / dep_i;
-    double du = u_i - u_j, dv = v_i - v_j;
+    double du = u_i - u_j;
+    double dv = v_i - v_j;
 
     double dep_i_comp = p_i_comp(2);
     double u_i_comp = p_i_comp(0) / dep_i_comp;
