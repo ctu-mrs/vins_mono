@@ -129,12 +129,18 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
         // err should store the L1 distance between patches around the original and a moved point, divided by number of pixels in a window, is used as a error measure (currently not used)
         vector<float> err;
         // find position of cur_pts from cur_img in the new forw_img and store them in forw_pts, status = 0 for points for which optical flow could not be calculated
-        cv::calcOpticalFlowPyrLK(cur_img, forw_img, cur_pts, forw_pts, status, err, cv::Size(21, 21), 3);
+        // note petrlmat: adding termcriteria helps with keeping the computation time bounded, changing pyramid levels from 3 to 1 surprisingly results in more successful tracks
+        /* cv::calcOpticalFlowPyrLK(cur_img, forw_img, cur_pts, forw_pts, status, err, cv::Size(21, 21), 3); */
+        cv::calcOpticalFlowPyrLK(cur_img, forw_img, cur_pts, forw_pts, status, err, cv::Size(21, 21), 1, cv::TermCriteria(cv::TermCriteria::COUNT+cv::TermCriteria::EPS, 30, 0.01));
 
         // remove points outside of the image and points that could not be tracked by the optical flow
         for (int i = 0; i < int(forw_pts.size()); i++)
+        {
             if (status[i] && !inBorder(forw_pts[i]))
+            {
                 status[i] = 0;
+            }
+        }
         reduceVector(cur_pts, status);
         reduceVector(forw_pts, status);
         reduceVector(ids, status);
