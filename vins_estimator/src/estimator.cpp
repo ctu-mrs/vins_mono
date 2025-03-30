@@ -53,12 +53,12 @@ void Estimator::initializeState()
         ric[i] = Matrix3d::Identity();
     }
 
+    marginalization_flag = MARGIN_OLD;
     solver_flag = INITIAL;
     first_imu = false,
     sum_of_back = 0;
     sum_of_front = 0;
     frame_count = 0;
-    solver_flag = INITIAL;
     initial_timestamp = 0;
     all_image_frame.clear();
     td = TD;

@@ -241,6 +241,7 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         feature_points->header.frame_id = VINS_WORLD_FRAME_ID;
 
         vector<set<int>> hash_ids(NUM_OF_CAM);
+        bool track_success = false;
         for (int i = 0; i < NUM_OF_CAM; i++)
         {
             auto &un_pts = trackerData[i].cur_un_pts;
@@ -249,6 +250,10 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
             auto &pts_velocity = trackerData[i].pts_velocity;
             for (unsigned int j = 0; j < ids.size(); j++)
             {
+                if (trackerData[i].cur_pts.size() > 0)
+                {
+                  track_success = true;
+                }
                 if (trackerData[i].track_cnt[j] > 1)
                 {
                     int p_id = ids[j];
@@ -282,7 +287,14 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         }
         else
         {
-            pub_img.publish(feature_points);
+            if (track_success) 
+                {
+                    pub_img.publish(feature_points);
+                }
+            else
+                {
+                    ROS_WARN("[%s]: no features tracked", NODE_NAME.c_str());
+                }
         }
 
         if (SHOW_TRACK)

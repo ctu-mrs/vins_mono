@@ -122,6 +122,7 @@ void FeatureTracker::readImage(const cv::Mat &_img, double _cur_time)
 
     forw_pts.clear();
 
+    /* ROS_INFO("[%s]: features: %lu", NODE_NAME.c_str(), cur_pts.size()); */
     if (cur_pts.size() > 0)
     {
         TicToc t_o;

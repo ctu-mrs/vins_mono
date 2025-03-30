@@ -224,6 +224,7 @@ std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointC
         if (!(imu_buf.front()->header.stamp.toSec() < feature_buf.back()->header.stamp.toSec() + estimator.td))
         {
             ROS_WARN("[VinsEstimator]: Throw img, only should happen at the beginning");
+            ROS_WARN("[VinsEstimator]: imu: %.4f < features: %.4f + td: %.4f", imu_buf.front()->header.stamp.toSec(), feature_buf.back()->header.stamp.toSec(), estimator.td);
             feature_buf.pop();
             continue;
         }
