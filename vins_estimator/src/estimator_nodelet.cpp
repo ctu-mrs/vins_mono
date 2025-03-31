@@ -270,9 +270,10 @@ void VinsEstimator::callbackImu(const sensor_msgs::ImuConstPtr &imu_msg)
     }
     last_imu_t = imu_msg->header.stamp.toSec();
 
-    m_buf.lock();
+    {
+    std::scoped_lock lock(m_buf);
     imu_buf.push(imu_msg);
-    m_buf.unlock();
+    }
     con.notify_one();
 
     /* last_imu_t = imu_msg->header.stamp.toSec(); */
@@ -311,9 +312,10 @@ void VinsEstimator::callbackFeatures(const sensor_msgs::PointCloudConstPtr &feat
         return;
     }
 
-    m_buf.lock();
+    {
+    std::scoped_lock lock(m_buf);
     feature_buf.push(feature_msg);
-    m_buf.unlock();
+    }
     con.notify_one();
 }
 /*//}*/
@@ -329,16 +331,18 @@ void VinsEstimator::callbackRestart(const std_msgs::BoolConstPtr &restart_msg)
     if (restart_msg->data == true)
     {
         ROS_WARN("restart the estimator!");
-        m_buf.lock();
+        {
+        std::scoped_lock lock(m_buf);
         while(!feature_buf.empty())
             feature_buf.pop();
         while(!imu_buf.empty())
             imu_buf.pop();
-        m_buf.unlock();
-        m_estimator.lock();
+        }
+        {
+        std::scoped_lock lock(m_estimator);
         estimator.clearState();
         estimator.setParameter();
-        m_estimator.unlock();
+        }
         current_time = -1;
         last_imu_t = 0;
     }
@@ -355,9 +359,10 @@ void VinsEstimator::callbackRelocalization(const sensor_msgs::PointCloudConstPtr
     }
 
     //printf("relocalization callback! \n");
-    m_buf.lock();
+    {
+    std::scoped_lock lock(m_buf);
     relo_buf.push(points_msg);
-    m_buf.unlock();
+    }
 }
 /*//}*/
 
@@ -371,12 +376,16 @@ void VinsEstimator::process()
         std::string imu_frame_id;
         std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointCloudConstPtr>> measurements;
         std::unique_lock<std::mutex> lk(m_buf);
+        if (ros::isShuttingDown()) {
+          ROS_INFO("[VinsEstimator]: ros shutting down"); 
+        }
         con.wait(lk, [&]
                  {
             return ((measurements = getMeasurements()).size() != 0 || ros::isShuttingDown());
                  });
         lk.unlock();
-        m_estimator.lock();
+        {
+        std::scoped_lock lock(m_estimator);
         for (auto &measurement : measurements)
         {
             auto img_msg = measurement.second;
@@ -413,6 +422,7 @@ void VinsEstimator::process()
                     // dt_2: time from last img to last imu
                     double dt_2 = t - img_t;
                     current_time = img_t;
+                    // TODO petrlmat: dts should be >0 not >=0
                     ROS_ASSERT(dt_1 >= 0);
                     ROS_ASSERT(dt_2 >= 0);
                     ROS_ASSERT(dt_1 + dt_2 > 0);
@@ -490,7 +500,6 @@ void VinsEstimator::process()
             pubPointCloud(estimator, header);
             pubTF(estimator, header);
             pubKeyframe(estimator);
-            pubDiagnostics(estimator, header, whole_t);
             pubBias(estimator, header, imu_frame_id);
             if (relo_msg != NULL)
             {
@@ -498,15 +507,14 @@ void VinsEstimator::process()
             }
             //ROS_ERROR("end: %f, at %f", img_msg->header.stamp.toSec(), ros::Time::now().toSec());
         }
-        m_estimator.unlock();
-        m_buf.lock();
-        m_state.lock();
+        }
+        {
+        std::scoped_lock lock(m_buf, m_state);
         if (estimator.solver_flag == Estimator::SolverFlag::NON_LINEAR)
         {
             update();
         }
-        m_state.unlock();
-        m_buf.unlock();
+        }
     }
     ROS_WARN("[%s]: exiting process thread", NODE_NAME.c_str());
 }

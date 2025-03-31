@@ -45,6 +45,7 @@ void Estimator::initializeState()
         dt_buf[i].clear();
         linear_acceleration_buf[i].clear();
         angular_velocity_buf[i].clear();
+        pre_integrations[i] = nullptr;
     }
 
     for (int i = 0; i < NUM_OF_CAM; i++)
@@ -63,6 +64,8 @@ void Estimator::initializeState()
     all_image_frame.clear();
     td = TD;
 
+    tmp_pre_integration = nullptr;
+    last_marginalization_info = nullptr;
     last_marginalization_parameter_blocks.clear();
 
     f_manager.clearState();
@@ -169,8 +172,15 @@ void Estimator::processIMU(double dt, const Vector3d &linear_acceleration, const
     {
         pre_integrations[frame_count] = new IntegrationBase{acc_0, gyr_0, Bas[frame_count], Bgs[frame_count]};
     }
+
+    if (!tmp_pre_integration)
+    {
+        tmp_pre_integration = new IntegrationBase{acc_0, gyr_0, Bas[frame_count], Bgs[frame_count]};
+    }
+
     if (frame_count != 0)
     {
+      /* ROS_INFO("[%s]: frame_count: %d dt: %.2f linear_acceleration: %.2f angular_velocity: %.2f", ros::this_node::getName().c_str(), frame_count, linear_acceleration.x(), angular_velocity.x()); */
         pre_integrations[frame_count]->push_back(dt, linear_acceleration, angular_velocity);
         //if(solver_flag != NON_LINEAR)
             tmp_pre_integration->push_back(dt, linear_acceleration, angular_velocity);

@@ -18,6 +18,7 @@ double F_THRESHOLD;
 int FEATURE_DETECTOR;
 int FAST_THRESHOLD;
 int SHOW_TRACK;
+int SHOW_TRACK_VELOCITY;
 int STEREO_TRACK;
 int EQUALIZE;
 int ROW;
@@ -67,6 +68,7 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("freq", FREQ);
     pl.loadParam("F_threshold", F_THRESHOLD);
     pl.loadParam("show_track", SHOW_TRACK);
+    pl.loadParam("show_track_velocity", SHOW_TRACK_VELOCITY);
     pl.loadParam("equalize", EQUALIZE);
     pl.loadParam("use_fisheye_mask", FISHEYE);
     pl.loadParam("fisheye_mask_name", FISHEYE_MASK_NAME);
@@ -175,6 +177,7 @@ void readParameters(ros::NodeHandle &n)
     FREQ = fsSettings["freq"];
     F_THRESHOLD = fsSettings["F_threshold"];
     SHOW_TRACK = fsSettings["show_track"];
+    SHOW_TRACK_VELOCITY = fsSettings["show_track_velocity"];
     EQUALIZE = fsSettings["equalize"];
     FISHEYE = fsSettings["fisheye"];
     fsSettings["fisheye_mask_name"] >> FISHEYE_MASK_NAME;

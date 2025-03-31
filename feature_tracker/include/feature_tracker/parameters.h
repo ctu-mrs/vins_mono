@@ -37,6 +37,7 @@ extern int WINDOW_SIZE;
 extern int FREQ;
 extern double F_THRESHOLD;
 extern int SHOW_TRACK;
+extern int SHOW_TRACK_VELOCITY;
 extern int STEREO_TRACK;
 extern int EQUALIZE;
 extern int FISHEYE;
