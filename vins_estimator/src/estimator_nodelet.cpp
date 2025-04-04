@@ -501,6 +501,7 @@ void VinsEstimator::process()
             pubTF(estimator, header);
             pubKeyframe(estimator);
             pubBias(estimator, header, imu_frame_id);
+            pubDiagnostics(estimator, header, whole_t);
             if (relo_msg != NULL)
             {
                 pubRelocalization(estimator);
