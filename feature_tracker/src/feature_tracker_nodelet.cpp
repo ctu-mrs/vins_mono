@@ -311,6 +311,7 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         if (SHOW_TRACK)
         {
             ptr = cv_bridge::cvtColor(ptr, sensor_msgs::image_encodings::BGR8);
+            cv::Mat tmp_img;
             //cv::Mat stereo_img(ROW * NUM_OF_CAM, COL, CV_8UC3);
             cv::Mat stereo_img = ptr->image;
             if (DOWNSAMPLE) 
@@ -320,11 +321,9 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
 
             for (int i = 0; i < NUM_OF_CAM; i++)
             {
-                cv::Mat tmp_img;
                 if (DOWNSAMPLE) 
                 {
                     cv::pyrDown(stereo_img.rowRange(i * ROW, (i + 1) * ROW), stereo_img, cv::Size(img_msg->width / 2.0, img_msg->height / 2.0));
-                    cv::pyrDown(show_img, show_img, cv::Size(img_msg->width / 2.0, img_msg->height / 2.0));
                 }
                 else
                 {
@@ -348,19 +347,21 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
                         tmp_prev_un_pts.head(2) = tmp_cur_un_pts - 0.10 * tmp_pts_velocity;
                         tmp_prev_un_pts.z() = 1;
                         Vector2d tmp_prev_uv;
-                        /* trackerData[i].m_camera->spaceToPlane(tmp_prev_un_pts, tmp_prev_uv); */
+
+                        trackerData[i].m_camera->spaceToPlane(tmp_prev_un_pts, tmp_prev_uv);
                         /* ROS_INFO("[%s]: vel u: %.2f v: %.2f", NODE_NAME.c_str(), tmp_prev_uv.x(), tmp_prev_uv.y()); */
                         /* cv::line(tmp_img, trackerData[i].cur_pts[j], cv::Point2f(tmp_prev_uv.x(), tmp_prev_uv.y()), cv::Scalar(255 , 0, 0), 1 , 8, 0); */
                     }
                     
                     char name[10];
                     sprintf(name, "%d", trackerData[i].ids[j]);
-                    /* cv::putText(tmp_img, name, trackerData[i].cur_pts[j], cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0)); */
+                    cv::putText(tmp_img, name, trackerData[i].cur_pts[j], cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
                 }
             }
             //cv::imshow("vis", stereo_img);
             //cv::waitKey(5);
-            sensor_msgs::ImagePtr ros_img_msg_out = ptr->toImageMsg();
+            /* sensor_msgs::ImagePtr ros_img_msg_out = ptr->toImageMsg(); */
+            sensor_msgs::ImagePtr ros_img_msg_out = cv_bridge::CvImage(img_msg->header, "bgr8", tmp_img).toImageMsg();
             ros_img_msg_out->header.frame_id = VINS_CAMERA_FRAME_ID;
             pub_match.publish(ros_img_msg_out);
         }
