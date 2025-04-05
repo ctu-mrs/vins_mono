@@ -26,6 +26,7 @@ int COL;
 double FOCAL_LENGTH;
 int FISHEYE;
 bool PUB_THIS_FRAME;
+int DOWNSAMPLE;
 
 #if USE_MRS_LIB
 
@@ -56,6 +57,10 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("config_file", config_file);
     pl.addYamlFile(config_file);
 
+    /* std::string calib_file; */
+    /* pl.loadParam("calib_file", calib_file); */
+    /* pl.addYamlFile(calib_file); */
+
     std::string CONFIG_PATH;
     pl.loadParam("config_path", CONFIG_PATH);
 
@@ -77,11 +82,14 @@ void readParameters(ros::NodeHandle &n)
       FISHEYE_MASK = CONFIG_PATH + "/" + FISHEYE_MASK_NAME;
     }
 
+    /* CAM_NAMES.push_back(calib_file); */
     CAM_NAMES.push_back(config_file);
 
     WINDOW_SIZE = 20;
     STEREO_TRACK = false;
     PUB_THIS_FRAME = false;
+
+    pl.loadParam("downsample", DOWNSAMPLE);
 
     std::string model_type;
     pl.loadParam("model_type", model_type);
@@ -91,6 +99,10 @@ void readParameters(ros::NodeHandle &n)
       pl.loadParam("projection_parameters/mu", mu);
       pl.loadParam("projection_parameters/mv", mv);
       FOCAL_LENGTH = (mu + mv) / 2.0;
+      if (DOWNSAMPLE)
+      {
+          FOCAL_LENGTH /= 2;
+      }
     }
     else 
     {
@@ -98,6 +110,10 @@ void readParameters(ros::NodeHandle &n)
       pl.loadParam("projection_parameters/fx", fx);
       pl.loadParam("projection_parameters/fy", fy);
       FOCAL_LENGTH = (fx + fy) / 2.0;
+      if (DOWNSAMPLE)
+      {
+          FOCAL_LENGTH /= 2;
+      }
     }
 
     ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);
@@ -183,6 +199,7 @@ void readParameters(ros::NodeHandle &n)
     fsSettings["fisheye_mask_name"] >> FISHEYE_MASK_NAME;
     if (FISHEYE == 1)
         FISHEYE_MASK = CONFIG_PATH + "/"+ FISHEYE_MASK_NAME;
+    /* CAM_NAMES.push_back(calib_file); */
     CAM_NAMES.push_back(config_file);
 
     WINDOW_SIZE = 20;
