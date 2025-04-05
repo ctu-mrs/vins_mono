@@ -27,6 +27,7 @@ double FOCAL_LENGTH;
 int FISHEYE;
 bool PUB_THIS_FRAME;
 int DOWNSAMPLE;
+int HALF_IMAGE_RATE;
 
 #if USE_MRS_LIB
 
@@ -90,6 +91,7 @@ void readParameters(ros::NodeHandle &n)
     PUB_THIS_FRAME = false;
 
     pl.loadParam("downsample", DOWNSAMPLE);
+    pl.loadParam("half_image_rate", HALF_IMAGE_RATE);
 
     std::string model_type;
     pl.loadParam("model_type", model_type);
@@ -202,6 +204,9 @@ void readParameters(ros::NodeHandle &n)
     /* CAM_NAMES.push_back(calib_file); */
     CAM_NAMES.push_back(config_file);
 
+    DOWNSAMPLE = fsSettings["downsample"];
+    HALF_IMAGE_RATE = fsSettings["half_image_rate"];
+
     WINDOW_SIZE = 20;
     STEREO_TRACK = false;
     PUB_THIS_FRAME = false;
@@ -216,6 +221,10 @@ void readParameters(ros::NodeHandle &n)
     double f = (fx + fy) / 2.0;
 
     FOCAL_LENGTH = m > f ? m : f;
+    if (DOWNSAMPLE)
+    {
+        FOCAL_LENGTH /= 2;
+    }
     ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);
 
     if (FREQ == 0)

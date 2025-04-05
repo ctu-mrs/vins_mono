@@ -43,6 +43,7 @@ extern int EQUALIZE;
 extern int FISHEYE;
 extern bool PUB_THIS_FRAME;
 extern int DOWNSAMPLE;
+extern int HALF_IMAGE_RATE;
 
 void readParameters(ros::NodeHandle &n);
 
