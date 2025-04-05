@@ -178,6 +178,17 @@ EquidistantCamera::Parameters::readFromYamlFile(const std::string& filename)
     m_u0 = static_cast<double>(n["u0"]);
     m_v0 = static_cast<double>(n["v0"]);
 
+    bool DOWNSAMPLE; 
+    fs["downsample"] >> DOWNSAMPLE;
+
+    if (DOWNSAMPLE)
+    {
+        m_mu /= 2;
+        m_mv /= 2;
+        m_u0 /= 2;
+        m_v0 /= 2;
+    }
+
     return true;
 }
 
