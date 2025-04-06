@@ -861,15 +861,16 @@ void Estimator::optimization()
     for (int i = 0; i < NUM_OF_CAM; i++)
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
-        problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
-        if (!ESTIMATE_EXTRINSIC)
+        if (ESTIMATE_EXTRINSIC)
+        /* if (ESTIMATE_EXTRINSIC && frame_count == WINDOW_SIZE && Vs[0].norm() > 0.5) */
         {
-            ROS_DEBUG("fix extrinsic param");
-            problem.SetParameterBlockConstant(para_Ex_Pose[i]);
+            ROS_DEBUG("estimate extrinsic param");
+            problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
         }
         else
         {
-            ROS_DEBUG("estimate extrinsic param");
+            ROS_DEBUG("fix extrinsic param");
+            problem.SetParameterBlockConstant(para_Ex_Pose[i]);
         }
     }
     if (ESTIMATE_TD)
