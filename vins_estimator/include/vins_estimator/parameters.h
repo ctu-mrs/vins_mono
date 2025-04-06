@@ -55,6 +55,8 @@ extern double BIAS_GYR_THRESHOLD;
 extern double SOLVER_TIME;
 extern int SOLVER_THREADS;
 extern int NUM_ITERATIONS;
+extern int REJECT_OUTLIERS;
+extern double OUTLIER_REJECTION_THR;
 extern int LOSS_FUNCTION;
 extern std::string EX_CALIB_RESULT_PATH;
 extern std::string VINS_RESULT_PATH;

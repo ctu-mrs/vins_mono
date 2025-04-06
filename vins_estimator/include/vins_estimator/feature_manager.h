@@ -94,6 +94,7 @@ class FeatureManager
     void removeBack();
     void removeFront(int frame_count);
     void removeOutlier();
+    void removeOutlier(set<int> &outlierIndex);
     list<FeaturePerId> feature;
     int last_track_num;
 

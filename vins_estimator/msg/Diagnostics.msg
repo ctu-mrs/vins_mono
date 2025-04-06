@@ -7,4 +7,7 @@ float64 t_solver
 float64 t_marginalize
 float64 t_optimize_total
 
+uint8 n_features
+uint8 n_outliers_removed
+
 uint8 solver_iterations

@@ -61,21 +61,26 @@ bool FeatureManager::addFeatureCheckParallax(int frame_count, const map<int, vec
     double parallax_sum = 0;
     int parallax_num = 0;
     last_track_num = 0;
+
+    // Iterate over through new features
     for (auto &id_pts : image)
     {
         FeaturePerFrame f_per_fra(id_pts.second[0].second, td);
 
         int feature_id = id_pts.first;
+        // Find the new feature in old features
         auto it = find_if(feature.begin(), feature.end(), [feature_id](const FeaturePerId &it)
                           {
             return it.feature_id == feature_id;
                           });
 
+        // If feature not found in tracked features, add it
         if (it == feature.end())
         {
             feature.push_back(FeaturePerId(feature_id, frame_count));
             feature.back().feature_per_frame.push_back(f_per_fra);
         }
+        // If found, add to tracked
         else if (it->feature_id == feature_id)
         {
             it->feature_per_frame.push_back(f_per_fra);
@@ -86,6 +91,7 @@ bool FeatureManager::addFeatureCheckParallax(int frame_count, const map<int, vec
     if (frame_count < 2 || last_track_num < 20)
         return true;
 
+    // Compute average parallax of features
     for (auto &it_per_id : feature)
     {
         if (it_per_id.start_frame <= frame_count - 2 &&
@@ -292,7 +298,7 @@ void FeatureManager::triangulate(Vector3d Ps[], Vector3d tic[], Matrix3d ric[])
 /*//{ removeOutliers() */
 void FeatureManager::removeOutlier()
 {
-    ROS_BREAK();
+    /* ROS_BREAK(); */
     int i = -1;
     for (auto it = feature.begin(), it_next = feature.begin();
          it != feature.end(); it = it_next)
@@ -305,6 +311,25 @@ void FeatureManager::removeOutlier()
         }
     }
 }
+
+
+void FeatureManager::removeOutlier(set<int> &outlierIndex)
+{
+    std::set<int>::iterator itSet;
+    for (auto it = feature.begin(), it_next = feature.begin();
+         it != feature.end(); it = it_next)
+    {
+        it_next++;
+        int index = it->feature_id;
+        itSet = outlierIndex.find(index);
+        if(itSet != outlierIndex.end())
+        {
+            feature.erase(it);
+            //printf("remove outlier %d \n", index);
+        }
+    }
+}
+
 /*//}*/
 
 /*//{ removeBackShiftDepth() */

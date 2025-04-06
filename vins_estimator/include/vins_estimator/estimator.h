@@ -51,6 +51,8 @@ class Estimator
     void vector2double();
     void double2vector();
     bool failureDetection();
+    double reprojectionError(Matrix3d &Ri, Vector3d &Pi, Matrix3d &rici, Vector3d &tici, Matrix3d &Rj, Vector3d &Pj, Matrix3d &ricj, Vector3d &ticj, double depth, Vector3d &uvi, Vector3d &uvj);
+    void outliersRejection(set<int> &removeIndex);
 
 
     enum SolverFlag
@@ -73,6 +75,8 @@ class Estimator
     double t_ceres;
     double t_marginalize;
     double t_optimize_total;
+
+    int n_outliers_removed = 0;
 
     Vector3d g;
     MatrixXd Ap[2], backup_A;

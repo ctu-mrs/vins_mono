@@ -25,6 +25,8 @@ Eigen::Vector3d G{0.0, 0.0, 9.8};
 
 double BIAS_ACC_THRESHOLD;
 double BIAS_GYR_THRESHOLD;
+int REJECT_OUTLIERS;
+double OUTLIER_REJECTION_THR;
 double SOLVER_TIME;
 int SOLVER_THREADS;
 int NUM_ITERATIONS;
@@ -79,6 +81,8 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("max_solver_time", SOLVER_TIME);
     pl.loadParam("solver_threads", SOLVER_THREADS);
     pl.loadParam("max_num_iterations", NUM_ITERATIONS);
+    pl.loadParam("reject_outliers", REJECT_OUTLIERS);
+    pl.loadParam("outlier_reject_thr", OUTLIER_REJECTION_THR);
     pl.loadParam("rotation_compensated_parallax", ROTATION_COMPENSATED_PARALLAX);
     pl.loadParam("keyframe_parallax", MIN_PARALLAX);
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;
@@ -260,6 +264,8 @@ void readParameters(ros::NodeHandle &n)
     SOLVER_TIME = fsSettings["max_solver_time"];
     SOLVER_THREADS = fsSettings["solver_threads"];
     NUM_ITERATIONS = fsSettings["max_num_iterations"];
+    REJECT_OUTLIERS = fsSettings["reject_outliers"];
+    OUTLIER_REJECTION_THR = fsSettings["outlier_reject_thr"];
     ROTATION_COMPENSATED_PARALLAX = fsSettings["rotation_compensated_parallax"];
     MIN_PARALLAX = fsSettings["keyframe_parallax"];
     MIN_PARALLAX = MIN_PARALLAX / FOCAL_LENGTH;

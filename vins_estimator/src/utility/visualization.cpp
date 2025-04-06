@@ -532,6 +532,9 @@ void pubDiagnostics(const Estimator &estimator, const std_msgs::Header &header, 
         diag_msg.t_marginalize = estimator.t_marginalize;
         diag_msg.t_optimize_total = estimator.t_optimize_total;
 
+        diag_msg.n_outliers_removed = estimator.n_outliers_removed;
+        diag_msg.n_features = estimator.f_manager.getFeatureCount();
+
         diag_msg.solver_iterations = static_cast<int>(estimator.summary.iterations.size());
 
         pub_diagnostics.publish(diag_msg);

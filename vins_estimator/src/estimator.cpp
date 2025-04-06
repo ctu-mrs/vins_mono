@@ -631,6 +631,65 @@ void Estimator::solveOdometry()
         t_triangulate = t_tri.toc();
         ROS_DEBUG("triangulation costs %f", t_triangulate);
         optimization();
+
+        // Reject outliers based on reprojection errors
+        if (REJECT_OUTLIERS)
+        {
+            set<int> removeIndex;
+            outliersRejection(removeIndex);
+            f_manager.removeOutlier(removeIndex);
+            n_outliers_removed = removeIndex.size();
+        }
+    }
+}
+/*//}*/
+
+/*//{ reprojectionError() */
+double Estimator::reprojectionError(Matrix3d &Ri, Vector3d &Pi, Matrix3d &rici, Vector3d &tici, Matrix3d &Rj, Vector3d &Pj, Matrix3d &ricj, Vector3d &ticj, double depth, Vector3d &uvi, Vector3d &uvj)
+{
+    Vector3d pts_w = Ri * (rici * (depth * uvi) + tici) + Pi;
+    Vector3d pts_cj = ricj.transpose() * (Rj.transpose() * (pts_w - Pj) - ticj);
+    Vector2d residual = (pts_cj / pts_cj.z()).head<2>() - uvj.head<2>();
+    double rx = residual.x();
+    double ry = residual.y();
+    return sqrt(rx * rx + ry * ry);
+}
+/*//}*/
+
+/*//{ outliersRejection() */
+void Estimator::outliersRejection(set<int> &removeIndex)
+{
+    //return;
+    int feature_index = -1;
+    for (auto &it_per_id : f_manager.feature)
+    {
+        double err = 0;
+        int errCnt = 0;
+        it_per_id.used_num = it_per_id.feature_per_frame.size();
+        if (it_per_id.used_num < 4)
+            continue;
+        feature_index ++;
+        int imu_i = it_per_id.start_frame, imu_j = imu_i - 1;
+        Vector3d pts_i = it_per_id.feature_per_frame[0].point;
+        double depth = it_per_id.estimated_depth;
+        for (auto &it_per_frame : it_per_id.feature_per_frame)
+        {
+            imu_j++;
+            if (imu_i != imu_j)
+            {
+                Vector3d pts_j = it_per_frame.point;             
+                double tmp_error = reprojectionError(Rs[imu_i], Ps[imu_i], ric[0], tic[0], 
+                                                    Rs[imu_j], Ps[imu_j], ric[0], tic[0],
+                                                    depth, pts_i, pts_j);
+                err += tmp_error;
+                errCnt++;
+                //printf("tmp_error %f\n", FOCAL_LENGTH / 1.5 * tmp_error);
+            }
+        }
+        double ave_err = err / errCnt;
+        if(ave_err * FOCAL_LENGTH > OUTLIER_REJECTION_THR)
+            removeIndex.insert(it_per_id.feature_id);
+
     }
 }
 /*//}*/
@@ -838,6 +897,8 @@ bool Estimator::failureDetection()
 void Estimator::optimization()
 {
     ceres::Problem problem;
+
+    // Set loss function
     ceres::LossFunction *loss_function;
     if (LOSS_FUNCTION == LossFunction_t::HUBER)
     {
@@ -852,20 +913,24 @@ void Estimator::optimization()
         ROS_WARN_THROTTLE(1.0, "[%s]: Wrong loss function: %d. Using default Cauchy loss.", NODE_NAME.c_str(), LOSS_FUNCTION);
         loss_function = new ceres::CauchyLoss(1.0);
     }
+
+    // Add position factor
     for (int i = 0; i < WINDOW_SIZE + 1; i++)
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
         problem.AddParameterBlock(para_Pose[i], SIZE_POSE, local_parameterization);
         problem.AddParameterBlock(para_SpeedBias[i], SIZE_SPEEDBIAS);
     }
+
+    // Add extrinsic parameters factor
     for (int i = 0; i < NUM_OF_CAM; i++)
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
+        problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
         if (ESTIMATE_EXTRINSIC)
         /* if (ESTIMATE_EXTRINSIC && frame_count == WINDOW_SIZE && Vs[0].norm() > 0.5) */
         {
             ROS_DEBUG("estimate extrinsic param");
-            problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
         }
         else
         {
@@ -873,6 +938,8 @@ void Estimator::optimization()
             problem.SetParameterBlockConstant(para_Ex_Pose[i]);
         }
     }
+
+    // Add time delay factor
     if (ESTIMATE_TD)
     {
         problem.AddParameterBlock(para_Td[0], 1);
