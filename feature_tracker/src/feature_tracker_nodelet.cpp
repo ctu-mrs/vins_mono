@@ -52,6 +52,7 @@ private:
   bool first_image_flag = true;
   double last_image_time = 0;
   bool init_pub = 0;
+  bool drop_img_flag = false;
 
   string uav_name = "";
 
@@ -136,6 +137,12 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         first_image_time = img_msg->header.stamp.toSec();
         last_image_time = img_msg->header.stamp.toSec();
         ROS_INFO("[%s]: Got first camera image.", NODE_NAME.c_str());
+        return;
+    }
+
+    drop_img_flag = !drop_img_flag;
+    if (HALF_IMAGE_RATE && drop_img_flag)
+    {
         return;
     }
 
