@@ -927,8 +927,8 @@ void Estimator::optimization()
     {
         ceres::LocalParameterization *local_parameterization = new PoseLocalParameterization();
         problem.AddParameterBlock(para_Ex_Pose[i], SIZE_POSE, local_parameterization);
-        if (ESTIMATE_EXTRINSIC)
-        /* if (ESTIMATE_EXTRINSIC && frame_count == WINDOW_SIZE && Vs[0].norm() > 0.5) */
+        /* if (ESTIMATE_EXTRINSIC) */
+        if (ESTIMATE_EXTRINSIC && frame_count == WINDOW_SIZE && Vs[0].norm() > 0.5)
         {
             ROS_DEBUG("estimate extrinsic param");
         }
