@@ -201,8 +201,8 @@ void readParameters(ros::NodeHandle &n)
     fsSettings["fisheye_mask_name"] >> FISHEYE_MASK_NAME;
     if (FISHEYE == 1)
         FISHEYE_MASK = CONFIG_PATH + "/"+ FISHEYE_MASK_NAME;
-    /* CAM_NAMES.push_back(calib_file); */
-    CAM_NAMES.push_back(config_file);
+    CAM_NAMES.push_back(calib_file);
+    /* CAM_NAMES.push_back(config_file); */
 
     DOWNSAMPLE = fsSettings["downsample"];
     HALF_IMAGE_RATE = fsSettings["half_image_rate"];

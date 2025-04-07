@@ -13,6 +13,7 @@ double ACC_N, ACC_W;
 double GYR_N, GYR_W;
 
 double FOCAL_LENGTH;
+int DOWNSAMPLE;
 
 double INIT_MIN_PARALLAX;
 int INIT_MIN_FEATURES;
@@ -60,6 +61,7 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("calib_file", calib_file);
     pl.addYamlFile(calib_file);
 
+    pl.loadParam("downsample", DOWNSAMPLE);
     std::string model_type;
     pl.loadParam("model_type", model_type);
     if (model_type == "KANNALA_BRANDT" || model_type == "SCARAMUZZA") 
@@ -68,6 +70,7 @@ void readParameters(ros::NodeHandle &n)
       pl.loadParam("projection_parameters/mu", mu);
       pl.loadParam("projection_parameters/mv", mv);
       FOCAL_LENGTH = (mu + mv) / 2.0;
+
     }
     else 
     {
@@ -75,6 +78,11 @@ void readParameters(ros::NodeHandle &n)
       pl.loadParam("projection_parameters/fx", fx);
       pl.loadParam("projection_parameters/fy", fy);
       FOCAL_LENGTH = (fx + fy) / 2.0;
+    }
+
+    if (DOWNSAMPLE)
+    {
+        FOCAL_LENGTH /= 2;
     }
 
     ROS_INFO("[%s]: FOCAL_LENGTH: %.2f", NODE_NAME.c_str(), FOCAL_LENGTH);

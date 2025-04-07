@@ -33,6 +33,7 @@ const int NUM_OF_F = 1000;
 //#define UNIT_SPHERE_ERROR
 
 extern double FOCAL_LENGTH;
+extern int DOWNSAMPLE;
 
 extern double INIT_DEPTH;
 extern double MIN_PARALLAX;
