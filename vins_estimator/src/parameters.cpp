@@ -54,8 +54,11 @@ void readParameters(ros::NodeHandle &n)
 
     std::string config_file;
     pl.loadParam("config_file", config_file);
-
     pl.addYamlFile(config_file);
+
+    std::string calib_file;
+    pl.loadParam("calib_file", calib_file);
+    pl.addYamlFile(calib_file);
 
     std::string model_type;
     pl.loadParam("model_type", model_type);

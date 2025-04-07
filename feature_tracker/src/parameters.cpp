@@ -58,9 +58,9 @@ void readParameters(ros::NodeHandle &n)
     pl.loadParam("config_file", config_file);
     pl.addYamlFile(config_file);
 
-    /* std::string calib_file; */
-    /* pl.loadParam("calib_file", calib_file); */
-    /* pl.addYamlFile(calib_file); */
+    std::string calib_file;
+    pl.loadParam("calib_file", calib_file);
+    pl.addYamlFile(calib_file);
 
     std::string CONFIG_PATH;
     pl.loadParam("config_path", CONFIG_PATH);
@@ -83,8 +83,8 @@ void readParameters(ros::NodeHandle &n)
       FISHEYE_MASK = CONFIG_PATH + "/" + FISHEYE_MASK_NAME;
     }
 
-    /* CAM_NAMES.push_back(calib_file); */
-    CAM_NAMES.push_back(config_file);
+    CAM_NAMES.push_back(calib_file);
+    /* CAM_NAMES.push_back(config_file); */
 
     WINDOW_SIZE = 20;
     STEREO_TRACK = false;
