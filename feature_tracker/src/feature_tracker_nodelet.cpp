@@ -200,11 +200,11 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
         cv::Mat img_temp;
         if (DOWNSAMPLE) 
         {
-            cv::pyrDown(ptr->image.rowRange(ROW * i, ROW * (i + 1)), img_temp, cv::Size(img_msg->width / 2.0, img_msg->height / 2.0));
+            cv::pyrDown(ptr->image, img_temp, cv::Size(img_msg->width / 2.0, img_msg->height / 2.0));
         }
         else
         {
-            img_temp = ptr->image.rowRange(ROW * i, ROW * (i + 1));
+            img_temp = ptr->image;
         }
 
         ROS_DEBUG("processing camera %d", i);
@@ -323,11 +323,11 @@ void FeatureTrackerNodelet::callbackImage(const sensor_msgs::ImageConstPtr &img_
             {
                 if (DOWNSAMPLE) 
                 {
-                    cv::pyrDown(stereo_img.rowRange(i * ROW, (i + 1) * ROW), stereo_img, cv::Size(img_msg->width / 2.0, img_msg->height / 2.0));
+                    cv::pyrDown(stereo_img, stereo_img, cv::Size(img_msg->width / 2.0, img_msg->height / 2.0));
                 }
                 else
                 {
-                    tmp_img = stereo_img.rowRange(i * ROW, (i + 1) * ROW);
+                    tmp_img = stereo_img;
                 }
 
                 cv::cvtColor(show_img, tmp_img, CV_GRAY2RGB);

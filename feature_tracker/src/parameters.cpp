@@ -102,6 +102,8 @@ void readParameters(ros::NodeHandle &n)
       if (DOWNSAMPLE)
       {
           FOCAL_LENGTH /= 2;
+          ROW /= 2;
+          COL /= 2;
       }
     }
     else 
@@ -113,6 +115,8 @@ void readParameters(ros::NodeHandle &n)
       if (DOWNSAMPLE)
       {
           FOCAL_LENGTH /= 2;
+          ROW /= 2;
+          COL /= 2;
       }
     }
 

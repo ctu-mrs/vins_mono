@@ -127,7 +127,7 @@ void VinsEstimator::onInit()
 
     registerPub(nh);
 
-    sub_imu_ = nh.subscribe("imu_in", 1, &VinsEstimator::callbackImu, this, ros::TransportHints().tcpNoDelay());
+    sub_imu_ = nh.subscribe("imu_in", 20, &VinsEstimator::callbackImu, this, ros::TransportHints().tcpNoDelay());
     sub_features_ = nh.subscribe("feature_tracker/feature", 1, &VinsEstimator::callbackFeatures, this, ros::TransportHints().tcpNoDelay());
     sub_restart_ = nh.subscribe("feature_tracker/restart", 1, &VinsEstimator::callbackRestart, this, ros::TransportHints().tcpNoDelay());
     sub_relo_points_ = nh.subscribe("pose_graph/match_points", 1, &VinsEstimator::callbackRelocalization, this, ros::TransportHints().tcpNoDelay());
