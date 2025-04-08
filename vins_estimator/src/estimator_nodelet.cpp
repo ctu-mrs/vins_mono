@@ -43,12 +43,15 @@ private:
   queue<sensor_msgs::ImuConstPtr> imu_buf;
   queue<sensor_msgs::PointCloudConstPtr> feature_buf;
   queue<sensor_msgs::PointCloudConstPtr> relo_buf;
+  geometry_msgs::Vector3 input_acc;
+  bool got_input_acc = false;
   int sum_of_wait = 0;
 
   std::mutex m_buf;
   std::mutex m_state;
   std::mutex i_buf;
   std::mutex m_estimator;
+  std::mutex m_acc;
 
   double latest_time;
   Eigen::Vector3d tmp_P;
@@ -61,6 +64,7 @@ private:
   bool init_feature = 0;
   bool init_imu = 1;
   double last_imu_t = 0;
+  double last_acc_t = 0;
   string uav_name = "";
 
   void predict(const sensor_msgs::ImuConstPtr &imu_msg);
@@ -71,6 +75,9 @@ private:
 
   ros::Subscriber sub_imu_; 
   void callbackImu(const sensor_msgs::ImuConstPtr &imu_msg);
+
+  ros::Subscriber sub_acc_; 
+  void callbackAcc(const geometry_msgs::Vector3StampedConstPtr &acc_msg);
 
   ros::Subscriber sub_features_; 
   void callbackFeatures(const sensor_msgs::PointCloudConstPtr &feature_msg);
@@ -127,7 +134,8 @@ void VinsEstimator::onInit()
 
     registerPub(nh);
 
-    sub_imu_ = nh.subscribe("imu_in", 1, &VinsEstimator::callbackImu, this, ros::TransportHints().tcpNoDelay());
+    sub_imu_ = nh.subscribe("imu_in", 100, &VinsEstimator::callbackImu, this, ros::TransportHints().tcpNoDelay());
+    sub_acc_ = nh.subscribe("acc_in", 100, &VinsEstimator::callbackAcc, this, ros::TransportHints().tcpNoDelay());
     sub_features_ = nh.subscribe("feature_tracker/feature", 1, &VinsEstimator::callbackFeatures, this, ros::TransportHints().tcpNoDelay());
     sub_restart_ = nh.subscribe("feature_tracker/restart", 1, &VinsEstimator::callbackRestart, this, ros::TransportHints().tcpNoDelay());
     sub_relo_points_ = nh.subscribe("pose_graph/match_points", 1, &VinsEstimator::callbackRelocalization, this, ros::TransportHints().tcpNoDelay());
@@ -253,6 +261,31 @@ std::vector<std::pair<std::vector<sensor_msgs::ImuConstPtr>, sensor_msgs::PointC
 }
 /*//}*/
 
+/*//{ callbackAcc() */
+void VinsEstimator::callbackAcc(const geometry_msgs::Vector3StampedConstPtr &acc_msg)
+{
+
+    if (!is_initialized_) {
+      return;
+    }
+
+    ROS_INFO_ONCE("[%s]: got acc message", NODE_NAME.c_str());
+
+    if (acc_msg->header.stamp.toSec() <= last_acc_t)
+    {
+        ROS_WARN("acc message in disorder!");
+        return;
+    }
+    last_acc_t = acc_msg->header.stamp.toSec();
+
+    {
+    std::scoped_lock lock(m_acc);
+    input_acc = acc_msg->vector;
+    got_input_acc = true;
+    }
+}
+/*//}*/
+
 /*//{ callbackImu() */
 void VinsEstimator::callbackImu(const sensor_msgs::ImuConstPtr &imu_msg)
 {
@@ -269,10 +302,20 @@ void VinsEstimator::callbackImu(const sensor_msgs::ImuConstPtr &imu_msg)
         return;
     }
     last_imu_t = imu_msg->header.stamp.toSec();
-
+    
+    sensor_msgs::Imu tmp_imu = *imu_msg;
+    if (got_input_acc) 
+        {
+            std::scoped_lock lock(m_acc);
+            tmp_imu.linear_acceleration.x = input_acc.x; 
+            tmp_imu.linear_acceleration.y = input_acc.y; 
+            tmp_imu.linear_acceleration.z = input_acc.z; 
+        }
+    sensor_msgs::ImuConstPtr imu_mod = boost::make_shared<sensor_msgs::Imu>(tmp_imu);
+    
     {
     std::scoped_lock lock(m_buf);
-    imu_buf.push(imu_msg);
+    imu_buf.push(imu_mod);
     }
     con.notify_one();
 
